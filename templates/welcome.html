@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TransfertSpace - Transfert Monétaire</title>
+    <title>TransfertSpace - Transfert Monétaire International</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-image {
@@ -13,7 +13,7 @@
             background-repeat: no-repeat;
         }
         .bg-overlay {
-            background-color: rgba(79, 70, 229, 0.5);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.6), rgba(99, 102, 241, 0.4));
         }
         .modal {
             display: none;
@@ -24,134 +24,229 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0,0,0,0.6);
         }
         .modal.active {
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        .btn-primary {
+            background: linear-gradient(135deg, #4F46E5, #6366F1);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(79, 70, 229, 0.4);
+        }
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3);
+        }
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(37, 211, 102, 0.4);
+        }
     </style>
 </head>
-<body class="bg-image min-h-screen flex items-center justify-center">
+<body class="bg-image min-h-screen flex items-center justify-center p-4">
     <div class="bg-overlay absolute inset-0"></div>
     
-    <div class="relative z-10 bg-white p-8 rounded-2xl shadow-2xl w-96">
-        <h1 class="text-3xl font-bold text-center mb-2 text-gray-800">TransfertSpace</h1>
-        <p class="text-center text-gray-600 mb-8">Connexion à la plateforme</p>
+    <div class="relative z-10 bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-3">TransfertSpace</h1>
+            <p class="text-gray-600 text-lg">Connexion à la plateforme</p>
+            <div class="mt-2 inline-block bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium">
+                Transferts internationaux sécurisés
+            </div>
+        </div>
         
         {% if error %}
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {{ error }}
+        <div class="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-start">
+            <svg class="w-5 h-5 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+            </svg>
+            <span>{{ error }}</span>
         </div>
         {% endif %}
         
         <form method="POST" action="{{ url_for('main.index') }}">
-            <div class="mb-4">
+            <div class="mb-5">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Nom d'utilisateur</label>
-                <input type="text" name="username" required
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="text" name="username" required autocomplete="username"
+                       class="shadow-sm appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
             </div>
             
             <div class="mb-6">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Mot de passe</label>
-                <input type="password" name="password" required
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="password" name="password" required autocomplete="current-password"
+                       class="shadow-sm appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
             </div>
             
             <button type="submit" 
-                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition">
+                    class="w-full btn-primary text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-indigo-300">
                 Se connecter
             </button>
         </form>
         
         <div class="mt-6">
+            <div class="relative mb-4">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-3 bg-white text-gray-500 font-medium">Nouveau sur TransfertSpace?</span>
+                </div>
+            </div>
+            
             <button onclick="openRegistrationModal()" 
-                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    class="w-full btn-whatsapp text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-green-300 flex items-center justify-center gap-2">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                 </svg>
-                Demande d'inscription
+                <span>Demander un compte</span>
             </button>
         </div>
         
         <div class="mt-8 text-center text-sm text-gray-600">
-            <p>© 2025 <a href="https://www.myoneart.com" target="_blank" class="text-indigo-600 hover:text-indigo-800 transition">MOA Digital Agency LLC</a></p>
-            <p class="mt-1">Transfert Monétaire Facile, Bénéfique & Rapide</p>
+            <p>© 2025 <a href="https://www.myoneart.com" target="_blank" class="text-indigo-600 hover:text-indigo-800 transition font-semibold">MOA Digital Agency LLC</a></p>
+            <p class="mt-1 font-medium">Transfert Monétaire Facile, Bénéfique & Rapide</p>
         </div>
     </div>
 
     <div id="registrationModal" class="modal">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md m-4">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Demande d'inscription</h2>
-                <button onclick="closeRegistrationModal()" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-lg m-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Demande d'inscription</h2>
+                    <p class="text-sm text-indigo-600 font-medium">Devenez opérateur de transfert</p>
+                </div>
+                <button onclick="closeRegistrationModal()" class="text-gray-400 hover:text-gray-600 text-3xl font-bold transition">
                     &times;
                 </button>
             </div>
             
-            <p class="text-sm text-gray-600 mb-4">
-                Remplissez ce formulaire pour créer votre compte TransfertSpace et commencer à envoyer de l'argent entre vos pays choisis.
-            </p>
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 border-l-4 border-indigo-500 p-4 rounded-lg mb-6">
+                <h3 class="font-bold text-gray-800 mb-2 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                    Comment ça marche?
+                </h3>
+                <ul class="text-sm text-gray-700 space-y-2 ml-7">
+                    <li class="flex items-start">
+                        <span class="text-indigo-600 mr-2">1.</span>
+                        <span><strong>Remplissez ce formulaire</strong> avec vos informations et les deux pays entre lesquels vous souhaitez effectuer des transferts</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-indigo-600 mr-2">2.</span>
+                        <span><strong>Votre demande sera envoyée</strong> automatiquement par WhatsApp à notre équipe</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-indigo-600 mr-2">3.</span>
+                        <span><strong>Une fois votre compte créé,</strong> vous recevrez vos identifiants et votre lien personnalisé par WhatsApp</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-indigo-600 mr-2">4.</span>
+                        <span><strong>Gérez vos transferts internationaux</strong> entre vos deux pays configurés avec vos propres taux et frais</span>
+                    </li>
+                </ul>
+            </div>
             
-            <form id="registrationForm" class="space-y-4">
+            <form id="registrationForm" class="space-y-5">
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Nom complet</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Nom complet *</label>
                     <input type="text" id="fullName" required
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                           class="shadow-sm appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
                 </div>
                 
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Numéro WhatsApp</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Numéro WhatsApp *</label>
                     <input type="text" id="whatsappNumber" placeholder="+212600000000" required
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    <p class="text-xs text-gray-500 mt-1">Format international avec indicatif pays</p>
+                           class="shadow-sm appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
+                    <p class="text-xs text-gray-500 mt-1.5">📱 Format international avec indicatif pays (ex: +212699140001)</p>
                 </div>
                 
-                <div class="border-t pt-4">
-                    <h3 class="text-sm font-bold text-gray-800 mb-3">Configuration des transferts</h3>
+                <div class="border-t-2 border-gray-200 pt-5">
+                    <h3 class="text-base font-bold text-gray-800 mb-1 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+                        </svg>
+                        Configuration des transferts internationaux
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-4 ml-7">Choisissez les deux pays entre lesquels vous souhaitez effectuer des transferts</p>
                     
-                    <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Pays d'envoi</label>
-                        <select id="sendCountry" required onchange="updateSendCurrency()"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <option value="">Sélectionnez un pays...</option>
-                        </select>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                        <p class="text-sm text-blue-800">
+                            <strong>🌍 Transferts toujours entre deux pays différents:</strong> 
+                            Par exemple, Maroc ↔ RDC, France ↔ Sénégal, etc.
+                        </p>
                     </div>
                     
-                    <div class="mt-3">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Devise d'envoi</label>
-                        <select id="sendCurrency" required
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <option value="">Sélectionnez d'abord un pays...</option>
-                        </select>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h4 class="text-sm font-bold text-green-800 mb-3 flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                </svg>
+                                Pays d'origine
+                            </h4>
+                            <div class="mb-3">
+                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Pays d'envoi *</label>
+                                <select id="sendCountry" required onchange="updateSendCurrency()"
+                                        class="shadow-sm appearance-none border-2 border-green-300 rounded-lg w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition">
+                                    <option value="">Sélectionnez...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Devise *</label>
+                                <select id="sendCurrency" required
+                                        class="shadow-sm appearance-none border-2 border-green-300 rounded-lg w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition">
+                                    <option value="">Choisir le pays d'abord...</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                            <h4 class="text-sm font-bold text-purple-800 mb-3 flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                Pays de destination
+                            </h4>
+                            <div class="mb-3">
+                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Pays de réception *</label>
+                                <select id="receiveCountry" required onchange="updateReceiveCurrency()"
+                                        class="shadow-sm appearance-none border-2 border-purple-300 rounded-lg w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition">
+                                    <option value="">Sélectionnez...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Devise *</label>
+                                <select id="receiveCurrency" required
+                                        class="shadow-sm appearance-none border-2 border-purple-300 rounded-lg w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition">
+                                    <option value="">Choisir le pays d'abord...</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="border-t pt-4">
-                    <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Pays de destination</label>
-                        <select id="receiveCountry" required onchange="updateReceiveCurrency()"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <option value="">Sélectionnez un pays...</option>
-                        </select>
-                    </div>
-                    
-                    <div class="mt-3">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Devise de réception</label>
-                        <select id="receiveCurrency" required
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <option value="">Sélectionnez d'abord un pays...</option>
-                        </select>
-                    </div>
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg">
+                    <p class="text-sm text-yellow-800">
+                        <strong>📩 Notification automatique:</strong> Après validation, vous recevrez vos identifiants de connexion et votre URL personnalisée directement sur WhatsApp.
+                    </p>
                 </div>
                 
                 <button type="submit" 
-                        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline transition flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        class="w-full btn-whatsapp text-white font-bold py-4 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-green-300 flex items-center justify-center gap-2 text-lg">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                     </svg>
-                    Envoyer la demande sur WhatsApp
+                    <span>Envoyer ma demande via WhatsApp</span>
                 </button>
             </form>
         </div>
