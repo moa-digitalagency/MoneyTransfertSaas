@@ -8,13 +8,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-indigo-600 text-white p-4">
+    <nav class="bg-blue-900 bg-opacity-90 text-white p-4 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">TransfertSpace Dashboard</h1>
+            <h1 class="text-2xl font-bold">💰 TransfertSpace Dashboard</h1>
             <div class="space-x-4">
-                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-indigo-200">Dashboard</a>
-                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-indigo-200">Admins</a>
-                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-indigo-200">Déconnexion</a>
+                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">Dashboard</a>
+                <a href="{{ url_for('superadmin.statistics') }}" class="hover:text-blue-200 transition">Statistiques</a>
+                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition">Admins</a>
+                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">Déconnexion</a>
             </div>
         </div>
     </nav>
@@ -51,7 +52,14 @@
                             <td class="px-6 py-4">{{ transaction.send_amount }} {{ transaction.send_currency }}</td>
                             <td class="px-6 py-4">{{ transaction.receive_amount }} {{ transaction.receive_currency }}</td>
                             <td class="px-6 py-4">{{ transaction.reception_method }}</td>
-                            <td class="px-6 py-4">{{ transaction.created_at[:10] if transaction.created_at else '-' }}</td>
+                            <td class="px-6 py-4">
+                                {% if transaction.created_at %}
+                                    {{ transaction.created_at[:10] }}<br>
+                                    <span class="text-xs text-gray-500">{{ transaction.created_at[11:19] }}</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
                         </tr>
                         {% else %}
                         <tr>
