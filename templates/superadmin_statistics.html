@@ -63,13 +63,13 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                        {% for i, stat in enumerate(admin_stats, 1) %}
+                        {% for stat in admin_stats %}
                         <tr class="hover:bg-blue-50 transition">
                             <td class="px-6 py-4 whitespace-nowrap text-lg font-bold">
-                                {% if i == 1 %}🥇
-                                {% elif i == 2 %}🥈
-                                {% elif i == 3 %}🥉
-                                {% else %}{{ i }}
+                                {% if loop.index == 1 %}🥇
+                                {% elif loop.index == 2 %}🥈
+                                {% elif loop.index == 3 %}🥉
+                                {% else %}{{ loop.index }}
                                 {% endif %}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap font-semibold text-blue-900">{{ stat.username }}</td>
