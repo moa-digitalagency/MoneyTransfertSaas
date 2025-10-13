@@ -222,6 +222,10 @@ def admin_statistics():
         Transaction.created_at >= month_start
     ).first()
     
+    total_today = round(stats_today[0], 2) if stats_today and stats_today[0] else 0
+    total_week = round(stats_week[0], 2) if stats_week and stats_week[0] else 0
+    total_month = round(stats_month[0], 2) if stats_month and stats_month[0] else 0
+    
     daily_stats = []
     for i in range(7):
         day_start = today_start - timedelta(days=i)
@@ -237,7 +241,7 @@ def admin_statistics():
         daily_stats.append({
             'date': day_start.strftime('%Y-%m-%d'),
             'day_name': day_start.strftime('%A'),
-            'total': round(day_total.total, 2) if day_total.total else 0
+            'total': round(day_total[0], 2) if day_total and day_total[0] else 0
         })
     
     top_admins = db.session.query(
@@ -266,9 +270,9 @@ def admin_statistics():
     
     return render_template('admin_statistics.html',
                          username=admin.username,
-                         total_today=round(stats_today.total, 2) if stats_today.total else 0,
-                         total_week=round(stats_week.total, 2) if stats_week.total else 0,
-                         total_month=round(stats_month.total, 2) if stats_month.total else 0,
+                         total_today=total_today,
+                         total_week=total_week,
+                         total_month=total_month,
                          daily_stats=daily_stats,
                          top_admins=top_admins,
                          all_admins=all_admins)
