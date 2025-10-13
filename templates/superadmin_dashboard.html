@@ -72,7 +72,7 @@
             <div class="bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl p-6 text-white shadow-2xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-blue-100 text-sm mb-1">Montant Total Aujourd'hui</p>
+                        <p class="text-blue-100 text-sm mb-1">Transactions Aujourd'hui</p>
                         <p class="text-3xl font-bold">{{ total_today }}</p>
                     </div>
                     <div class="text-5xl opacity-50">📅</div>
@@ -82,7 +82,7 @@
             <div class="bg-gradient-to-br from-green-500 to-green-700 rounded-xl p-6 text-white shadow-2xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-green-100 text-sm mb-1">Montant Total Cette Semaine</p>
+                        <p class="text-green-100 text-sm mb-1">Transactions Cette Semaine</p>
                         <p class="text-3xl font-bold">{{ total_week }}</p>
                     </div>
                     <div class="text-5xl opacity-50">📆</div>
@@ -92,7 +92,7 @@
             <div class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl p-6 text-white shadow-2xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-purple-100 text-sm mb-1">Montant Total Ce Mois-ci</p>
+                        <p class="text-purple-100 text-sm mb-1">Transactions Ce Mois-ci</p>
                         <p class="text-3xl font-bold">{{ total_month }}</p>
                     </div>
                     <div class="text-5xl opacity-50">📊</div>
@@ -102,7 +102,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <div class="bg-white rounded-xl shadow-2xl p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">📈 Évolution des 7 derniers jours</h2>
+                <h2 class="text-xl font-bold text-gray-800 mb-4">📈 Transactions des 7 derniers jours</h2>
                 <canvas id="dailyChart"></canvas>
             </div>
 
@@ -214,7 +214,7 @@
             data: {
                 labels: dailyData.reverse().map(d => d.day_name),
                 datasets: [{
-                    label: 'Montant Total',
+                    label: 'Nombre de Transactions',
                     data: dailyData.map(d => d.total),
                     backgroundColor: 'rgba(59, 130, 246, 0.5)',
                     borderColor: 'rgba(59, 130, 246, 1)',
@@ -233,8 +233,9 @@
                     y: {
                         beginAtZero: true,
                         ticks: {
+                            stepSize: 1,
                             callback: function(value) {
-                                return value.toFixed(2);
+                                return Number.isInteger(value) ? value : '';
                             }
                         }
                     }

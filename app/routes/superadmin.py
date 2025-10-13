@@ -59,27 +59,27 @@ def dashboard():
     week_start = today_start - timedelta(days=today_start.weekday())
     month_start = today_start.replace(day=1)
     
-    stats_today = db.session.query(func.sum(Transaction.send_amount)).filter(
+    stats_today = db.session.query(func.count(Transaction.id)).filter(
         Transaction.created_at >= today_start
     ).scalar()
     
-    stats_week = db.session.query(func.sum(Transaction.send_amount)).filter(
+    stats_week = db.session.query(func.count(Transaction.id)).filter(
         Transaction.created_at >= week_start
     ).scalar()
     
-    stats_month = db.session.query(func.sum(Transaction.send_amount)).filter(
+    stats_month = db.session.query(func.count(Transaction.id)).filter(
         Transaction.created_at >= month_start
     ).scalar()
     
-    total_today = round(stats_today, 2) if stats_today else 0
-    total_week = round(stats_week, 2) if stats_week else 0
-    total_month = round(stats_month, 2) if stats_month else 0
+    total_today = stats_today if stats_today else 0
+    total_week = stats_week if stats_week else 0
+    total_month = stats_month if stats_month else 0
     
     daily_stats = []
     for i in range(7):
         day_start = today_start - timedelta(days=i)
         day_end = day_start + timedelta(days=1)
-        day_total = db.session.query(func.sum(Transaction.send_amount)).filter(
+        day_total = db.session.query(func.count(Transaction.id)).filter(
             Transaction.created_at >= day_start,
             Transaction.created_at < day_end
         ).scalar()
@@ -87,7 +87,7 @@ def dashboard():
         daily_stats.append({
             'date': day_start.strftime('%Y-%m-%d'),
             'day_name': day_start.strftime('%A'),
-            'total': round(day_total, 2) if day_total else 0
+            'total': day_total if day_total else 0
         })
     
     top_admins = db.session.query(
