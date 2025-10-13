@@ -281,6 +281,29 @@ def admin_transactions(admin_id):
                          admin=admin,
                          transactions=[t.to_dict() for t in transactions])
 
+@superadmin_bp.route('/statistics')
+def statistics():
+    admin = require_superadmin_login()
+    if not admin:
+        return redirect(url_for('main.index'))
+    
+    admin_stats = db.session.query(
+        Admin.id,
+        Admin.username,
+        Admin.full_name,
+        Admin.email,
+        Admin.status,
+        Admin.created_at,
+        func.count(Transaction.id).label('transaction_count'),
+        func.sum(Transaction.send_amount).label('total_volume')
+    ).outerjoin(Transaction, Admin.id == Transaction.admin_id)\
+     .filter(Admin.role == 'admin')\
+     .group_by(Admin.id, Admin.username, Admin.full_name, Admin.email, Admin.status, Admin.created_at)\
+     .order_by(desc('total_volume'))\
+     .all()
+    
+    return render_template('superadmin_statistics.html', admin_stats=admin_stats)
+
 @superadmin_bp.route('/logout')
 def logout():
     session.clear()
