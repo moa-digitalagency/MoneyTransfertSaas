@@ -19,3 +19,16 @@ def init_db(app):
         from app.models.transaction import Transaction
         from app.models.admin import Admin, AdminConfig
         db.create_all()
+        
+        existing_superadmin = Admin.query.filter_by(role='superadmin').first()
+        if not existing_superadmin:
+            superadmin = Admin(
+                username='myoneart',
+                email='moa@myoneart.com',
+                role='superadmin',
+                status='active'
+            )
+            superadmin.set_password('my0n34rt')
+            db.session.add(superadmin)
+            db.session.commit()
+            print("✅ Superadmin créé automatiquement")

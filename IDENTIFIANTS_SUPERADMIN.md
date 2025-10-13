@@ -2,7 +2,7 @@
 
 ## Compte Principal
 
-Voici les identifiants pour accéder au panneau SuperAdmin :
+Le compte SuperAdmin est créé **automatiquement** au démarrage de l'application.
 
 ### Connexion
 - **URL** : `/` (page d'accueil)
@@ -11,8 +11,8 @@ Voici les identifiants pour accéder au panneau SuperAdmin :
 - **Mot de passe** : `my0n34rt`
 
 ### Sécurité
-- ✅ Mot de passe haché avec **scrypt** (algorithme Werkzeug)
-- ✅ Hash : `scrypt:32768:8:1$F3WTigOKIFIA0yRj$72ff6424d8d59ca4e857399b9fb97eb707f21604d364d80a7df7475ffaf768ad8874cdeb8bbe8a4738523e72c14a4ef47f6000d1a73d928c13f5d5a26e4be660`
+- ✅ Création automatique au déploiement
+- ✅ Mot de passe haché avec **Werkzeug** (PBKDF2-SHA256)
 - ✅ Rôle : `superadmin`
 - ✅ Statut : `active`
 

@@ -168,10 +168,18 @@ Each admin can independently configure:
 ## Getting Started
 
 ### Initial SuperAdmin Setup
-1. Run the initialization script: `python init_superadmin.py`
-2. Follow the prompts to create the first SuperAdmin account
-3. Access the SuperAdmin panel at `/superadmin/login`
-4. Create admin accounts from the SuperAdmin dashboard
+Le compte SuperAdmin se crée **automatiquement** au démarrage de l'application avec les identifiants suivants:
+- **Username**: `myoneart`
+- **Email**: `moa@myoneart.com`
+- **Mot de passe**: `my0n34rt`
+
+Pour utiliser le SuperAdmin:
+1. Accédez à la page d'accueil `/`
+2. Connectez-vous avec les identifiants ci-dessus
+3. Vous serez redirigé vers le dashboard SuperAdmin
+4. Créez des comptes admin depuis le dashboard
+
+**Note**: Si vous souhaitez créer un SuperAdmin différent, vous pouvez utiliser le script `python init_superadmin.py`
 
 ### Creating Admin Accounts
 1. Login as SuperAdmin
