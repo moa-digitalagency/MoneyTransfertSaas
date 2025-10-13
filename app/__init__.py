@@ -13,9 +13,11 @@ def create_app():
     
     logging.basicConfig(level=logging.DEBUG)
     
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.config['SESSION_COOKIE_SECURE'] = False
     app.config['SESSION_COOKIE_HTTPONLY'] = True
-    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+    app.config['SESSION_COOKIE_SAMESITE'] = None
+    app.config['SESSION_COOKIE_NAME'] = 'admin_session'
     app.config['PERMANENT_SESSION_LIFETIME'] = 86400
     
     from app.database import init_db

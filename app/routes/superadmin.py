@@ -23,8 +23,15 @@ def login():
 
 @superadmin_bp.route('/dashboard')
 def dashboard():
-    if not require_superadmin_login():
+    import logging
+    logging.debug(f"Dashboard accessed. Session: {dict(session)}")
+    
+    admin = require_superadmin_login()
+    if not admin:
+        logging.debug("require_superadmin_login returned False, redirecting to index")
         return redirect(url_for('main.index'))
+    
+    logging.debug(f"SuperAdmin dashboard accessed by: {admin.username}")
     
     total_admins = Admin.query.filter_by(role='admin').count()
     active_admins = Admin.query.filter_by(role='admin', status='active').count()
