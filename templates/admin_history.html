@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique des Transactions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #dc2626 100%);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 mt-8">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-blue-900">
+                    📋 Historique des Transactions WhatsApp
+                </h1>
+                <div class="flex gap-4 items-center">
+                    <a href="/" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                        🏠 Accueil
+                    </a>
+                    <a href="/admin" class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition">
+                        ⚙️ Configuration
+                    </a>
+                    <a href="/admin/logout" class="text-sm text-red-600 hover:text-red-700 transition">Déconnexion</a>
+                </div>
+            </div>
+
+            {% if transactions|length == 0 %}
+            <div class="text-center py-12">
+                <p class="text-gray-500 text-lg">Aucune transaction pour le moment</p>
+            </div>
+            {% else %}
+            <div class="mb-4 text-sm text-gray-600">
+                Total: {{ transactions|length }} transaction(s)
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200">
+                    <thead class="bg-blue-900 text-white">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Date</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Direction</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Envoi</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Réception</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Méthode</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Coordonnées</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Contact WhatsApp</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for transaction in transactions %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 text-sm text-gray-900">
+                                {{ transaction.created_at[:10] }}<br>
+                                <span class="text-xs text-gray-500">{{ transaction.created_at[11:19] }}</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {% if transaction.direction == 'country1_to_country2' %}
+                                    <span class="text-blue-700">{{ transaction.country1_name }} → {{ transaction.country2_name }}</span>
+                                {% else %}
+                                    <span class="text-green-700">{{ transaction.country2_name }} → {{ transaction.country1_name }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3 text-sm font-semibold text-blue-900">
+                                {{ transaction.send_amount }} {{ transaction.send_currency }}
+                            </td>
+                            <td class="px-4 py-3 text-sm font-semibold text-green-700">
+                                {{ transaction.receive_amount }} {{ transaction.receive_currency }}
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-700">
+                                {{ transaction.reception_method }}
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-700">
+                                {{ transaction.reception_details }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <div class="text-gray-700">{{ transaction.whatsapp_contact }}</div>
+                                <div class="text-xs text-gray-500">{{ transaction.whatsapp_phone }}</div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="text-center mt-6 text-white text-sm">
+            <p>© 2025 <a href="https://www.myoneart.com" target="_blank" class="underline hover:text-blue-200 transition">MOA Digital Agency LLC</a></p>
+        </div>
+    </div>
+</body>
+</html>

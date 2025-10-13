@@ -1,0 +1,110 @@
+{
+  "admin_password_hash": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+  "countries": {
+    "country1": {
+      "code": "RDC",
+      "currency_code": "USD"
+    },
+    "country2": {
+      "code": "MA",
+      "currency_code": "MAD"
+    }
+  },
+  "rates": {
+    "country1_to_country2": 10.2,
+    "country2_to_country1": 0.098
+  },
+  "transaction_fees": {
+    "country1_to_country2": [
+      {
+        "min": 0.0,
+        "max": 50.0,
+        "fee": 5.0
+      },
+      {
+        "min": 50.0,
+        "max": 100.0,
+        "fee": 8.0
+      },
+      {
+        "min": 100.0,
+        "max": 200.0,
+        "fee": 12.0
+      },
+      {
+        "min": 200.0,
+        "max": 500.0,
+        "fee": 20.0
+      },
+      {
+        "min": 500.0,
+        "max": 1000.0,
+        "fee": 35.0
+      },
+      {
+        "min": 1000.0,
+        "max": 999999.0,
+        "fee": 50.0
+      }
+    ],
+    "country2_to_country1": [
+      {
+        "min": 0.0,
+        "max": 500.0,
+        "fee": 0.5
+      },
+      {
+        "min": 500.0,
+        "max": 1000.0,
+        "fee": 0.8
+      },
+      {
+        "min": 1000.0,
+        "max": 2000.0,
+        "fee": 1.2
+      },
+      {
+        "min": 2000.0,
+        "max": 5000.0,
+        "fee": 2.0
+      },
+      {
+        "min": 5000.0,
+        "max": 10000.0,
+        "fee": 3.5
+      },
+      {
+        "min": 10000.0,
+        "max": 9999999.0,
+        "fee": 5.0
+      }
+    ]
+  },
+  "whatsapp": {
+    "country1_to_country2": {
+      "phone": "212600265350",
+      "contact_name": "Néhémie"
+    },
+    "country2_to_country1": {
+      "phone": "212600265350",
+      "contact_name": "Néhémie"
+    }
+  },
+  "app_section": {
+    "title": "Transfert Monétaire",
+    "content": "La seule référence pour vos transfert d'argent sûr RDC🇨🇩 et Maroc🇲🇦 "
+  },
+  "reception_methods": {
+    "country1": [
+      "Mobile Money RDC",
+      "Airtel Money",
+      "Orange Money",
+      "Virement bancaire"
+    ],
+    "country2": [
+      "Virement bancaire",
+      "Cash Plus",
+      "Western Union"
+    ]
+  }
+}

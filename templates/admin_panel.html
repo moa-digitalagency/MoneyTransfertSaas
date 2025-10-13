@@ -1,0 +1,361 @@
+<!--
+MoneyTransfert
+By MOA Digital Agency LLC
+Developed by : Aisance KALONJI
+Contact : moa@myoneart.com
+www.myoneart.com
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panneau d'Administration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #dc2626 100%);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 mt-8">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-blue-900">
+                    ⚙️ Configuration
+                </h1>
+                <div class="flex gap-4 items-center">
+                    <a href="/admin/history" class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition">
+                        📋 Historique
+                    </a>
+                    <a href="/admin/logout" class="text-sm text-red-600 hover:text-red-700 transition">Déconnexion</a>
+                </div>
+            </div>
+            
+            {% if username %}
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <p class="text-sm text-gray-600 mb-2">🔗 Lien de votre page de transfert:</p>
+                <div class="flex gap-2 items-center">
+                    <input type="text" value="{{ request.host_url }}{{ username }}" readonly 
+                           class="flex-1 px-3 py-2 bg-white border border-gray-300 rounded text-sm" id="page-link">
+                    <button onclick="copyLink()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm">
+                        📋 Copier
+                    </button>
+                    <a href="/{{ username }}" target="_blank" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition text-sm">
+                        👁️ Voir
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if success %}
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                ✓ {{ success }}
+            </div>
+            {% endif %}
+            
+            <form method="POST" action="/admin/update" class="space-y-6" id="configForm">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="token" value="{{ token }}">
+                
+                <div class="border-b pb-4">
+                    <h2 class="text-lg font-semibold text-blue-900 mb-4">🌍 Configuration des Pays</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Pays 1</label>
+                            <select name="country1_code" id="country1_code" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition" onchange="updateCurrencies()">
+                                {% for country in countries %}
+                                <option value="{{ country.code }}" {% if config.countries.country1.code == country.code %}selected{% endif %}>
+                                    {{ country.flag }} {{ country.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Devise Pays 1</label>
+                            <select name="country1_currency" id="country1_currency" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition">
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Pays 2</label>
+                            <select name="country2_code" id="country2_code" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition" onchange="updateCurrencies()">
+                                {% for country in countries %}
+                                <option value="{{ country.code }}" {% if config.countries.country2.code == country.code %}selected{% endif %}>
+                                    {{ country.flag }} {{ country.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Devise Pays 2</label>
+                            <select name="country2_currency" id="country2_currency" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-b pb-4">
+                    <h2 class="text-lg font-semibold text-blue-900 mb-4">💱 Taux de change</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" id="rate_label_1">Pays 1 → Pays 2</label>
+                            <input type="number" step="0.01" name="country1_to_country2" value="{{ config.rates.country1_to_country2 }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" id="rate_label_2">Pays 2 → Pays 1</label>
+                            <input type="number" step="0.001" name="country2_to_country1" value="{{ config.rates.country2_to_country1 }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-b pb-4">
+                    <h2 class="text-lg font-semibold text-blue-900 mb-4">💵 Frais de transaction</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-blue-900 mb-3" id="fees_label_1">Pays 1 → Pays 2</h3>
+                            <div class="space-y-3">
+                                {% for tier in config.transaction_fees.country1_to_country2 %}
+                                <div class="bg-white p-3 rounded border border-blue-200">
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <div>
+                                            <label class="text-xs text-gray-600">Min</label>
+                                            <input type="number" name="country1_to_country2[{{ loop.index0 }}][min]" value="{{ tier.min }}" class="w-full px-2 py-1 border border-gray-300 rounded text-sm" step="0.01">
+                                        </div>
+                                        <div>
+                                            <label class="text-xs text-gray-600">Max</label>
+                                            <input type="number" name="country1_to_country2[{{ loop.index0 }}][max]" value="{{ tier.max }}" class="w-full px-2 py-1 border border-gray-300 rounded text-sm" step="0.01">
+                                        </div>
+                                        <div>
+                                            <label class="text-xs text-gray-600">Frais</label>
+                                            <input type="number" name="country1_to_country2[{{ loop.index0 }}][fee]" value="{{ tier.fee }}" class="w-full px-2 py-1 border border-gray-300 rounded text-sm" step="0.01">
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-red-900 mb-3" id="fees_label_2">Pays 2 → Pays 1</h3>
+                            <div class="space-y-3">
+                                {% for tier in config.transaction_fees.country2_to_country1 %}
+                                <div class="bg-white p-3 rounded border border-red-200">
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <div>
+                                            <label class="text-xs text-gray-600">Min</label>
+                                            <input type="number" name="country2_to_country1[{{ loop.index0 }}][min]" value="{{ tier.min }}" class="w-full px-2 py-1 border border-gray-300 rounded text-sm" step="0.01">
+                                        </div>
+                                        <div>
+                                            <label class="text-xs text-gray-600">Max</label>
+                                            <input type="number" name="country2_to_country1[{{ loop.index0 }}][max]" value="{{ tier.max }}" class="w-full px-2 py-1 border border-gray-300 rounded text-sm" step="0.01">
+                                        </div>
+                                        <div>
+                                            <label class="text-xs text-gray-600">Frais</label>
+                                            <input type="number" name="country2_to_country1[{{ loop.index0 }}][fee]" value="{{ tier.fee }}" class="w-full px-2 py-1 border border-gray-300 rounded text-sm" step="0.01">
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-4">💡 Vous pouvez maintenant modifier directement les paliers de frais</p>
+                </div>
+                
+                <div class="border-b pb-4">
+                    <h2 class="text-lg font-semibold text-blue-900 mb-4">📱 WhatsApp</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-blue-900 mb-3" id="whatsapp_label_1">Pays 1 → Pays 2</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Numéro de téléphone</label>
+                                    <input type="text" name="phone_country1_to_country2" value="{{ config.whatsapp.country1_to_country2.phone }}" required placeholder="212600265350" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition text-sm">
+                                    <p class="text-xs text-gray-500 mt-1">Format international sans le +</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nom du contact</label>
+                                    <input type="text" name="contact_name_country1_to_country2" value="{{ config.whatsapp.country1_to_country2.contact_name }}" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition text-sm">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-red-900 mb-3" id="whatsapp_label_2">Pays 2 → Pays 1</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Numéro de téléphone</label>
+                                    <input type="text" name="phone_country2_to_country1" value="{{ config.whatsapp.country2_to_country1.phone }}" required placeholder="212600265350" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition text-sm">
+                                    <p class="text-xs text-gray-500 mt-1">Format international sans le +</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nom du contact</label>
+                                    <input type="text" name="contact_name_country2_to_country1" value="{{ config.whatsapp.country2_to_country1.contact_name }}" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition text-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-b pb-4">
+                    <h2 class="text-lg font-semibold text-blue-900 mb-4">💳 Moyens de Réception</h2>
+                    <p class="text-sm text-gray-600 mb-4">Configurez les moyens de réception disponibles pour chaque pays (un par ligne)</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-blue-900 mb-3" id="reception_label_1">Pays 1</h3>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Moyens de réception</label>
+                                <textarea name="reception_methods_country1" rows="8" placeholder="Mobile Money&#10;Virement bancaire&#10;Western Union&#10;MoneyGram&#10;Remise en espèces" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition text-sm font-mono">{{ config.reception_methods.country1 | join('\n') if config.reception_methods and config.reception_methods.country1 else '' }}</textarea>
+                                <p class="text-xs text-gray-500 mt-1">Un moyen par ligne. Laisser vide pour utiliser les moyens par défaut du pays.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-red-900 mb-3" id="reception_label_2">Pays 2</h3>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Moyens de réception</label>
+                                <textarea name="reception_methods_country2" rows="8" placeholder="Mobile Money&#10;Virement bancaire&#10;Western Union&#10;MoneyGram&#10;Remise en espèces" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition text-sm font-mono">{{ config.reception_methods.country2 | join('\n') if config.reception_methods and config.reception_methods.country2 else '' }}</textarea>
+                                <p class="text-xs text-gray-500 mt-1">Un moyen par ligne. Laisser vide pour utiliser les moyens par défaut du pays.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-b pb-4">
+                    <h2 class="text-lg font-semibold text-blue-900 mb-4">📱 Bloc Application</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Titre du bloc</label>
+                            <input type="text" name="app_title" value="{{ config.app_section.title if config.app_section else '' }}" placeholder="Notre Application" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Contenu du bloc</label>
+                            <textarea name="app_content" rows="3" placeholder="Téléchargez notre application..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition">{{ config.app_section.content if config.app_section else '' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pb-4">
+                    <h2 class="text-lg font-semibold text-blue-900 mb-4">🔐 Sécurité</h2>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nouveau mot de passe admin (laisser vide pour ne pas changer)</label>
+                        <input type="password" name="new_password" placeholder="Entrez un nouveau mot de passe..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition">
+                        <p class="text-xs text-gray-500 mt-1">Le mot de passe actuel ne peut pas être affiché pour des raisons de sécurité</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <button type="submit" class="flex-1 bg-blue-900 text-white py-3 rounded-lg font-bold hover:bg-blue-800 transition">
+                        💾 Enregistrer les modifications
+                    </button>
+                    <a href="/" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-bold text-center hover:bg-gray-300 transition">
+                        🏠 Retour à l'accueil
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const countriesData = {{ countries_json | safe }};
+        const currentConfig = {{ config | tojson }};
+
+        function updateCurrencies() {
+            const country1Code = document.getElementById('country1_code').value;
+            const country2Code = document.getElementById('country2_code').value;
+
+            const country1 = countriesData.find(c => c.code === country1Code);
+            const country2 = countriesData.find(c => c.code === country2Code);
+
+            const currency1Select = document.getElementById('country1_currency');
+            const currency2Select = document.getElementById('country2_currency');
+
+            currency1Select.innerHTML = '';
+            currency2Select.innerHTML = '';
+
+            if (country1) {
+                country1.currencies.forEach(currency => {
+                    const option = document.createElement('option');
+                    option.value = currency.code;
+                    option.textContent = `${currency.code} - ${currency.name}`;
+                    if (currentConfig.countries.country1.currency_code === currency.code && country1Code === currentConfig.countries.country1.code) {
+                        option.selected = true;
+                    }
+                    currency1Select.appendChild(option);
+                });
+            }
+
+            if (country2) {
+                country2.currencies.forEach(currency => {
+                    const option = document.createElement('option');
+                    option.value = currency.code;
+                    option.textContent = `${currency.code} - ${currency.name}`;
+                    if (currentConfig.countries.country2.currency_code === currency.code && country2Code === currentConfig.countries.country2.code) {
+                        option.selected = true;
+                    }
+                    currency2Select.appendChild(option);
+                });
+            }
+
+            updateLabels();
+        }
+
+        function updateLabels() {
+            const country1Code = document.getElementById('country1_code').value;
+            const country2Code = document.getElementById('country2_code').value;
+            const currency1Code = document.getElementById('country1_currency').value;
+            const currency2Code = document.getElementById('country2_currency').value;
+
+            const country1 = countriesData.find(c => c.code === country1Code);
+            const country2 = countriesData.find(c => c.code === country2Code);
+
+            if (country1 && country2) {
+                document.getElementById('rate_label_1').textContent = `${currency1Code} → ${currency2Code}`;
+                document.getElementById('rate_label_2').textContent = `${currency2Code} → ${currency1Code}`;
+                
+                document.getElementById('fees_label_1').textContent = `${country1.flag} ${country1.name} → ${country2.flag} ${country2.name} (${currency1Code})`;
+                document.getElementById('fees_label_2').textContent = `${country2.flag} ${country2.name} → ${country1.flag} ${country1.name} (${currency2Code})`;
+                
+                document.getElementById('whatsapp_label_1').textContent = `${country1.flag} ${country1.name} → ${country2.flag} ${country2.name}`;
+                document.getElementById('whatsapp_label_2').textContent = `${country2.flag} ${country2.name} → ${country1.flag} ${country1.name}`;
+            }
+        }
+
+        document.getElementById('country1_currency').addEventListener('change', updateLabels);
+        document.getElementById('country2_currency').addEventListener('change', updateLabels);
+
+        updateCurrencies();
+        
+        function copyLink() {
+            const linkInput = document.getElementById('page-link');
+            linkInput.select();
+            document.execCommand('copy');
+            
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '✓ Copié!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

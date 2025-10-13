@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions de {{ admin.username }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-indigo-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">SuperAdmin Dashboard</h1>
+            <div class="space-x-4">
+                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-indigo-200">Dashboard</a>
+                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-indigo-200">Admins</a>
+                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-indigo-200">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Transactions de {{ admin.username }}</h2>
+                <a href="{{ url_for('superadmin.admins_list') }}" 
+                   class="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded">
+                    Retour
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Direction</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant envoyé</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant reçu</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Méthode</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for transaction in transactions %}
+                        <tr>
+                            <td class="px-6 py-4">{{ transaction.id }}</td>
+                            <td class="px-6 py-4">
+                                {{ transaction.country1_name }} → {{ transaction.country2_name }}
+                            </td>
+                            <td class="px-6 py-4">{{ transaction.send_amount }} {{ transaction.send_currency }}</td>
+                            <td class="px-6 py-4">{{ transaction.receive_amount }} {{ transaction.receive_currency }}</td>
+                            <td class="px-6 py-4">{{ transaction.reception_method }}</td>
+                            <td class="px-6 py-4">{{ transaction.created_at[:10] if transaction.created_at else '-' }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                Aucune transaction
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
