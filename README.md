@@ -47,13 +47,23 @@ Application web SaaS configurable permettant à plusieurs opérateurs de transfe
 
 Les utilisateurs peuvent demander la création d'un compte admin via un formulaire accessible sur la page d'accueil :
 
-1. Bouton "Demande d'inscription" sur la page principale
-2. Formulaire avec :
+### Comment ça marche?
+
+1. **Bouton "Demander un compte"** sur la page principale
+2. **Formulaire de demande** avec :
    - Nom complet
    - Numéro WhatsApp
-   - Pays d'envoi et devise
-   - Pays de destination et devise
-3. Envoi automatique de la demande au numéro WhatsApp : **212699140001**
+   - Pays d'origine (envoi) et devise
+   - Pays de destination (réception) et devise
+3. **Envoi automatique** de la demande au numéro WhatsApp : **+212699140001**
+4. **Notification par WhatsApp** : Une fois le compte créé par le SuperAdmin, l'utilisateur reçoit ses identifiants de connexion et son URL personnalisée directement sur WhatsApp
+
+### Concept Important
+
+- **Transferts toujours internationaux** : Les transferts se font toujours entre deux pays différents (ex: Maroc ↔ RDC, France ↔ Sénégal)
+- **Demande d'inscription** : Il s'agit d'une demande, pas d'une création automatique
+- **Validation manuelle** : Le SuperAdmin valide et crée le compte
+- **URL personnalisée** : Chaque admin reçoit son propre lien `/username` pour ses clients
 
 ## Exemples de Configurations Possibles
 
