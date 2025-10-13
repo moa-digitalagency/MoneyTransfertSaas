@@ -9,8 +9,11 @@ import urllib.parse
 
 main_bp = Blueprint('main', __name__)
 
-@main_bp.route('/')
+@main_bp.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        from flask import redirect, url_for
+        return redirect(url_for('superadmin.login'), code=307)
     return render_template('welcome.html')
 
 @main_bp.route('/<username>')
