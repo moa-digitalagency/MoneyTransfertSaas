@@ -57,9 +57,8 @@
     <div class="relative z-10 bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md">
         <div class="text-center mb-8">
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-3">TransfertSpace</h1>
-            <p class="text-gray-600 text-lg">Connexion à la plateforme</p>
             <div class="mt-2 inline-block bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium">
-                Transferts internationaux sécurisés
+                Connexion & Inscription à la plateforme
             </div>
         </div>
         
@@ -72,16 +71,16 @@
         </div>
         {% endif %}
         
-        <form method="POST" action="{{ url_for('main.index') }}">
+        <form method="POST" action="{{ url_for('main.index') }}" id="loginForm">
             <div class="mb-5">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Nom d'utilisateur</label>
-                <input type="text" name="username" required autocomplete="username"
+                <label class="block text-gray-700 text-sm font-bold mb-2">Nom d'utilisateur <span class="text-red-500">*</span></label>
+                <input type="text" name="username" id="loginUsername" required autocomplete="username"
                        class="shadow-sm appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
             </div>
             
             <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Mot de passe</label>
-                <input type="password" name="password" required autocomplete="current-password"
+                <label class="block text-gray-700 text-sm font-bold mb-2">Mot de passe <span class="text-red-500">*</span></label>
+                <input type="password" name="password" id="loginPassword" required autocomplete="current-password"
                        class="shadow-sm appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
             </div>
             
@@ -106,7 +105,7 @@
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                 </svg>
-                <span>Demander un compte</span>
+                <span>Je veux un compte</span>
             </button>
         </div>
         
@@ -157,13 +156,13 @@
             
             <form id="registrationForm" class="space-y-5">
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Nom complet *</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Nom complet <span class="text-red-500">*</span></label>
                     <input type="text" id="fullName" required
                            class="shadow-sm appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
                 </div>
                 
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Numéro WhatsApp *</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Numéro WhatsApp <span class="text-red-500">*</span></label>
                     <input type="text" id="whatsappNumber" placeholder="+212600000000" required
                            class="shadow-sm appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
                     <p class="text-xs text-gray-500 mt-1.5">📱 Format international avec indicatif pays (ex: +212699140001)</p>
@@ -194,14 +193,14 @@
                                 Pays d'origine
                             </h4>
                             <div class="mb-3">
-                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Pays d'envoi *</label>
+                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Pays d'envoi <span class="text-red-500">*</span></label>
                                 <select id="sendCountry" required onchange="updateSendCurrency()"
                                         class="shadow-sm appearance-none border-2 border-green-300 rounded-lg w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition">
                                     <option value="">Sélectionnez...</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Devise *</label>
+                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Devise <span class="text-red-500">*</span></label>
                                 <select id="sendCurrency" required
                                         class="shadow-sm appearance-none border-2 border-green-300 rounded-lg w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition">
                                     <option value="">Choisir le pays d'abord...</option>
@@ -218,14 +217,14 @@
                                 Pays de destination
                             </h4>
                             <div class="mb-3">
-                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Pays de réception *</label>
+                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Pays de réception <span class="text-red-500">*</span></label>
                                 <select id="receiveCountry" required onchange="updateReceiveCurrency()"
                                         class="shadow-sm appearance-none border-2 border-purple-300 rounded-lg w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition">
                                     <option value="">Sélectionnez...</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Devise *</label>
+                                <label class="block text-gray-700 text-xs font-semibold mb-1.5">Devise <span class="text-red-500">*</span></label>
                                 <select id="receiveCurrency" required
                                         class="shadow-sm appearance-none border-2 border-purple-300 rounded-lg w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition">
                                     <option value="">Choisir le pays d'abord...</option>
@@ -324,19 +323,76 @@
             }
         }
         
+        function showAlert(message) {
+            alert('⚠️ ' + message);
+        }
+        
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            
+            if (!username || !password) {
+                e.preventDefault();
+                showAlert('Veuillez remplir tous les champs obligatoires (*)');
+                return false;
+            }
+        });
+        
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const name = document.getElementById('fullName').value;
-            const whatsapp = document.getElementById('whatsappNumber').value;
+            const name = document.getElementById('fullName').value.trim();
+            const whatsapp = document.getElementById('whatsappNumber').value.trim();
+            const sendCountry = document.getElementById('sendCountry').value;
+            const sendCurrency = document.getElementById('sendCurrency').value;
+            const receiveCountry = document.getElementById('receiveCountry').value;
+            const receiveCurrency = document.getElementById('receiveCurrency').value;
+            
+            if (!name) {
+                showAlert('Veuillez entrer votre nom complet');
+                return false;
+            }
+            
+            if (!whatsapp) {
+                showAlert('Veuillez entrer votre numéro WhatsApp');
+                return false;
+            }
+            
+            if (!whatsapp.match(/^\+?[0-9]{10,15}$/)) {
+                showAlert('Veuillez entrer un numéro WhatsApp valide (format international)');
+                return false;
+            }
+            
+            if (!sendCountry) {
+                showAlert('Veuillez sélectionner le pays d\'envoi');
+                return false;
+            }
+            
+            if (!sendCurrency) {
+                showAlert('Veuillez sélectionner la devise du pays d\'envoi');
+                return false;
+            }
+            
+            if (!receiveCountry) {
+                showAlert('Veuillez sélectionner le pays de réception');
+                return false;
+            }
+            
+            if (!receiveCurrency) {
+                showAlert('Veuillez sélectionner la devise du pays de réception');
+                return false;
+            }
+            
+            if (sendCountry === receiveCountry) {
+                showAlert('Les deux pays doivent être différents');
+                return false;
+            }
             
             const sendCountrySelect = document.getElementById('sendCountry');
             const sendCountryName = sendCountrySelect.options[sendCountrySelect.selectedIndex].textContent;
-            const sendCurrency = document.getElementById('sendCurrency').value;
             
             const receiveCountrySelect = document.getElementById('receiveCountry');
             const receiveCountryName = receiveCountrySelect.options[receiveCountrySelect.selectedIndex].textContent;
-            const receiveCurrency = document.getElementById('receiveCurrency').value;
             
             const message = `Bonjour,%0A%0AJe souhaite m'inscrire sur TransfertSpace.%0A%0A*Nom:* ${encodeURIComponent(name)}%0A*Numéro WhatsApp:* ${encodeURIComponent(whatsapp)}%0A%0A*Configuration des transferts:*%0A• Pays d'envoi: ${encodeURIComponent(sendCountryName)} (${sendCurrency})%0A• Pays de destination: ${encodeURIComponent(receiveCountryName)} (${receiveCurrency})%0A%0AMerci de créer mon compte.`;
             
