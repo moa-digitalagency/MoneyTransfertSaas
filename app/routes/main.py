@@ -11,9 +11,28 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/', methods=['GET', 'POST'])
 def index():
+    from flask import redirect, url_for, session
+    from app.models.admin import Admin
+    
     if request.method == 'POST':
-        from flask import redirect, url_for
-        return redirect(url_for('superadmin.login'), code=307)
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        admin = Admin.query.filter_by(username=username, role='superadmin').first()
+        
+        if admin and admin.check_password(password):
+            if admin.status != 'active':
+                return render_template('welcome.html', error='Compte suspendu')
+            
+            session.clear()
+            session['admin_id'] = admin.id
+            session['admin_role'] = 'superadmin'
+            session.permanent = True
+            
+            return redirect(url_for('superadmin.dashboard'))
+        
+        return render_template('welcome.html', error='Identifiants invalides')
+    
     return render_template('welcome.html')
 
 @main_bp.route('/<username>')

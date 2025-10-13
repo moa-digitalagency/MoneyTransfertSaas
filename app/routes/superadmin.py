@@ -19,31 +19,12 @@ def require_superadmin_login():
 
 @superadmin_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        
-        admin = Admin.query.filter_by(username=username, role='superadmin').first()
-        
-        if admin and admin.check_password(password):
-            if admin.status != 'active':
-                return render_template('superadmin_login.html', error='Compte suspendu')
-            
-            session.clear()
-            session['admin_id'] = admin.id
-            session['admin_role'] = 'superadmin'
-            session.permanent = True
-            
-            return redirect(url_for('superadmin.dashboard'))
-        
-        return render_template('superadmin_login.html', error='Identifiants invalides')
-    
-    return render_template('superadmin_login.html')
+    return redirect(url_for('main.index'))
 
 @superadmin_bp.route('/dashboard')
 def dashboard():
     if not require_superadmin_login():
-        return redirect(url_for('superadmin.login'))
+        return redirect(url_for('main.index'))
     
     total_admins = Admin.query.filter_by(role='admin').count()
     active_admins = Admin.query.filter_by(role='admin', status='active').count()
@@ -75,7 +56,7 @@ def dashboard():
 @superadmin_bp.route('/admins')
 def admins_list():
     if not require_superadmin_login():
-        return redirect(url_for('superadmin.login'))
+        return redirect(url_for('main.index'))
     
     admins = Admin.query.filter_by(role='admin').order_by(Admin.created_at.desc()).all()
     
@@ -84,7 +65,7 @@ def admins_list():
 @superadmin_bp.route('/admins/create', methods=['GET', 'POST'])
 def create_admin():
     if not require_superadmin_login():
-        return redirect(url_for('superadmin.login'))
+        return redirect(url_for('main.index'))
     
     if request.method == 'POST':
         username = request.form.get('username')
@@ -140,7 +121,7 @@ def create_admin():
 @superadmin_bp.route('/admins/<int:admin_id>/edit', methods=['GET', 'POST'])
 def edit_admin(admin_id):
     if not require_superadmin_login():
-        return redirect(url_for('superadmin.login'))
+        return redirect(url_for('main.index'))
     
     admin = Admin.query.get_or_404(admin_id)
     
@@ -199,7 +180,7 @@ def delete_admin(admin_id):
 @superadmin_bp.route('/admins/<int:admin_id>/transactions')
 def admin_transactions(admin_id):
     if not require_superadmin_login():
-        return redirect(url_for('superadmin.login'))
+        return redirect(url_for('main.index'))
     
     admin = Admin.query.get_or_404(admin_id)
     transactions = Transaction.query.filter_by(admin_id=admin_id).order_by(Transaction.created_at.desc()).all()
@@ -211,4 +192,4 @@ def admin_transactions(admin_id):
 @superadmin_bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('superadmin.login'))
+    return redirect(url_for('main.index'))
