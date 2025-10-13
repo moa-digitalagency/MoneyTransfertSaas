@@ -83,8 +83,18 @@ def admin_update():
     config.country2_code = request.form.get('country2_code')
     config.country2_currency = request.form.get('country2_currency')
     
-    config.rate_country1_to_country2 = float(request.form.get('country1_to_country2', 0))
-    config.rate_country2_to_country1 = float(request.form.get('country2_to_country1', 0))
+    rate_1to2_str = request.form.get('country1_to_country2', '0').strip()
+    rate_2to1_str = request.form.get('country2_to_country1', '0').strip()
+    
+    try:
+        config.rate_country1_to_country2 = float(rate_1to2_str) if rate_1to2_str else 0
+    except ValueError:
+        config.rate_country1_to_country2 = 0
+    
+    try:
+        config.rate_country2_to_country1 = float(rate_2to1_str) if rate_2to1_str else 0
+    except ValueError:
+        config.rate_country2_to_country1 = 0
     
     config.whatsapp_phone_1to2 = request.form.get('phone_country1_to_country2')
     config.whatsapp_contact_1to2 = request.form.get('contact_name_country1_to_country2')
@@ -95,19 +105,35 @@ def admin_update():
     for i in range(10):
         min_key = f'country1_to_country2[{i}][min]'
         if min_key in request.form:
-            min_val = float(request.form.get(min_key, 0))
-            max_val = float(request.form.get(f'country1_to_country2[{i}][max]', 0))
-            fee_val = float(request.form.get(f'country1_to_country2[{i}][fee]', 0))
-            country1_to_country2_fees.append({'min': min_val, 'max': max_val, 'fee': fee_val})
+            min_val_str = request.form.get(min_key, '0').strip()
+            max_val_str = request.form.get(f'country1_to_country2[{i}][max]', '0').strip()
+            fee_val_str = request.form.get(f'country1_to_country2[{i}][fee]', '0').strip()
+            
+            if min_val_str and max_val_str and fee_val_str:
+                try:
+                    min_val = float(min_val_str)
+                    max_val = float(max_val_str)
+                    fee_val = float(fee_val_str)
+                    country1_to_country2_fees.append({'min': min_val, 'max': max_val, 'fee': fee_val})
+                except ValueError:
+                    pass
     
     country2_to_country1_fees = []
     for i in range(10):
         min_key = f'country2_to_country1[{i}][min]'
         if min_key in request.form:
-            min_val = float(request.form.get(min_key, 0))
-            max_val = float(request.form.get(f'country2_to_country1[{i}][max]', 0))
-            fee_val = float(request.form.get(f'country2_to_country1[{i}][fee]', 0))
-            country2_to_country1_fees.append({'min': min_val, 'max': max_val, 'fee': fee_val})
+            min_val_str = request.form.get(min_key, '0').strip()
+            max_val_str = request.form.get(f'country2_to_country1[{i}][max]', '0').strip()
+            fee_val_str = request.form.get(f'country2_to_country1[{i}][fee]', '0').strip()
+            
+            if min_val_str and max_val_str and fee_val_str:
+                try:
+                    min_val = float(min_val_str)
+                    max_val = float(max_val_str)
+                    fee_val = float(fee_val_str)
+                    country2_to_country1_fees.append({'min': min_val, 'max': max_val, 'fee': fee_val})
+                except ValueError:
+                    pass
     
     config.transaction_fees_1to2 = country1_to_country2_fees
     config.transaction_fees_2to1 = country2_to_country1_fees

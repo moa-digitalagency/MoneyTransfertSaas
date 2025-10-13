@@ -88,7 +88,10 @@ def calculate():
     data = request.json
     
     direction = data.get('direction')
-    amount = float(data.get('amount', 0))
+    try:
+        amount = float(data.get('amount', 0) or 0)
+    except (ValueError, TypeError):
+        amount = 0
     calculation_type = data.get('calculation_type')
     
     result = calculate_transfer(direction, amount, calculation_type, config)
@@ -105,7 +108,10 @@ def user_calculate(username):
     data = request.json
     
     direction = data.get('direction')
-    amount = float(data.get('amount', 0))
+    try:
+        amount = float(data.get('amount', 0) or 0)
+    except (ValueError, TypeError):
+        amount = 0
     calculation_type = data.get('calculation_type')
     
     result = calculate_transfer(direction, amount, calculation_type, config)
@@ -118,10 +124,17 @@ def generate_whatsapp():
     
     whatsapp_url, transaction_data = generate_whatsapp_message_from_config(data, config)
     
+    try:
+        send_amount = float(data.get('send_amount', 0) or 0)
+        receive_amount = float(data.get('receive_amount', 0) or 0)
+    except (ValueError, TypeError):
+        send_amount = 0
+        receive_amount = 0
+    
     transaction = Transaction(
         direction=data.get('direction'),
-        send_amount=float(data.get('send_amount', 0)),
-        receive_amount=float(data.get('receive_amount', 0)),
+        send_amount=send_amount,
+        receive_amount=receive_amount,
         send_currency=data.get('send_currency'),
         receive_currency=data.get('receive_currency'),
         reception_method=data.get('reception_method'),
@@ -149,11 +162,18 @@ def user_generate_whatsapp(username):
     
     whatsapp_url, transaction_data = generate_whatsapp_message_from_config(data, config)
     
+    try:
+        send_amount = float(data.get('send_amount', 0) or 0)
+        receive_amount = float(data.get('receive_amount', 0) or 0)
+    except (ValueError, TypeError):
+        send_amount = 0
+        receive_amount = 0
+    
     transaction = Transaction(
         admin_id=admin.id,
         direction=data.get('direction'),
-        send_amount=float(data.get('send_amount', 0)),
-        receive_amount=float(data.get('receive_amount', 0)),
+        send_amount=send_amount,
+        receive_amount=receive_amount,
         send_currency=data.get('send_currency'),
         receive_currency=data.get('receive_currency'),
         reception_method=data.get('reception_method'),

@@ -1,34 +1,51 @@
 import math
 
 def get_transaction_fee(amount, direction, config):
-    fees = config['transaction_fees'][direction]
+    fees = config.get('transaction_fees', {}).get(direction, [])
+    if not fees:
+        return 0
     for tier in fees:
         if tier['min'] <= amount < tier['max']:
             return tier['fee']
-    return fees[-1]['fee']
+    return fees[-1]['fee'] if fees else 0
 
 def round_up_to_cents(amount):
     return math.ceil(amount * 100) / 100
 
 def calculate_transfer(direction, amount, calculation_type, config):
-    rates = config['rates']
+    rates = config.get('rates', {})
     
-    country1_currency = config['countries']['country1']['currency_code']
-    country2_currency = config['countries']['country2']['currency_code']
+    country1_currency = config.get('countries', {}).get('country1', {}).get('currency_code', 'USD')
+    country2_currency = config.get('countries', {}).get('country2', {}).get('currency_code', 'MAD')
+    
+    rate_1to2 = rates.get('country1_to_country2', 0)
+    rate_2to1 = rates.get('country2_to_country1', 0)
+    
+    if rate_1to2 == 0 or rate_2to1 == 0:
+        return {
+            'send_amount': 0,
+            'receive_amount': 0,
+            'send_currency': country1_currency,
+            'receive_currency': country2_currency,
+            'rate': 0,
+            'fee': 0,
+            'fee_currency': country2_currency,
+            'error': 'Taux de change non configuré'
+        }
     
     if direction == 'country1_to_country2':
         if calculation_type == 'send':
             send_amount = round_up_to_cents(amount)
             fee = get_transaction_fee(send_amount, direction, config)
-            conversion = send_amount * rates['country1_to_country2']
+            conversion = send_amount * rate_1to2
             receive_amount = round_up_to_cents(conversion - fee)
         else:
             receive_amount = amount
-            send_amount = (receive_amount / rates['country1_to_country2'])
+            send_amount = (receive_amount / rate_1to2)
             
             for _ in range(10):
                 fee = get_transaction_fee(send_amount, direction, config)
-                new_send_amount = (receive_amount + fee) / rates['country1_to_country2']
+                new_send_amount = (receive_amount + fee) / rate_1to2
                 if abs(new_send_amount - send_amount) < 0.01:
                     send_amount = new_send_amount
                     break
@@ -42,7 +59,7 @@ def calculate_transfer(direction, amount, calculation_type, config):
                 test_send = (low + high) / 2
                 test_send = round(test_send, 3)
                 fee = get_transaction_fee(test_send, direction, config)
-                actual_receive = round_up_to_cents((test_send * rates['country1_to_country2']) - fee)
+                actual_receive = round_up_to_cents((test_send * rate_1to2) - fee)
                 
                 if actual_receive == target_receive:
                     send_amount = test_send
@@ -58,12 +75,12 @@ def calculate_transfer(direction, amount, calculation_type, config):
             
             send_amount = round_up_to_cents(send_amount)
             fee = get_transaction_fee(send_amount, direction, config)
-            receive_amount = round_up_to_cents((send_amount * rates['country1_to_country2']) - fee)
+            receive_amount = round_up_to_cents((send_amount * rate_1to2) - fee)
             
             while receive_amount < target_receive:
                 send_amount += 0.01
                 fee = get_transaction_fee(send_amount, direction, config)
-                receive_amount = round_up_to_cents((send_amount * rates['country1_to_country2']) - fee)
+                receive_amount = round_up_to_cents((send_amount * rate_1to2) - fee)
         
         send_currency = country1_currency
         receive_currency = country2_currency
@@ -73,14 +90,14 @@ def calculate_transfer(direction, amount, calculation_type, config):
         if calculation_type == 'send':
             send_amount = round_up_to_cents(amount)
             fee = get_transaction_fee(send_amount, direction, config)
-            conversion = send_amount * rates['country2_to_country1']
+            conversion = send_amount * rate_2to1
             receive_amount = round_up_to_cents(conversion - fee)
         else:
             receive_amount = amount
-            send_amount = (receive_amount / rates['country2_to_country1'])
+            send_amount = (receive_amount / rate_2to1)
             for _ in range(10):
                 fee = get_transaction_fee(send_amount, direction, config)
-                new_send_amount = (receive_amount + fee) / rates['country2_to_country1']
+                new_send_amount = (receive_amount + fee) / rate_2to1
                 if abs(new_send_amount - send_amount) < 0.01:
                     send_amount = new_send_amount
                     break
@@ -94,7 +111,7 @@ def calculate_transfer(direction, amount, calculation_type, config):
                 test_send = (low + high) / 2
                 test_send = round(test_send, 3)
                 fee = get_transaction_fee(test_send, direction, config)
-                actual_receive = round_up_to_cents((test_send * rates['country2_to_country1']) - fee)
+                actual_receive = round_up_to_cents((test_send * rate_2to1) - fee)
                 
                 if actual_receive == target_receive:
                     send_amount = test_send
@@ -110,12 +127,12 @@ def calculate_transfer(direction, amount, calculation_type, config):
             
             send_amount = round_up_to_cents(send_amount)
             fee = get_transaction_fee(send_amount, direction, config)
-            receive_amount = round_up_to_cents((send_amount * rates['country2_to_country1']) - fee)
+            receive_amount = round_up_to_cents((send_amount * rate_2to1) - fee)
             
             while receive_amount < target_receive:
                 send_amount += 0.01
                 fee = get_transaction_fee(send_amount, direction, config)
-                receive_amount = round_up_to_cents((send_amount * rates['country2_to_country1']) - fee)
+                receive_amount = round_up_to_cents((send_amount * rate_2to1) - fee)
         
         send_currency = country2_currency
         receive_currency = country1_currency
@@ -126,7 +143,7 @@ def calculate_transfer(direction, amount, calculation_type, config):
         'receive_amount': receive_amount,
         'send_currency': send_currency,
         'receive_currency': receive_currency,
-        'rate': rates['country1_to_country2'] if direction == 'country1_to_country2' else rates['country2_to_country1'],
+        'rate': rate_1to2 if direction == 'country1_to_country2' else rate_2to1,
         'fee': fee,
         'fee_currency': fee_currency
     }
