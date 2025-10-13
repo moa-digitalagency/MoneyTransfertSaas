@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfert Monétaire - Connexion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-96">
+        <h1 class="text-3xl font-bold text-center mb-2 text-gray-800">Transfert Monétaire</h1>
+        <p class="text-center text-gray-600 mb-8">Plateforme de gestion des transferts</p>
+        
+        <div class="space-y-4">
+            <a href="{{ url_for('superadmin.login') }}" 
+               class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg text-center transition transform hover:scale-105">
+                🔐 Connexion SuperAdmin
+            </a>
+            
+            <a href="{{ url_for('admin.admin') }}" 
+               class="block w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg text-center transition transform hover:scale-105">
+                👤 Connexion Admin
+            </a>
+        </div>
+        
+        <div class="mt-8 text-center text-sm text-gray-600">
+            <p>© 2025 MOA Digital Agency LLC</p>
+            <p class="mt-1">Transfert Monétaire Facile, Bénéfique & Rapide</p>
+        </div>
+    </div>
+</body>
+</html>

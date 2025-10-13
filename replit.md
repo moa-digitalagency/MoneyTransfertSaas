@@ -1,12 +1,60 @@
-# Money Transfer Calculator: Dynamic Multi-Country Support
+# Money Transfer Calculator: Multi-Tenant SaaS Platform
 
 ## Overview
 
-This web-based application facilitates money transfers between any two user-configured countries. It allows administrators to dynamically select source and destination countries and their respective currencies from an extensive list. The system automatically adjusts all calculations, display elements, and messaging based on these selections. Users can calculate transfer amounts in both directions (send amount to receive amount, or desired receive amount to required send amount), choose reception methods, and initiate transfer requests via WhatsApp. The application aims to provide a flexible, user-friendly, and administratively configurable platform for international money transfers, with a strong focus on African markets.
+This is a **multi-tenant SaaS platform** for money transfer services. The application has been converted from a single-instance system to a full SaaS model with role-based access control (SuperAdmin and Admin). 
+
+**Key Features:**
+- **SuperAdmin**: Manages multiple admin accounts (transfer service operators)
+- **Admin**: Each admin operates their own money transfer service with custom branding
+- **Multi-Tenancy**: Each admin has a unique URL (`/username`) for their customers
+- **Full Configuration**: Each admin can independently configure countries, rates, fees, and WhatsApp contacts
+
+The system allows admins to facilitate money transfers between any two configurable countries with automatic calculations, WhatsApp integration, and comprehensive transaction tracking.
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+
+## SaaS Features & Multi-Tenancy
+
+### Role-Based Access Control
+1. **SuperAdmin Role**
+   - Full system administration capabilities
+   - Can create, edit, suspend, activate, and delete admin accounts
+   - Access to comprehensive dashboard with system-wide statistics
+   - Monitors all transactions across all admin accounts
+   - Login: `/superadmin/login`
+
+2. **Admin Role**
+   - Operates independent money transfer service
+   - Unique username-based URL for customers (`/username`)
+   - Full configuration control (countries, rates, fees, branding)
+   - View transaction history for their account only
+   - Login: `/admin/`
+
+### SuperAdmin Dashboard Features
+- **Statistics Overview**: Total admins, active/suspended accounts, total transactions
+- **Admin Management**: CRUD operations for admin accounts
+- **Per-Admin Analytics**: Transaction count and volume for each admin
+- **Recent Activity**: Track new admin registrations
+- **Transaction Monitoring**: View transactions filtered by admin account
+
+### Admin Configuration Capabilities
+Each admin can independently configure:
+- Source and destination countries
+- Exchange rates (bidirectional)
+- Tiered transaction fees
+- WhatsApp contact numbers (dual contact system)
+- Reception methods per country
+- Custom branding (app title and promotional content)
+- Password management
+
+### Multi-Tenant Architecture
+- **URL Structure**: Each admin gets unique customer-facing URL at `/{username}`
+- **Data Isolation**: Transactions are linked to specific admin accounts
+- **Account Status**: Admins can be suspended/activated by SuperAdmin
+- **Suspended Account Handling**: Displays user-friendly message when admin is suspended
 
 ## System Architecture
 
@@ -16,10 +64,22 @@ Preferred communication style: Simple, everyday language.
 - **UI/UX Decisions**: Gradient background, card-based layout for a modern, mobile-first, and responsive interface.
 
 ### Backend Architecture
-- **Framework**: Flask (Python).
-- **Architecture Pattern**: Modular MVC-style structure utilizing Flask Blueprints for clear separation of concerns (main routes, admin routes).
-- **Code Organization**: Core logic is distributed across `routes`, `models` (for transaction and WhatsApp messaging), `utils` (for calculations and security), `config` (for settings), and `data` (for country and currency information).
-- **Country & Currency System**: A comprehensive database of 54+ countries and their currencies (including multiple currencies per country where applicable) allows for dynamic configuration via the admin panel.
+- **Framework**: Flask (Python) with SQLAlchemy ORM.
+- **Architecture Pattern**: Modular MVC-style structure utilizing Flask Blueprints for clear separation of concerns.
+- **Blueprints**:
+  - `main_bp`: Public-facing routes and user transfer pages
+  - `admin_bp`: Admin panel and configuration
+  - `superadmin_bp`: SuperAdmin dashboard and management
+- **Code Organization**: 
+  - `routes/`: Blueprint definitions (main, admin, superadmin)
+  - `models/`: Database models (Admin, AdminConfig, Transaction)
+  - `utils/`: Calculation and security utilities
+  - `data/`: Country and currency information (54+ countries)
+- **Database Models**:
+  - `Admin`: User accounts with role (admin/superadmin) and status (active/suspended)
+  - `AdminConfig`: Per-admin configuration (countries, rates, fees, branding)
+  - `Transaction`: Transaction records linked to admin accounts
+- **Country & Currency System**: Comprehensive database of 54+ countries with multiple currencies per country where applicable.
 
 ### Exchange Rate & Calculation System
 - **Configuration**: Exchange rates and tiered transaction fees are configurable via the admin panel and stored in `config.json`.
@@ -28,13 +88,36 @@ Preferred communication style: Simple, everyday language.
 - **Dynamic Adaptability**: All calculations, labels, and currency symbols automatically update based on the dynamically selected countries and currencies.
 
 ### Admin Panel
-- **Access & Authentication**: Accessed via a discreet link, secured with SHA-256 hashed password authentication and CSRF protection.
-- **Capabilities**: Administrators can select Country 1 and Country 2, configure their currencies, modify exchange rates and tiered transaction fees for both directions, set up dual WhatsApp contacts, update promotional content, and change the admin password.
+- **Access & Authentication**: `/admin/` route with session-based authentication
+- **Password Security**: Werkzeug password hashing (PBKDF2-SHA256)
+- **Capabilities**: 
+  - Select and configure Country 1 and Country 2
+  - Set exchange rates for both directions
+  - Configure tiered transaction fees
+  - Set up dual WhatsApp contacts (different for each direction)
+  - Customize branding (title and promotional content)
+  - Configure reception methods per country
+  - Change admin password
+  - View transaction history
+
+### SuperAdmin Panel
+- **Access & Authentication**: `/superadmin/login` with role verification
+- **Dashboard**: System-wide statistics and admin management
+- **Admin Management**:
+  - Create new admin accounts with username and email
+  - Edit admin credentials (email, password)
+  - Suspend/activate admin accounts
+  - Delete admin accounts
+  - View per-admin transaction history
+- **Security**: Only users with `role='superadmin'` can access
 
 ### Security Considerations
-- Admin password hashing (SHA-256).
-- CSRF protection on admin forms.
-- Session-based authentication for the admin panel.
+- **Password Security**: Werkzeug password hashing with PBKDF2-SHA256
+- **Session Management**: Flask secure sessions with configurable lifetime
+- **Role-Based Access**: Separate authentication for admin and superadmin
+- **Status Checks**: Active account verification on each protected request
+- **CSRF Protection**: Session-based CSRF protection
+- **Data Isolation**: Admins can only access their own transactions
 
 ## External Dependencies
 
@@ -49,6 +132,61 @@ Preferred communication style: Simple, everyday language.
 
 ### Data Storage
 - **PostgreSQL**: Used for transaction history, storing details of all WhatsApp transfer requests. This includes date/time, direction, amounts, currencies, reception method, and contact details.
+- **Database Tables**:
+  - `admins`: User accounts (admin and superadmin)
+  - `admin_configs`: Per-admin configuration settings
+  - `transactions`: Transaction records linked to admin accounts
 
 ### Reception Methods
 - **Configurable per country**, e.g., Airtel Money and Equity Bank for RDC (USD), Cash and CIH Bank for Morocco (MAD).
+
+## URL Structure & Routes
+
+### Public Routes
+- `/` - Landing page with login options (SuperAdmin and Admin)
+- `/{username}` - Customer-facing transfer page for specific admin
+
+### Admin Routes
+- `/admin/` - Admin login page (GET) or admin dashboard (when authenticated)
+- `/admin/login` - Admin login endpoint (POST)
+- `/admin/update` - Save admin configuration (POST)
+- `/admin/history` - View admin's transaction history
+- `/admin/logout` - Admin logout
+
+### SuperAdmin Routes
+- `/superadmin/login` - SuperAdmin login page and endpoint
+- `/superadmin/dashboard` - SuperAdmin dashboard with statistics
+- `/superadmin/admins` - List all admin accounts
+- `/superadmin/admins/create` - Create new admin account
+- `/superadmin/admins/{id}/edit` - Edit admin account
+- `/superadmin/admins/{id}/suspend` - Suspend admin account (POST)
+- `/superadmin/admins/{id}/activate` - Activate admin account (POST)
+- `/superadmin/admins/{id}/delete` - Delete admin account (POST)
+- `/superadmin/admins/{id}/transactions` - View admin's transaction history
+- `/superadmin/logout` - SuperAdmin logout
+
+## Getting Started
+
+### Initial SuperAdmin Setup
+1. Run the initialization script: `python init_superadmin.py`
+2. Follow the prompts to create the first SuperAdmin account
+3. Access the SuperAdmin panel at `/superadmin/login`
+4. Create admin accounts from the SuperAdmin dashboard
+
+### Creating Admin Accounts
+1. Login as SuperAdmin
+2. Navigate to "Admins" section
+3. Click "Create Admin"
+4. Enter username (used for customer URL), email, and password
+5. New admin can now login at `/admin/` and configure their service
+
+### Admin Configuration
+1. Login at `/admin/`
+2. Configure:
+   - Source and destination countries
+   - Exchange rates (both directions)
+   - Transaction fee tiers
+   - WhatsApp contact numbers
+   - Reception methods
+   - Branding (title and promotional content)
+3. Share customer URL: `yourdomain.com/{username}`

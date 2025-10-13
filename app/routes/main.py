@@ -11,21 +11,7 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    config = load_config()
-    
-    country1 = get_country_by_code(config['countries']['country1']['code'])
-    country2 = get_country_by_code(config['countries']['country2']['code'])
-    
-    config['country1_info'] = country1
-    config['country2_info'] = country2
-    
-    custom_methods1 = config.get('reception_methods', {}).get('country1', [])
-    custom_methods2 = config.get('reception_methods', {}).get('country2', [])
-    
-    config['country1_reception_methods'] = get_reception_methods(config['countries']['country1']['code'], custom_methods1)
-    config['country2_reception_methods'] = get_reception_methods(config['countries']['country2']['code'], custom_methods2)
-    
-    return render_template('index.html', config=config)
+    return render_template('welcome.html')
 
 @main_bp.route('/<username>')
 def user_index(username):
