@@ -55,6 +55,11 @@ www.myoneart.com
             <p class="text-center text-gray-600 mb-8">{{ config.country1_info.flag }} {{ config.country1_info.name }} ⇄ {{ config.country2_info.flag }} {{ config.country2_info.name }}</p>
 
             <div class="space-y-6">
+                {% set has_1to2 = config.transfer_directions.country1_to_country2 %}
+                {% set has_2to1 = config.transfer_directions.country2_to_country1 %}
+                {% set both_directions = has_1to2 and has_2to1 %}
+                
+                {% if both_directions %}
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Direction du transfert</label>
                     <select id="direction" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition">
@@ -62,6 +67,27 @@ www.myoneart.com
                         <option value="country2_to_country1">{{ config.country2_info.flag }} {{ config.country2_info.name }} → {{ config.country1_info.flag }} {{ config.country1_info.name }}</option>
                     </select>
                 </div>
+                {% elif has_1to2 %}
+                <input type="hidden" id="direction" value="country1_to_country2">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                    <p class="text-sm text-blue-800 font-medium">
+                        📍 Direction: {{ config.country1_info.flag }} {{ config.country1_info.name }} → {{ config.country2_info.flag }} {{ config.country2_info.name }}
+                    </p>
+                </div>
+                {% elif has_2to1 %}
+                <input type="hidden" id="direction" value="country2_to_country1">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                    <p class="text-sm text-blue-800 font-medium">
+                        📍 Direction: {{ config.country2_info.flag }} {{ config.country2_info.name }} → {{ config.country1_info.flag }} {{ config.country1_info.name }}
+                    </p>
+                </div>
+                {% else %}
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                    <p class="text-sm text-red-800 font-medium">
+                        ⚠️ Aucune direction de transfert n'est actuellement activée. Veuillez contacter l'administrateur.
+                    </p>
+                </div>
+                {% endif %}
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Type de calcul</label>
@@ -147,6 +173,11 @@ www.myoneart.com
                 name: '{{ config.country2_info.name }}',
                 flag: '{{ config.country2_info.flag }}',
                 currency: '{{ config.countries.country2.currency_code }}'
+            },
+            directions: {
+                has_1to2: {{ 'true' if config.transfer_directions.country1_to_country2 else 'false' }},
+                has_2to1: {{ 'true' if config.transfer_directions.country2_to_country1 else 'false' }},
+                hasAny: {{ 'true' if (config.transfer_directions.country1_to_country2 or config.transfer_directions.country2_to_country1) else 'false' }}
             }
         };
 
@@ -285,10 +316,30 @@ www.myoneart.com
             }
         }
 
-        document.getElementById('direction').addEventListener('change', updateLabels);
-        document.getElementById('amount').addEventListener('input', calculate);
-
-        updateLabels();
+        function initializePage() {
+            if (!config.directions.hasAny) {
+                document.getElementById('amount').disabled = true;
+                document.getElementById('btn-send').disabled = true;
+                document.getElementById('btn-receive').disabled = true;
+                return;
+            }
+            
+            const directionEl = document.getElementById('direction');
+            if (directionEl && directionEl.tagName === 'SELECT') {
+                directionEl.addEventListener('change', updateLabels);
+            }
+            
+            if (config.directions.has_1to2 && !config.directions.has_2to1) {
+                currentDirection = 'country1_to_country2';
+            } else if (!config.directions.has_1to2 && config.directions.has_2to1) {
+                currentDirection = 'country2_to_country1';
+            }
+            
+            document.getElementById('amount').addEventListener('input', calculate);
+            updateLabels();
+        }
+        
+        initializePage();
     </script>
 </body>
 </html>

@@ -17,6 +17,12 @@ Application web SaaS configurable permettant à plusieurs opérateurs de transfe
   - Support de devises multiples : USD, EUR, MAD, CDF, FCFA (XOF/XAF), GBP, CAD, KES, RWF, et plus
   - Interface dynamique qui s'adapte automatiquement aux pays sélectionnés
   
+- 🔄 **Contrôle des Directions de Transfert** : 
+  - Activez/désactivez indépendamment chaque direction (Pays 1 → Pays 2 ou Pays 2 → Pays 1)
+  - Configurez des transferts unidirectionnels ou bidirectionnels
+  - Interface client s'adapte automatiquement aux directions disponibles
+  - Par défaut, les deux directions sont activées (compatibilité descendante)
+
 - 💱 **Calcul bidirectionnel** : Transferts dans les deux directions configurables
 - 💰 **Deux modes de calcul** : 
   - Montant à envoyer (calcule le montant reçu)
