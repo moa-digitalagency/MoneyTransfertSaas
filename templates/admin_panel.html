@@ -18,6 +18,59 @@ www.myoneart.com
             background: linear-gradient(135deg, #1e3a8a 0%, #dc2626 100%);
             min-height: 100vh;
         }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: 0.3s;
+            border-radius: 30px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #3b82f6;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+        
+        .toggle-slider.suspended-toggle {
+            background-color: #cbd5e1;
+        }
+        
+        input:checked + .toggle-slider.suspended-toggle {
+            background-color: #ef4444;
+        }
     </style>
 </head>
 <body class="p-4">
@@ -130,21 +183,25 @@ www.myoneart.com
                     </div>
                     
                     <div class="space-y-4">
-                        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-                            <input type="checkbox" name="direction_1to2_enabled" id="direction_1to2_enabled" 
-                                   {% if config.transfer_directions.country1_to_country2 %}checked{% endif %}
-                                   class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                            <label for="direction_1to2_enabled" class="ml-3 text-sm font-medium text-gray-700" id="direction_label_1">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <label for="direction_1to2_enabled" class="text-sm font-medium text-gray-700" id="direction_label_1">
                                 Activer les transferts Pays 1 → Pays 2
+                            </label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" name="direction_1to2_enabled" id="direction_1to2_enabled" 
+                                       {% if config.transfer_directions.country1_to_country2 %}checked{% endif %}>
+                                <span class="toggle-slider"></span>
                             </label>
                         </div>
                         
-                        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-                            <input type="checkbox" name="direction_2to1_enabled" id="direction_2to1_enabled" 
-                                   {% if config.transfer_directions.country2_to_country1 %}checked{% endif %}
-                                   class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                            <label for="direction_2to1_enabled" class="ml-3 text-sm font-medium text-gray-700" id="direction_label_2">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <label for="direction_2to1_enabled" class="text-sm font-medium text-gray-700" id="direction_label_2">
                                 Activer les transferts Pays 2 → Pays 1
+                            </label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" name="direction_2to1_enabled" id="direction_2to1_enabled" 
+                                       {% if config.transfer_directions.country2_to_country1 %}checked{% endif %}>
+                                <span class="toggle-slider"></span>
                             </label>
                         </div>
                     </div>
@@ -302,12 +359,14 @@ www.myoneart.com
                     </div>
                     
                     <div class="space-y-4">
-                        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-                            <input type="checkbox" name="page_suspended" id="page_suspended" value="1"
-                                   {% if config.page_suspended %}checked{% endif %}
-                                   class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                            <label for="page_suspended" class="ml-3 text-sm font-medium text-gray-700">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <label for="page_suspended" class="text-sm font-medium text-gray-700">
                                 Désactiver temporairement ma page de transfert
+                            </label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" name="page_suspended" id="page_suspended" value="1"
+                                       {% if config.page_suspended %}checked{% endif %}>
+                                <span class="toggle-slider suspended-toggle"></span>
                             </label>
                         </div>
                         
