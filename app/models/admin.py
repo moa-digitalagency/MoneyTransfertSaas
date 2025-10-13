@@ -7,7 +7,9 @@ class Admin(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False, index=True)
+    full_name = db.Column(db.String(200))
     email = db.Column(db.String(120), unique=True, nullable=False)
+    whatsapp_number = db.Column(db.String(20))
     password_hash = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(20), nullable=False, default='admin')
     status = db.Column(db.String(20), nullable=False, default='active')
@@ -27,7 +29,9 @@ class Admin(db.Model):
         return {
             'id': self.id,
             'username': self.username,
+            'full_name': self.full_name,
             'email': self.email,
+            'whatsapp_number': self.whatsapp_number,
             'role': self.role,
             'status': self.status,
             'created_at': self.created_at.isoformat() if self.created_at else None,

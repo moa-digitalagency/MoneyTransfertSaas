@@ -5,26 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des Admins</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #dc2626 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('/static/bg-transfer.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 28px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #dc2626;
+            transition: .4s;
+            border-radius: 28px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #16a34a;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(32px);
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-indigo-600 text-white p-4">
+<body>
+    <nav class="bg-blue-900 bg-opacity-90 text-white p-4 shadow-lg relative z-10">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">SuperAdmin Dashboard</h1>
+            <h1 class="text-2xl font-bold">💰 SuperAdmin Dashboard</h1>
             <div class="space-x-4">
-                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-indigo-200">Dashboard</a>
-                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-indigo-200">Admins</a>
-                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-indigo-200">Déconnexion</a>
+                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">Dashboard</a>
+                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition">Admins</a>
+                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">Déconnexion</a>
             </div>
         </div>
     </nav>
 
-    <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow p-6">
+    <div class="content-wrapper container mx-auto p-6">
+        <div class="bg-white rounded-xl shadow-2xl p-8">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Liste des Admins</h2>
+                <h2 class="text-3xl font-bold text-blue-900">👥 Liste des Admins</h2>
                 <a href="{{ url_for('superadmin.create_admin') }}" 
-                   class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
-                    Créer un Admin
+                   class="bg-blue-900 text-white px-6 py-3 rounded-lg hover:bg-blue-800 transition font-bold shadow-lg">
+                    ➕ Créer un Admin
                 </a>
             </div>
 
@@ -32,47 +101,60 @@
                 <table class="min-w-full">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Créé le</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Username</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Nom complet</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">WhatsApp</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Statut</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Créé le</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         {% for admin in admins %}
-                        <tr>
-                            <td class="px-6 py-4">{{ admin.id }}</td>
+                        <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4">
-                                <a href="/{{ admin.username }}" target="_blank" class="text-indigo-600 hover:text-indigo-900">
+                                <a href="/{{ admin.username }}" target="_blank" class="text-blue-900 hover:text-blue-700 font-semibold">
                                     {{ admin.username }}
                                 </a>
                             </td>
-                            <td class="px-6 py-4">{{ admin.email }}</td>
                             <td class="px-6 py-4">
-                                <span class="px-2 py-1 text-xs rounded {% if admin.status == 'active' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
-                                    {{ admin.status }}
+                                <span class="text-gray-900">{{ admin.full_name or '-' }}</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-gray-600">{{ admin.email }}</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if admin.whatsapp_number %}
+                                <a href="https://wa.me/{{ admin.whatsapp_number }}" target="_blank" class="text-green-600 hover:text-green-700">
+                                    {{ admin.whatsapp_number }}
+                                </a>
+                                {% else %}
+                                <span class="text-gray-400">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                <label class="toggle-switch" title="Cliquer pour {% if admin.status == 'active' %}suspendre{% else %}activer{% endif %}">
+                                    <input type="checkbox" 
+                                           {% if admin.status == 'active' %}checked{% endif %}
+                                           onchange="toggleAdminStatus({{ admin.id }}, this.checked)"
+                                           id="toggle-{{ admin.id }}">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="ml-2 text-sm font-semibold {% if admin.status == 'active' %}text-green-600{% else %}text-red-600{% endif %}" id="status-text-{{ admin.id }}">
+                                    {{ admin.status|title }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4">{{ admin.created_at.strftime('%d/%m/%Y') }}</td>
-                            <td class="px-6 py-4 space-x-2">
+                            <td class="px-6 py-4 text-gray-600">{{ admin.created_at.strftime('%d/%m/%Y') }}</td>
+                            <td class="px-6 py-4 space-x-3">
                                 <a href="{{ url_for('superadmin.edit_admin', admin_id=admin.id) }}" 
-                                   class="text-blue-600 hover:text-blue-900">Modifier</a>
-                                
-                                {% if admin.status == 'active' %}
-                                <button onclick="suspendAdmin({{ admin.id }})" 
-                                        class="text-orange-600 hover:text-orange-900">Suspendre</button>
-                                {% else %}
-                                <button onclick="activateAdmin({{ admin.id }})" 
-                                        class="text-green-600 hover:text-green-900">Activer</button>
-                                {% endif %}
+                                   class="text-blue-600 hover:text-blue-900 font-semibold">✏️ Modifier</a>
                                 
                                 <button onclick="deleteAdmin({{ admin.id }})" 
-                                        class="text-red-600 hover:text-red-900">Supprimer</button>
+                                        class="text-red-600 hover:text-red-900 font-semibold">🗑️ Supprimer</button>
                                 
                                 <a href="{{ url_for('superadmin.admin_transactions', admin_id=admin.id) }}" 
-                                   class="text-purple-600 hover:text-purple-900">Transactions</a>
+                                   class="text-purple-600 hover:text-purple-900 font-semibold">📊 Transactions</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -83,27 +165,25 @@
     </div>
 
     <script>
-        async function suspendAdmin(adminId) {
-            if (!confirm('Voulez-vous suspendre cet admin ?')) return;
+        async function toggleAdminStatus(adminId, isActive) {
+            const endpoint = isActive ? 'activate' : 'suspend';
+            const statusText = document.getElementById(`status-text-${adminId}`);
             
-            const response = await fetch(`/superadmin/admins/${adminId}/suspend`, {
-                method: 'POST'
-            });
-            
-            if (response.ok) {
-                location.reload();
-            }
-        }
-        
-        async function activateAdmin(adminId) {
-            if (!confirm('Voulez-vous activer cet admin ?')) return;
-            
-            const response = await fetch(`/superadmin/admins/${adminId}/activate`, {
-                method: 'POST'
-            });
-            
-            if (response.ok) {
-                location.reload();
+            try {
+                const response = await fetch(`/superadmin/admins/${adminId}/${endpoint}`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    statusText.textContent = isActive ? 'Active' : 'Suspended';
+                    statusText.className = `ml-2 text-sm font-semibold ${isActive ? 'text-green-600' : 'text-red-600'}`;
+                } else {
+                    document.getElementById(`toggle-${adminId}`).checked = !isActive;
+                    alert('Erreur lors du changement de statut');
+                }
+            } catch (error) {
+                document.getElementById(`toggle-${adminId}`).checked = !isActive;
+                alert('Erreur lors du changement de statut');
             }
         }
         

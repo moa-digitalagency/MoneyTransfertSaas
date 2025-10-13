@@ -78,12 +78,16 @@ def create_admin():
     
     if request.method == 'POST':
         username = request.form.get('username')
+        full_name = request.form.get('full_name')
         email = request.form.get('email')
+        whatsapp_number = request.form.get('whatsapp_number')
         password = request.form.get('password')
         country1_code = request.form.get('country1_code', 'RDC')
         country1_currency = request.form.get('country1_currency', 'USD')
         country2_code = request.form.get('country2_code', 'MA')
         country2_currency = request.form.get('country2_currency', 'MAD')
+        reception_methods_country1 = request.form.getlist('reception_methods_country1')
+        reception_methods_country2 = request.form.getlist('reception_methods_country2')
         
         if Admin.query.filter_by(username=username).first():
             return render_template('superadmin_create_admin.html', 
@@ -97,7 +101,9 @@ def create_admin():
         
         admin = Admin(
             username=username,
+            full_name=full_name,
             email=email,
+            whatsapp_number=whatsapp_number,
             role='admin',
             status='active'
         )
@@ -114,12 +120,12 @@ def create_admin():
             country2_currency=country2_currency,
             rate_country1_to_country2=10.0,
             rate_country2_to_country1=0.1,
-            whatsapp_phone_1to2='212699140001',
-            whatsapp_contact_1to2='Eazi',
-            whatsapp_phone_2to1='212699140001',
-            whatsapp_contact_2to1='Eazi',
-            reception_methods_country1=['Remise en personne'],
-            reception_methods_country2=['Remise en personne'],
+            whatsapp_phone_1to2=whatsapp_number or '212699140001',
+            whatsapp_contact_1to2=full_name or 'Eazi',
+            whatsapp_phone_2to1=whatsapp_number or '212699140001',
+            whatsapp_contact_2to1=full_name or 'Eazi',
+            reception_methods_country1=reception_methods_country1 if reception_methods_country1 else ['Remise en personne'],
+            reception_methods_country2=reception_methods_country2 if reception_methods_country2 else ['Remise en personne'],
             transaction_fees_1to2=[
                 {'min': 0, 'max': 100, 'fee': 5},
                 {'min': 100, 'max': 500, 'fee': 10},
@@ -147,7 +153,9 @@ def edit_admin(admin_id):
     admin = Admin.query.get_or_404(admin_id)
     
     if request.method == 'POST':
+        full_name = request.form.get('full_name')
         email = request.form.get('email')
+        whatsapp_number = request.form.get('whatsapp_number')
         new_password = request.form.get('new_password')
         
         existing = Admin.query.filter(Admin.email == email, Admin.id != admin_id).first()
@@ -156,7 +164,9 @@ def edit_admin(admin_id):
                                  admin=admin,
                                  error='Cet email existe déjà')
         
+        admin.full_name = full_name
         admin.email = email
+        admin.whatsapp_number = whatsapp_number
         if new_password:
             admin.set_password(new_password)
         
