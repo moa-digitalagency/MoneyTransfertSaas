@@ -1,6 +1,7 @@
 from flask import Flask
 from werkzeug.middleware.proxy_fix import ProxyFix
 import os
+import logging
 
 def create_app():
     """Factory pour créer l'application Flask"""
@@ -10,7 +11,9 @@ def create_app():
     app.secret_key = os.environ.get("SESSION_SECRET") or os.urandom(24).hex()
     app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
     
-    app.config['SESSION_COOKIE_SECURE'] = True
+    logging.basicConfig(level=logging.DEBUG)
+    
+    app.config['SESSION_COOKIE_SECURE'] = False
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
     app.config['PERMANENT_SESSION_LIFETIME'] = 86400

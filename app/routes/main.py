@@ -13,25 +13,39 @@ main_bp = Blueprint('main', __name__)
 def index():
     from flask import redirect, url_for, session
     from app.models.admin import Admin
+    import logging
     
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '')
+        
+        logging.debug(f"Tentative de connexion pour: {username}")
+        
+        if not username or not password:
+            logging.debug("Username ou password vide")
+            return render_template('welcome.html', error='Veuillez remplir tous les champs')
         
         admin = Admin.query.filter_by(username=username, role='superadmin').first()
         
-        if admin and admin.check_password(password):
-            if admin.status != 'active':
-                return render_template('welcome.html', error='Compte suspendu')
-            
-            session.clear()
-            session['admin_id'] = admin.id
-            session['admin_role'] = 'superadmin'
-            session.permanent = True
-            
-            return redirect(url_for('superadmin.dashboard'))
+        if not admin:
+            logging.debug(f"Aucun superadmin trouvé avec username: {username}")
+            return render_template('welcome.html', error='Identifiants invalides')
         
-        return render_template('welcome.html', error='Identifiants invalides')
+        if not admin.check_password(password):
+            logging.debug(f"Mot de passe incorrect pour: {username}")
+            return render_template('welcome.html', error='Identifiants invalides')
+        
+        if admin.status != 'active':
+            logging.debug(f"Compte suspendu: {username}")
+            return render_template('welcome.html', error='Compte suspendu')
+        
+        logging.debug(f"Connexion réussie pour: {username}")
+        session.clear()
+        session['admin_id'] = admin.id
+        session['admin_role'] = 'superadmin'
+        session.permanent = True
+        
+        return redirect(url_for('superadmin.dashboard'))
     
     return render_template('welcome.html')
 
