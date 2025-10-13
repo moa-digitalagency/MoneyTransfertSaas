@@ -114,7 +114,7 @@
                             <tr>
                                 <th class="text-left p-3 text-sm font-semibold text-blue-900">Rang</th>
                                 <th class="text-left p-3 text-sm font-semibold text-blue-900">Admin</th>
-                                <th class="text-right p-3 text-sm font-semibold text-blue-900">Montant</th>
+                                <th class="text-right p-3 text-sm font-semibold text-blue-900">Volume (devises mixtes)</th>
                                 <th class="text-right p-3 text-sm font-semibold text-blue-900">Txns</th>
                             </tr>
                         </thead>
@@ -129,7 +129,9 @@
                                     {% endif %}
                                 </td>
                                 <td class="p-3 text-sm font-medium">{{ top_admins[i].username }}</td>
-                                <td class="p-3 text-sm text-right font-bold text-green-600">{{ "%.2f"|format(top_admins[i].total) }}</td>
+                                <td class="p-3 text-sm text-right font-bold text-green-600">
+                                    {{ "%.2f"|format(top_admins[i].total) }} <span class="text-xs text-gray-500">USD/MAD/...</span>
+                                </td>
                                 <td class="p-3 text-sm text-right text-gray-600">{{ top_admins[i].count }}</td>
                             </tr>
                             {% endfor %}
@@ -167,7 +169,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ "%.2f"|format(stat.total_volume or 0) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <a href="{{ url_for('superadmin.admin_transactions', admin_id=stat.id) }}" 
-                                   class="inline-block bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition shadow-md" 
+                                   class="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition" 
                                    title="Voir les transactions">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
