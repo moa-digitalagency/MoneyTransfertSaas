@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
 import json
 import logging
+from datetime import datetime, timedelta
+from sqlalchemy import func, desc
 from app.models.admin import Admin, AdminConfig
 from app.models.transaction import Transaction
 from app.data import COUNTRIES
@@ -187,3 +189,86 @@ def admin_history():
     return render_template('admin_history.html', 
                          transactions=transactions_data,
                          username=admin.username)
+
+@admin_bp.route('/statistics')
+def admin_statistics():
+    admin = require_admin_login()
+    if not admin:
+        return redirect(url_for('admin.admin'))
+    
+    now = datetime.utcnow()
+    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    week_start = today_start - timedelta(days=today_start.weekday())
+    month_start = today_start.replace(day=1)
+    
+    stats_today = db.session.query(
+        func.sum(Transaction.send_amount).label('total')
+    ).filter(
+        Transaction.admin_id == admin.id,
+        Transaction.created_at >= today_start
+    ).first()
+    
+    stats_week = db.session.query(
+        func.sum(Transaction.send_amount).label('total')
+    ).filter(
+        Transaction.admin_id == admin.id,
+        Transaction.created_at >= week_start
+    ).first()
+    
+    stats_month = db.session.query(
+        func.sum(Transaction.send_amount).label('total')
+    ).filter(
+        Transaction.admin_id == admin.id,
+        Transaction.created_at >= month_start
+    ).first()
+    
+    daily_stats = []
+    for i in range(7):
+        day_start = today_start - timedelta(days=i)
+        day_end = day_start + timedelta(days=1)
+        day_total = db.session.query(
+            func.sum(Transaction.send_amount).label('total')
+        ).filter(
+            Transaction.admin_id == admin.id,
+            Transaction.created_at >= day_start,
+            Transaction.created_at < day_end
+        ).first()
+        
+        daily_stats.append({
+            'date': day_start.strftime('%Y-%m-%d'),
+            'day_name': day_start.strftime('%A'),
+            'total': round(day_total.total, 2) if day_total.total else 0
+        })
+    
+    top_admins = db.session.query(
+        Admin.username,
+        func.sum(Transaction.send_amount).label('total'),
+        func.count(Transaction.id).label('count')
+    ).join(
+        Transaction, Transaction.admin_id == Admin.id
+    ).group_by(
+        Admin.id, Admin.username
+    ).order_by(
+        desc('total')
+    ).limit(10).all()
+    
+    all_admins = db.session.query(
+        Admin.username,
+        func.sum(Transaction.send_amount).label('total'),
+        func.count(Transaction.id).label('count')
+    ).join(
+        Transaction, Transaction.admin_id == Admin.id
+    ).group_by(
+        Admin.id, Admin.username
+    ).order_by(
+        desc('total')
+    ).all()
+    
+    return render_template('admin_statistics.html',
+                         username=admin.username,
+                         total_today=round(stats_today.total, 2) if stats_today.total else 0,
+                         total_week=round(stats_week.total, 2) if stats_week.total else 0,
+                         total_month=round(stats_month.total, 2) if stats_month.total else 0,
+                         daily_stats=daily_stats,
+                         top_admins=top_admins,
+                         all_admins=all_admins)
