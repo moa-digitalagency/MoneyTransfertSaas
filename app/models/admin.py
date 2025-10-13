@@ -74,6 +74,9 @@ class AdminConfig(db.Model):
     reception_methods_country1 = db.Column(db.JSON, default=list)
     reception_methods_country2 = db.Column(db.JSON, default=list)
     
+    direction_1to2_enabled = db.Column(db.Boolean, nullable=False, default=True)
+    direction_2to1_enabled = db.Column(db.Boolean, nullable=False, default=True)
+    
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
@@ -102,5 +105,9 @@ class AdminConfig(db.Model):
             'reception_methods': {
                 'country1': self.reception_methods_country1 or [],
                 'country2': self.reception_methods_country2 or []
+            },
+            'transfer_directions': {
+                'country1_to_country2': self.direction_1to2_enabled,
+                'country2_to_country1': self.direction_2to1_enabled
             }
         }

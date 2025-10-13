@@ -1,63 +1,73 @@
 COUNTRIES = [
     {
-        "code": "RDC",
-        "name": "Rép. Dém. du Congo",
-        "flag": "🇨🇩",
+        "code": "ZA",
+        "name": "Afrique du Sud",
+        "flag": "🇿🇦",
         "currencies": [
-            {"code": "USD", "name": "Dollar Américain", "symbol": "$"},
-            {"code": "CDF", "name": "Franc Congolais", "symbol": "FC"}
-        ],
-        "reception_methods": [
-            "Mobile Money (M-Pesa, Orange Money, Airtel Money)",
-            "Virement bancaire",
-            "Western Union",
-            "MoneyGram",
-            "Remise en espèces"
-        ]
-    },
-    {
-        "code": "MA",
-        "name": "Maroc",
-        "flag": "🇲🇦",
-        "currencies": [
-            {"code": "MAD", "name": "Dirham Marocain", "symbol": "DH"}
+            {"code": "ZAR", "name": "Rand Sud-Africain", "symbol": "R"}
         ],
         "reception_methods": [
             "Virement bancaire",
             "Western Union",
             "MoneyGram",
-            "Cash Plus",
+            "FNB eWallet",
             "Remise en espèces"
         ]
     },
     {
-        "code": "CI",
-        "name": "Côte d'Ivoire",
-        "flag": "🇨🇮",
+        "code": "DZ",
+        "name": "Algérie",
+        "flag": "🇩🇿",
+        "currencies": [
+            {"code": "DZD", "name": "Dinar Algérien", "symbol": "DA"}
+        ]
+    },
+    {
+        "code": "AO",
+        "name": "Angola",
+        "flag": "🇦🇴",
+        "currencies": [
+            {"code": "AOA", "name": "Kwanza Angolais", "symbol": "Kz"}
+        ]
+    },
+    {
+        "code": "BE",
+        "name": "Belgique",
+        "flag": "🇧🇪",
+        "currencies": [
+            {"code": "EUR", "name": "Euro", "symbol": "€"}
+        ]
+    },
+    {
+        "code": "BW",
+        "name": "Botswana",
+        "flag": "🇧🇼",
+        "currencies": [
+            {"code": "BWP", "name": "Pula Botswanais", "symbol": "P"}
+        ]
+    },
+    {
+        "code": "BF",
+        "name": "Burkina Faso",
+        "flag": "🇧🇫",
         "currencies": [
             {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
-        ],
-        "reception_methods": [
-            "Mobile Money (Orange Money, MTN Money, Moov Money)",
-            "Virement bancaire",
-            "Western Union",
-            "MoneyGram",
-            "Remise en espèces"
         ]
     },
     {
-        "code": "SN",
-        "name": "Sénégal",
-        "flag": "🇸🇳",
+        "code": "BI",
+        "name": "Burundi",
+        "flag": "🇧🇮",
+        "currencies": [
+            {"code": "BIF", "name": "Franc Burundais", "symbol": "FBu"}
+        ]
+    },
+    {
+        "code": "BJ",
+        "name": "Bénin",
+        "flag": "🇧🇯",
         "currencies": [
             {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
-        ],
-        "reception_methods": [
-            "Mobile Money (Orange Money, Free Money, Wave)",
-            "Virement bancaire",
-            "Western Union",
-            "MoneyGram",
-            "Remise en espèces"
         ]
     },
     {
@@ -76,75 +86,50 @@ COUNTRIES = [
         ]
     },
     {
-        "code": "GA",
-        "name": "Gabon",
-        "flag": "🇬🇦",
+        "code": "CA",
+        "name": "Canada",
+        "flag": "🇨🇦",
+        "currencies": [
+            {"code": "CAD", "name": "Dollar Canadien", "symbol": "C$"}
+        ]
+    },
+    {
+        "code": "CF",
+        "name": "Centrafrique",
+        "flag": "🇨🇫",
         "currencies": [
             {"code": "XAF", "name": "Franc CFA", "symbol": "FCFA"}
         ]
     },
     {
-        "code": "BJ",
-        "name": "Bénin",
-        "flag": "🇧🇯",
+        "code": "CI",
+        "name": "Côte d'Ivoire",
+        "flag": "🇨🇮",
         "currencies": [
             {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
+        ],
+        "reception_methods": [
+            "Mobile Money (Orange Money, MTN Money, Moov Money)",
+            "Virement bancaire",
+            "Western Union",
+            "MoneyGram",
+            "Remise en espèces"
         ]
     },
     {
-        "code": "TG",
-        "name": "Togo",
-        "flag": "🇹🇬",
+        "code": "DJ",
+        "name": "Djibouti",
+        "flag": "🇩🇯",
         "currencies": [
-            {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
+            {"code": "DJF", "name": "Franc Djiboutien", "symbol": "Fdj"}
         ]
     },
     {
-        "code": "BF",
-        "name": "Burkina Faso",
-        "flag": "🇧🇫",
+        "code": "SZ",
+        "name": "Eswatini",
+        "flag": "🇸🇿",
         "currencies": [
-            {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
-        ]
-    },
-    {
-        "code": "ML",
-        "name": "Mali",
-        "flag": "🇲🇱",
-        "currencies": [
-            {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
-        ]
-    },
-    {
-        "code": "NE",
-        "name": "Niger",
-        "flag": "🇳🇪",
-        "currencies": [
-            {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
-        ]
-    },
-    {
-        "code": "GN",
-        "name": "Guinée",
-        "flag": "🇬🇳",
-        "currencies": [
-            {"code": "GNF", "name": "Franc Guinéen", "symbol": "FG"}
-        ]
-    },
-    {
-        "code": "TN",
-        "name": "Tunisie",
-        "flag": "🇹🇳",
-        "currencies": [
-            {"code": "TND", "name": "Dinar Tunisien", "symbol": "DT"}
-        ]
-    },
-    {
-        "code": "DZ",
-        "name": "Algérie",
-        "flag": "🇩🇿",
-        "currencies": [
-            {"code": "DZD", "name": "Dinar Algérien", "symbol": "DA"}
+            {"code": "SZL", "name": "Lilangeni", "symbol": "E"}
         ]
     },
     {
@@ -163,27 +148,162 @@ COUNTRIES = [
         ]
     },
     {
-        "code": "BE",
-        "name": "Belgique",
-        "flag": "🇧🇪",
+        "code": "GA",
+        "name": "Gabon",
+        "flag": "🇬🇦",
         "currencies": [
-            {"code": "EUR", "name": "Euro", "symbol": "€"}
+            {"code": "XAF", "name": "Franc CFA", "symbol": "FCFA"}
         ]
     },
     {
-        "code": "CA",
-        "name": "Canada",
-        "flag": "🇨🇦",
+        "code": "GH",
+        "name": "Ghana",
+        "flag": "🇬🇭",
         "currencies": [
-            {"code": "CAD", "name": "Dollar Canadien", "symbol": "C$"}
+            {"code": "GHS", "name": "Cedi Ghanéen", "symbol": "GH₵"}
         ]
     },
     {
-        "code": "US",
-        "name": "États-Unis",
-        "flag": "🇺🇸",
+        "code": "GN",
+        "name": "Guinée",
+        "flag": "🇬🇳",
         "currencies": [
-            {"code": "USD", "name": "Dollar Américain", "symbol": "$"}
+            {"code": "GNF", "name": "Franc Guinéen", "symbol": "FG"}
+        ]
+    },
+    {
+        "code": "GQ",
+        "name": "Guinée Équatoriale",
+        "flag": "🇬🇶",
+        "currencies": [
+            {"code": "XAF", "name": "Franc CFA", "symbol": "FCFA"}
+        ]
+    },
+    {
+        "code": "KE",
+        "name": "Kenya",
+        "flag": "🇰🇪",
+        "currencies": [
+            {"code": "KES", "name": "Shilling Kenyan", "symbol": "KSh"}
+        ]
+    },
+    {
+        "code": "LS",
+        "name": "Lesotho",
+        "flag": "🇱🇸",
+        "currencies": [
+            {"code": "LSL", "name": "Loti", "symbol": "L"}
+        ]
+    },
+    {
+        "code": "LR",
+        "name": "Liberia",
+        "flag": "🇱🇷",
+        "currencies": [
+            {"code": "LRD", "name": "Dollar Libérien", "symbol": "$"}
+        ]
+    },
+    {
+        "code": "LY",
+        "name": "Libye",
+        "flag": "🇱🇾",
+        "currencies": [
+            {"code": "LYD", "name": "Dinar Libyen", "symbol": "LD"}
+        ]
+    },
+    {
+        "code": "MG",
+        "name": "Madagascar",
+        "flag": "🇲🇬",
+        "currencies": [
+            {"code": "MGA", "name": "Ariary Malgache", "symbol": "Ar"}
+        ]
+    },
+    {
+        "code": "MW",
+        "name": "Malawi",
+        "flag": "🇲🇼",
+        "currencies": [
+            {"code": "MWK", "name": "Kwacha Malawite", "symbol": "MK"}
+        ]
+    },
+    {
+        "code": "ML",
+        "name": "Mali",
+        "flag": "🇲🇱",
+        "currencies": [
+            {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
+        ]
+    },
+    {
+        "code": "MA",
+        "name": "Maroc",
+        "flag": "🇲🇦",
+        "currencies": [
+            {"code": "MAD", "name": "Dirham Marocain", "symbol": "DH"}
+        ],
+        "reception_methods": [
+            "Virement bancaire",
+            "Western Union",
+            "MoneyGram",
+            "Cash Plus",
+            "Remise en espèces"
+        ]
+    },
+    {
+        "code": "MU",
+        "name": "Maurice",
+        "flag": "🇲🇺",
+        "currencies": [
+            {"code": "MUR", "name": "Roupie Mauricienne", "symbol": "₨"}
+        ]
+    },
+    {
+        "code": "MR",
+        "name": "Mauritanie",
+        "flag": "🇲🇷",
+        "currencies": [
+            {"code": "MRU", "name": "Ouguiya Mauritanien", "symbol": "UM"}
+        ]
+    },
+    {
+        "code": "MZ",
+        "name": "Mozambique",
+        "flag": "🇲🇿",
+        "currencies": [
+            {"code": "MZN", "name": "Metical Mozambicain", "symbol": "MT"}
+        ]
+    },
+    {
+        "code": "NA",
+        "name": "Namibie",
+        "flag": "🇳🇦",
+        "currencies": [
+            {"code": "NAD", "name": "Dollar Namibien", "symbol": "$"}
+        ]
+    },
+    {
+        "code": "NE",
+        "name": "Niger",
+        "flag": "🇳🇪",
+        "currencies": [
+            {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
+        ]
+    },
+    {
+        "code": "NG",
+        "name": "Nigeria",
+        "flag": "🇳🇬",
+        "currencies": [
+            {"code": "NGN", "name": "Naira Nigérian", "symbol": "₦"}
+        ]
+    },
+    {
+        "code": "UG",
+        "name": "Ouganda",
+        "flag": "🇺🇬",
+        "currencies": [
+            {"code": "UGX", "name": "Shilling Ougandais", "symbol": "USh"}
         ]
     },
     {
@@ -203,130 +323,27 @@ COUNTRIES = [
         ]
     },
     {
-        "code": "UG",
-        "name": "Ouganda",
-        "flag": "🇺🇬",
+        "code": "RDC",
+        "name": "Rép. Dém. du Congo",
+        "flag": "🇨🇩",
         "currencies": [
-            {"code": "UGX", "name": "Shilling Ougandais", "symbol": "USh"}
-        ]
-    },
-    {
-        "code": "KE",
-        "name": "Kenya",
-        "flag": "🇰🇪",
-        "currencies": [
-            {"code": "KES", "name": "Shilling Kenyan", "symbol": "KSh"}
-        ]
-    },
-    {
-        "code": "TZ",
-        "name": "Tanzanie",
-        "flag": "🇹🇿",
-        "currencies": [
-            {"code": "TZS", "name": "Shilling Tanzanien", "symbol": "TSh"}
-        ]
-    },
-    {
-        "code": "ZA",
-        "name": "Afrique du Sud",
-        "flag": "🇿🇦",
-        "currencies": [
-            {"code": "ZAR", "name": "Rand Sud-Africain", "symbol": "R"}
+            {"code": "USD", "name": "Dollar Américain", "symbol": "$"},
+            {"code": "CDF", "name": "Franc Congolais", "symbol": "FC"}
         ],
         "reception_methods": [
+            "Mobile Money (M-Pesa, Orange Money, Airtel Money)",
             "Virement bancaire",
             "Western Union",
             "MoneyGram",
-            "FNB eWallet",
             "Remise en espèces"
         ]
     },
     {
-        "code": "NG",
-        "name": "Nigeria",
-        "flag": "🇳🇬",
+        "code": "CG",
+        "name": "Rép. du Congo",
+        "flag": "🇨🇬",
         "currencies": [
-            {"code": "NGN", "name": "Naira Nigérian", "symbol": "₦"}
-        ]
-    },
-    {
-        "code": "GH",
-        "name": "Ghana",
-        "flag": "🇬🇭",
-        "currencies": [
-            {"code": "GHS", "name": "Cedi Ghanéen", "symbol": "GH₵"}
-        ]
-    },
-    {
-        "code": "ET",
-        "name": "Éthiopie",
-        "flag": "🇪🇹",
-        "currencies": [
-            {"code": "ETB", "name": "Birr Éthiopien", "symbol": "Br"}
-        ]
-    },
-    {
-        "code": "EG",
-        "name": "Égypte",
-        "flag": "🇪🇬",
-        "currencies": [
-            {"code": "EGP", "name": "Livre Égyptienne", "symbol": "E£"}
-        ]
-    },
-    {
-        "code": "AO",
-        "name": "Angola",
-        "flag": "🇦🇴",
-        "currencies": [
-            {"code": "AOA", "name": "Kwanza Angolais", "symbol": "Kz"}
-        ]
-    },
-    {
-        "code": "MZ",
-        "name": "Mozambique",
-        "flag": "🇲🇿",
-        "currencies": [
-            {"code": "MZN", "name": "Metical Mozambicain", "symbol": "MT"}
-        ]
-    },
-    {
-        "code": "ZM",
-        "name": "Zambie",
-        "flag": "🇿🇲",
-        "currencies": [
-            {"code": "ZMW", "name": "Kwacha Zambien", "symbol": "ZK"}
-        ]
-    },
-    {
-        "code": "ZW",
-        "name": "Zimbabwe",
-        "flag": "🇿🇼",
-        "currencies": [
-            {"code": "USD", "name": "Dollar Américain", "symbol": "$"}
-        ]
-    },
-    {
-        "code": "BW",
-        "name": "Botswana",
-        "flag": "🇧🇼",
-        "currencies": [
-            {"code": "BWP", "name": "Pula Botswanais", "symbol": "P"}
-        ]
-    },
-    {
-        "code": "MG",
-        "name": "Madagascar",
-        "flag": "🇲🇬",
-        "currencies": [
-            {"code": "MGA", "name": "Ariary Malgache", "symbol": "Ar"}
-        ]
-    },
-    {
-        "code": "MU",
-        "name": "Maurice",
-        "flag": "🇲🇺",
-        "currencies": [
-            {"code": "MUR", "name": "Roupie Mauricienne", "symbol": "₨"}
+            {"code": "XAF", "name": "Franc CFA", "symbol": "FCFA"}
         ]
     },
     {
@@ -338,11 +355,11 @@ COUNTRIES = [
         ]
     },
     {
-        "code": "BI",
-        "name": "Burundi",
-        "flag": "🇧🇮",
+        "code": "SL",
+        "name": "Sierra Leone",
+        "flag": "🇸🇱",
         "currencies": [
-            {"code": "BIF", "name": "Franc Burundais", "symbol": "FBu"}
+            {"code": "SLL", "name": "Leone", "symbol": "Le"}
         ]
     },
     {
@@ -351,22 +368,6 @@ COUNTRIES = [
         "flag": "🇸🇴",
         "currencies": [
             {"code": "SOS", "name": "Shilling Somalien", "symbol": "Sh"}
-        ]
-    },
-    {
-        "code": "DJ",
-        "name": "Djibouti",
-        "flag": "🇩🇯",
-        "currencies": [
-            {"code": "DJF", "name": "Franc Djiboutien", "symbol": "Fdj"}
-        ]
-    },
-    {
-        "code": "ER",
-        "name": "Érythrée",
-        "flag": "🇪🇷",
-        "currencies": [
-            {"code": "ERN", "name": "Nakfa Érythréen", "symbol": "Nfk"}
         ]
     },
     {
@@ -386,35 +387,26 @@ COUNTRIES = [
         ]
     },
     {
-        "code": "LR",
-        "name": "Liberia",
-        "flag": "🇱🇷",
+        "code": "SN",
+        "name": "Sénégal",
+        "flag": "🇸🇳",
         "currencies": [
-            {"code": "LRD", "name": "Dollar Libérien", "symbol": "$"}
+            {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
+        ],
+        "reception_methods": [
+            "Mobile Money (Orange Money, Free Money, Wave)",
+            "Virement bancaire",
+            "Western Union",
+            "MoneyGram",
+            "Remise en espèces"
         ]
     },
     {
-        "code": "SL",
-        "name": "Sierra Leone",
-        "flag": "🇸🇱",
+        "code": "TZ",
+        "name": "Tanzanie",
+        "flag": "🇹🇿",
         "currencies": [
-            {"code": "SLL", "name": "Leone", "symbol": "Le"}
-        ]
-    },
-    {
-        "code": "GQ",
-        "name": "Guinée Équatoriale",
-        "flag": "🇬🇶",
-        "currencies": [
-            {"code": "XAF", "name": "Franc CFA", "symbol": "FCFA"}
-        ]
-    },
-    {
-        "code": "CG",
-        "name": "Rép. du Congo",
-        "flag": "🇨🇬",
-        "currencies": [
-            {"code": "XAF", "name": "Franc CFA", "symbol": "FCFA"}
+            {"code": "TZS", "name": "Shilling Tanzanien", "symbol": "TSh"}
         ]
     },
     {
@@ -426,59 +418,67 @@ COUNTRIES = [
         ]
     },
     {
-        "code": "CF",
-        "name": "Centrafrique",
-        "flag": "🇨🇫",
+        "code": "TG",
+        "name": "Togo",
+        "flag": "🇹🇬",
         "currencies": [
-            {"code": "XAF", "name": "Franc CFA", "symbol": "FCFA"}
+            {"code": "XOF", "name": "Franc CFA", "symbol": "FCFA"}
         ]
     },
     {
-        "code": "LY",
-        "name": "Libye",
-        "flag": "🇱🇾",
+        "code": "TN",
+        "name": "Tunisie",
+        "flag": "🇹🇳",
         "currencies": [
-            {"code": "LYD", "name": "Dinar Libyen", "symbol": "LD"}
+            {"code": "TND", "name": "Dinar Tunisien", "symbol": "DT"}
         ]
     },
     {
-        "code": "MR",
-        "name": "Mauritanie",
-        "flag": "🇲🇷",
+        "code": "ZM",
+        "name": "Zambie",
+        "flag": "🇿🇲",
         "currencies": [
-            {"code": "MRU", "name": "Ouguiya Mauritanien", "symbol": "UM"}
+            {"code": "ZMW", "name": "Kwacha Zambien", "symbol": "ZK"}
         ]
     },
     {
-        "code": "NA",
-        "name": "Namibie",
-        "flag": "🇳🇦",
+        "code": "ZW",
+        "name": "Zimbabwe",
+        "flag": "🇿🇼",
         "currencies": [
-            {"code": "NAD", "name": "Dollar Namibien", "symbol": "$"}
+            {"code": "USD", "name": "Dollar Américain", "symbol": "$"}
         ]
     },
     {
-        "code": "MW",
-        "name": "Malawi",
-        "flag": "🇲🇼",
+        "code": "EG",
+        "name": "Égypte",
+        "flag": "🇪🇬",
         "currencies": [
-            {"code": "MWK", "name": "Kwacha Malawite", "symbol": "MK"}
+            {"code": "EGP", "name": "Livre Égyptienne", "symbol": "E£"}
         ]
     },
     {
-        "code": "LS",
-        "name": "Lesotho",
-        "flag": "🇱🇸",
+        "code": "ER",
+        "name": "Érythrée",
+        "flag": "🇪🇷",
         "currencies": [
-            {"code": "LSL", "name": "Loti", "symbol": "L"}
+            {"code": "ERN", "name": "Nakfa Érythréen", "symbol": "Nfk"}
         ]
     },
     {
-        "code": "SZ",
-        "name": "Eswatini",
-        "flag": "🇸🇿",
+        "code": "US",
+        "name": "États-Unis",
+        "flag": "🇺🇸",
         "currencies": [
-            {"code": "SZL", "name": "Lilangeni", "symbol": "E"}
+            {"code": "USD", "name": "Dollar Américain", "symbol": "$"}
+        ]
+    },
+    {
+        "code": "ET",
+        "name": "Éthiopie",
+        "flag": "🇪🇹",
+        "currencies": [
+            {"code": "ETB", "name": "Birr Éthiopien", "symbol": "Br"}
         ]
     }
 ]
