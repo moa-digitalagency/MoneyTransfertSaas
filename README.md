@@ -1,36 +1,75 @@
-# Transfert Monétique - Application Multi-Pays de Transfert d'Argent
+# TransfertSpace - Plateforme SaaS Multi-Tenant de Transfert d'Argent
 
-Application web configurable pour calculer les transferts d'argent entre n'importe quelle paire de pays avec conversion automatique de devises.
+Application web SaaS configurable permettant à plusieurs opérateurs de transfert d'argent de gérer leurs services de transfert entre n'importe quelle paire de pays avec conversion automatique de devises.
 
 ## 🌍 Fonctionnalités Principales
 
-- 🌐 **Configuration Multi-Pays** : Support de 24+ pays et leurs devises
+### Architecture Multi-Tenant SaaS
+- 🏢 **TransfertSpace** : Plateforme centralisée de gestion
+- 👥 **Multi-Opérateurs** : Chaque admin gère son propre service de transfert
+- 🔗 **URL Unique** : Chaque admin dispose d'une URL personnalisée (`/username`)
+- 📱 **Demande d'Inscription** : Bouton WhatsApp pour créer un nouveau compte admin
+- 🎨 **Branding Personnalisable** : Chaque admin configure son propre service
+
+### Fonctionnalités de Transfert
+- 🌐 **Configuration Multi-Pays** : Support de 54+ pays et leurs devises
   - Sélectionnez n'importe quelle paire de pays depuis le panneau admin
-  - Support de devises multiples : USD, EUR, MAD, FCFA, GBP, CAD, KES, RWF, et plus
+  - Support de devises multiples : USD, EUR, MAD, CDF, FCFA (XOF/XAF), GBP, CAD, KES, RWF, et plus
   - Interface dynamique qui s'adapte automatiquement aux pays sélectionnés
   
 - 💱 **Calcul bidirectionnel** : Transferts dans les deux directions configurables
 - 💰 **Deux modes de calcul** : 
   - Montant à envoyer (calcule le montant reçu)
   - Montant à recevoir (calcule le montant à envoyer)
-- 💵 **Frais de transaction par paliers** configurables pour chaque direction
+- 💵 **Frais de transaction** : Jusqu'à 10 paliers configurables pour chaque direction
+- 🔄 **Calcul automatique inverse** : Les taux de change inverses se calculent automatiquement
 - 📱 **Intégration WhatsApp** : envoi direct de la demande de transfert avec contacts configurables
 - ⚙️ **Panneau d'administration** : gestion complète des pays, devises, taux, frais et paramètres
-- 🔐 **Sécurité** : authentification admin avec hachage SHA-256 et protection CSRF
+- 🔐 **Sécurité** : authentification avec hachage de mot de passe sécurisé
+
+### Rôles et Permissions
+
+#### TransfertSpace (SuperAdmin)
+- Gestion complète de tous les comptes admin
+- Création, modification, suspension et suppression d'admins
+- Visualisation des statistiques globales
+- Accès à l'historique de toutes les transactions
+- **Login** : `myoneart` / `my0n34rt` (à changer immédiatement !)
+
+#### Admins
+- Gestion de leur propre service de transfert
+- Configuration des pays, devises, taux et frais
+- URL personnalisée pour leurs clients (`/username`)
+- Historique de leurs propres transactions
+- **Login** : `/admin/`
+
+## 📋 Demande d'Inscription
+
+Les utilisateurs peuvent demander la création d'un compte admin via un formulaire accessible sur la page d'accueil :
+
+1. Bouton "Demande d'inscription" sur la page principale
+2. Formulaire avec :
+   - Nom complet
+   - Numéro WhatsApp
+   - Pays d'envoi et devise
+   - Pays de destination et devise
+3. Envoi automatique de la demande au numéro WhatsApp : **212699140001**
 
 ## Exemples de Configurations Possibles
 
-- **RDC (USD) ⇄ Maroc (MAD)** - Configuration par défaut
+- **RDC (USD) ⇄ Maroc (MAD)**
 - **Côte d'Ivoire (FCFA) ⇄ Maroc (MAD)**
 - **Sénégal (FCFA) ⇄ France (EUR)**
 - **Kenya (KES) ⇄ Rwanda (RWF)**
 - **Cameroun (FCFA) ⇄ Canada (CAD)**
-- Ou n'importe quelle autre combinaison des 24+ pays disponibles !
+- **Rép. du Congo (FCFA) ⇄ Belgique (EUR)**
+- Ou n'importe quelle autre combinaison des 54+ pays disponibles !
 
 ## Installation
 
 ### Prérequis
 - Python 3.11 ou supérieur
+- PostgreSQL (pour la base de données)
 
 ### Installation des dépendances
 
@@ -38,201 +77,177 @@ Application web configurable pour calculer les transferts d'argent entre n'impor
 pip install -r requirements.txt
 ```
 
-Ou avec uv :
-
-```bash
-uv sync
-```
-
 ## Démarrage
 
 ### Mode développement
 
 ```bash
-python app.py
+gunicorn --bind 0.0.0.0:5000 --reuse-port --reload main:app
 ```
 
 L'application sera accessible sur `http://localhost:5000`
 
-### Mode production (avec Gunicorn)
+### Mode production
 
 ```bash
-gunicorn --bind=0.0.0.0:5000 --reuse-port app:app
-```
-
-Pour un déploiement avec plusieurs workers :
-
-```bash
-gunicorn --bind=0.0.0.0:5000 --reuse-port --workers 4 app:app
+gunicorn --bind=0.0.0.0:5000 --reuse-port --workers 4 main:app
 ```
 
 ## Configuration
 
-### Accès au panneau d'administration
+### Premier Accès TransfertSpace (SuperAdmin)
 
-1. Cliquez sur le lien **"For Admin"** en bas de la page d'accueil
-2. Connectez-vous avec le mot de passe admin par défaut : **`admin`**
-3. Vous pouvez configurer :
+Le compte TransfertSpace est créé automatiquement au démarrage :
 
-#### Configuration des Pays et Devises
-- **Pays 1** : Sélectionnez le premier pays (avec drapeau)
-- **Devise Pays 1** : Choisissez la devise pour ce pays
-- **Pays 2** : Sélectionnez le deuxième pays (avec drapeau)
-- **Devise Pays 2** : Choisissez la devise pour ce pays
+- **Username** : `myoneart`
+- **Email** : `moa@myoneart.com`
+- **Mot de passe** : `my0n34rt`
+
+⚠️ **Changez ce mot de passe immédiatement après la première connexion !**
+
+### Créer un Admin
+
+1. Connectez-vous en tant que TransfertSpace
+2. Accédez à "Admins" puis "Créer un Admin"
+3. Remplissez les informations :
+   - Username (sera l'URL : `/username`)
+   - Nom complet
+   - Email
+   - Numéro WhatsApp
+   - Mot de passe
+   - Pays 1 et Devise
+   - Pays 2 et Devise
+   - Moyens de réception
+
+### Configuration Admin
+
+Chaque admin peut configurer :
+
+#### Pays et Devises
+- **Pays 1 & Pays 2** : Sélection parmi 54+ pays avec drapeaux
+- **Devises** : Mise à jour automatique selon le pays sélectionné
+
+#### Taux de Change
+- **Calcul automatique inverse** : Entrez USD→MAD = 10, MAD→USD = 0.1 se calcule automatiquement
+- Précision jusqu'à 6 décimales
+
+#### Frais de Transaction
+- **Jusqu'à 10 paliers** pour chaque direction
+- Seuls les paliers remplis sont pris en compte
+- Configuration Min/Max/Frais pour chaque palier
 
 #### Autres Paramètres
-- **Taux de change** : Entre les deux devises sélectionnées (bidirectionnel)
-- **Frais de transaction** : Par palier pour chaque direction
 - **Contacts WhatsApp** : Numéros et noms séparés pour chaque direction
+- **Moyens de Réception** : Personnalisables par pays
 - **Bloc Application** : Titre et contenu du bloc promotionnel
-- **Mot de passe admin** : Changez le mot de passe par défaut
+- **Mot de passe** : Changement sécurisé du mot de passe admin
 
 ### Pays et Devises Disponibles
 
-L'application supporte 24+ pays incluant :
+L'application supporte 54+ pays incluant :
 
-| Pays | Drapeau | Devises Disponibles |
-|------|---------|-------------------|
-| RDC | 🇨🇩 | USD, CDF |
-| Maroc | 🇲🇦 | MAD |
-| Côte d'Ivoire | 🇨🇮 | XOF (FCFA) |
-| Sénégal | 🇸🇳 | XOF (FCFA) |
-| Cameroun | 🇨🇲 | XAF (FCFA) |
-| France | 🇫🇷 | EUR |
-| Belgique | 🇧🇪 | EUR |
-| Canada | 🇨🇦 | CAD |
-| États-Unis | 🇺🇸 | USD |
-| Royaume-Uni | 🇬🇧 | GBP |
-| Kenya | 🇰🇪 | KES |
-| Rwanda | 🇷🇼 | RWF |
-| Et 12+ autres pays... | | |
-
-### Fichier config.json
-
-Le fichier `config.json` contient toutes les configurations :
-
-```json
-{
-  "admin_password_hash": "hash_du_mot_de_passe",
-  "countries": {
-    "country1": {
-      "code": "RDC",
-      "currency_code": "USD"
-    },
-    "country2": {
-      "code": "MA",
-      "currency_code": "MAD"
-    }
-  },
-  "rates": {
-    "country1_to_country2": 10.2,
-    "country2_to_country1": 0.098
-  },
-  "transaction_fees": {
-    "country1_to_country2": [...],
-    "country2_to_country1": [...]
-  },
-  "whatsapp": {
-    "country1_to_country2": {
-      "phone": "212600265350",
-      "contact_name": "Néhémie"
-    },
-    "country2_to_country1": {
-      "phone": "212600265350",
-      "contact_name": "Néhémie"
-    }
-  }
-}
-```
+| Région | Pays Disponibles |
+|--------|------------------|
+| **Afrique Centrale** | RDC (USD, CDF), Rép. du Congo (FCFA), Cameroun (FCFA), Gabon (FCFA), Tchad (FCFA), Centrafrique (FCFA) |
+| **Afrique de l'Ouest** | Côte d'Ivoire (FCFA), Sénégal (FCFA), Mali (FCFA), Burkina Faso (FCFA), Bénin (FCFA), Togo (FCFA), Niger (FCFA), Nigeria (NGN), Ghana (GHS), Guinée (GNF) |
+| **Afrique du Nord** | Maroc (MAD), Tunisie (TND), Algérie (DZD), Égypte (EGP), Libye (LYD) |
+| **Afrique de l'Est** | Kenya (KES), Rwanda (RWF), Ouganda (UGX), Tanzanie (TZS), Éthiopie (ETB), Burundi (BIF) |
+| **Afrique Australe** | Afrique du Sud (ZAR), Zimbabwe (USD), Botswana (BWP), Namibie (NAD), Mozambique (MZN), Zambie (ZMW) |
+| **Europe** | France (EUR), Belgique (EUR), Royaume-Uni (GBP) |
+| **Amérique** | États-Unis (USD), Canada (CAD) |
+| **Océan Indien** | Madagascar (MGA), Maurice (MUR), Seychelles (SCR) |
 
 ## Structure du projet
 
 ```
 .
 ├── app/
-│   ├── __init__.py          # Application Flask factory
+│   ├── __init__.py
 │   ├── config/
-│   │   └── settings.py      # Gestion de config.json
+│   │   └── settings.py
 │   ├── data/
-│   │   ├── countries.py     # Base de données des pays et devises
+│   │   ├── countries.py         # 54+ pays et devises
 │   │   └── __init__.py
 │   ├── models/
-│   │   └── transaction.py   # Logique WhatsApp et transactions
+│   │   ├── admin.py            # Modèles Admin et AdminConfig
+│   │   └── transaction.py      # Modèle Transaction
 │   ├── routes/
-│   │   ├── main.py         # Routes principales
-│   │   └── admin.py        # Routes admin
-│   └── utils/
-│       ├── calculations.py  # Calculs avec arrondis
-│       └── security.py      # Hachage de mots de passe
+│   │   ├── main.py            # Routes publiques
+│   │   ├── admin.py           # Routes admin
+│   │   └── superadmin.py      # Routes TransfertSpace
+│   ├── utils/
+│   │   ├── calculations.py    # Calculs avec 10 paliers
+│   │   └── security.py        # Hachage de mots de passe
+│   └── database.py            # Configuration PostgreSQL
 ├── templates/
-│   ├── index.html          # Page principale (dynamique)
-│   ├── admin_login.html    # Login admin
-│   └── admin_panel.html    # Panneau d'administration
+│   ├── welcome.html           # Page d'accueil avec inscription
+│   ├── index.html             # Interface de transfert client
+│   ├── admin_login.html       # Login admin
+│   ├── admin_panel.html       # Panneau admin (10 paliers)
+│   ├── superadmin_*.html      # Interfaces TransfertSpace
+│   └── ...
 ├── static/
-│   └── bg-transfer.jpg     # Image de fond
-├── app.py                  # Point d'entrée
-├── config.json            # Configuration (pays, taux, frais)
-├── requirements.txt       # Dépendances Python
-└── pyproject.toml         # Configuration uv
+│   ├── background.jpg
+│   └── bg-transfer.jpg
+├── main.py                    # Point d'entrée
+├── requirements.txt
+└── pyproject.toml
 ```
+
+## Base de Données PostgreSQL
+
+L'application utilise PostgreSQL avec 3 tables principales :
+
+- **admins** : Comptes admin et TransfertSpace
+- **admin_configs** : Configurations personnalisées par admin
+- **transactions** : Historique de toutes les transactions
 
 ## Déploiement
 
-### Sur un serveur
+### Variables d'environnement
 
-1. Installez les dépendances :
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+DATABASE_URL=postgresql://...
+SESSION_SECRET=votre_clé_secrète
+```
 
-2. Configurez les variables d'environnement si nécessaire
+### Déploiement sur serveur
 
-3. Lancez avec Gunicorn :
-   ```bash
-   gunicorn --bind=0.0.0.0:5000 --workers 4 app:app
-   ```
-
-4. (Optionnel) Configurez un reverse proxy (Nginx/Apache)
-
-### Variables d'environnement (optionnel)
-
-Vous pouvez utiliser les variables d'environnement pour la production :
-- `FLASK_SECRET_KEY` : Clé secrète Flask (sinon générée aléatoirement)
-- `PORT` : Port d'écoute (défaut: 5000)
+1. Configurez PostgreSQL
+2. Installez les dépendances : `pip install -r requirements.txt`
+3. Lancez avec Gunicorn : `gunicorn --bind=0.0.0.0:5000 --workers 4 main:app`
+4. Configurez un reverse proxy (Nginx/Apache) si nécessaire
 
 ## Sécurité
 
 ⚠️ **Important pour la production** :
-- **Changez IMMÉDIATEMENT le mot de passe admin par défaut** (`admin` → votre mot de passe sécurisé)
-- Utilisez HTTPS pour les communications
-- Configurez une clé secrète Flask fixe via variable d'environnement
-- Envisagez d'utiliser bcrypt ou argon2 pour le hachage des mots de passe
-- Ajoutez une limitation du taux de tentatives de connexion
+- **Changez IMMÉDIATEMENT** le mot de passe TransfertSpace par défaut
+- Utilisez HTTPS pour toutes les communications
+- Configurez `SESSION_SECRET` avec une valeur aléatoire sécurisée
+- Limitez les tentatives de connexion
+- Effectuez des sauvegardes régulières de la base de données
 
-## Comment Changer de Pays
+## Nouvelles Fonctionnalités (Octobre 2025)
 
-1. Connectez-vous au panneau admin
-2. Dans **"Configuration des Pays"** :
-   - Sélectionnez votre nouveau **Pays 1** (ex: Côte d'Ivoire 🇨🇮)
-   - Choisissez sa **devise** (ex: XOF - Franc CFA)
-   - Sélectionnez votre nouveau **Pays 2** (ex: France 🇫🇷)
-   - Choisissez sa **devise** (ex: EUR - Euro)
-3. Ajustez les **taux de change** entre FCFA et EUR
-4. Configurez les **frais** pour chaque direction
-5. Mettez à jour les **contacts WhatsApp** si nécessaire
-6. Enregistrez
-
-**Tout le reste s'adapte automatiquement** : interface, drapeaux, calculs, et messages !
+✨ **Dernières améliorations** :
+- 🎨 Boutons d'action améliorés (Modifier, Supprimer, Transactions)
+- 🔄 Toggle de statut admin amélioré avec feedback
+- 🌍 Liste complète de 54+ pays avec devises dynamiques
+- 📊 Extension à 10 paliers de frais de transaction
+- 🔢 Calcul automatique inverse des taux de change
+- 📝 Formulaire de demande d'inscription via WhatsApp
+- 🏷️ Rebranding : SuperAdmin → TransfertSpace
 
 ## Support
 
 Pour toute question ou problème :
-- Contactez le support via WhatsApp au numéro configuré dans l'application
+- **Email** : moa@myoneart.com
+- **WhatsApp** : +212699140001
+- **Website** : [www.myoneart.com](https://www.myoneart.com)
 
 ---
 
-**MoneyTransfert**  
-By **MOA Digital Agency LLC**  
+**TransfertSpace**  
+By **[MOA Digital Agency LLC](https://www.myoneart.com)**  
 Developed by: **Aisance KALONJI**  
-Contact: moa@myoneart.com  
-www.myoneart.com
+Transfert Monétaire Facile, Bénéfique & Rapide

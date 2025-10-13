@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SuperAdmin - Transfert Monétaire</title>
+    <title>TransfertSpace - Transfert Monétaire</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-image {
@@ -15,13 +15,29 @@
         .bg-overlay {
             background-color: rgba(79, 70, 229, 0.5);
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body class="bg-image min-h-screen flex items-center justify-center">
     <div class="bg-overlay absolute inset-0"></div>
     
     <div class="relative z-10 bg-white p-8 rounded-2xl shadow-2xl w-96">
-        <h1 class="text-3xl font-bold text-center mb-2 text-gray-800">SuperAdmin</h1>
+        <h1 class="text-3xl font-bold text-center mb-2 text-gray-800">TransfertSpace</h1>
         <p class="text-center text-gray-600 mb-8">Connexion à la plateforme</p>
         
         {% if error %}
@@ -49,10 +65,191 @@
             </button>
         </form>
         
+        <div class="mt-6">
+            <button onclick="openRegistrationModal()" 
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+                Demande d'inscription
+            </button>
+        </div>
+        
         <div class="mt-8 text-center text-sm text-gray-600">
-            <p>© 2025 MOA Digital Agency LLC</p>
+            <p>© 2025 <a href="https://www.myoneart.com" target="_blank" class="text-indigo-600 hover:text-indigo-800 transition">MOA Digital Agency LLC</a></p>
             <p class="mt-1">Transfert Monétaire Facile, Bénéfique & Rapide</p>
         </div>
     </div>
+
+    <div id="registrationModal" class="modal">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Demande d'inscription</h2>
+                <button onclick="closeRegistrationModal()" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">
+                    &times;
+                </button>
+            </div>
+            
+            <p class="text-sm text-gray-600 mb-4">
+                Remplissez ce formulaire pour créer votre compte TransfertSpace et commencer à envoyer de l'argent entre vos pays choisis.
+            </p>
+            
+            <form id="registrationForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Nom complet</label>
+                    <input type="text" id="fullName" required
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Numéro WhatsApp</label>
+                    <input type="text" id="whatsappNumber" placeholder="+212600000000" required
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <p class="text-xs text-gray-500 mt-1">Format international avec indicatif pays</p>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h3 class="text-sm font-bold text-gray-800 mb-3">Configuration des transferts</h3>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Pays d'envoi</label>
+                        <select id="sendCountry" required onchange="updateSendCurrency()"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Sélectionnez un pays...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Devise d'envoi</label>
+                        <select id="sendCurrency" required
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Sélectionnez d'abord un pays...</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Pays de destination</label>
+                        <select id="receiveCountry" required onchange="updateReceiveCurrency()"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Sélectionnez un pays...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Devise de réception</label>
+                        <select id="receiveCurrency" required
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Sélectionnez d'abord un pays...</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" 
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline transition flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                    Envoyer la demande sur WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const countriesData = {{ countries_json | safe }};
+        
+        function openRegistrationModal() {
+            document.getElementById('registrationModal').classList.add('active');
+            if (countriesData) {
+                populateCountries();
+            }
+        }
+        
+        function closeRegistrationModal() {
+            document.getElementById('registrationModal').classList.remove('active');
+        }
+        
+        function populateCountries() {
+            const sendSelect = document.getElementById('sendCountry');
+            const receiveSelect = document.getElementById('receiveCountry');
+            
+            sendSelect.innerHTML = '<option value="">Sélectionnez un pays...</option>';
+            receiveSelect.innerHTML = '<option value="">Sélectionnez un pays...</option>';
+            
+            countriesData.forEach(country => {
+                const sendOption = document.createElement('option');
+                sendOption.value = country.code;
+                sendOption.textContent = `${country.flag} ${country.name}`;
+                sendOption.dataset.currencies = JSON.stringify(country.currencies);
+                sendSelect.appendChild(sendOption);
+                
+                const receiveOption = document.createElement('option');
+                receiveOption.value = country.code;
+                receiveOption.textContent = `${country.flag} ${country.name}`;
+                receiveOption.dataset.currencies = JSON.stringify(country.currencies);
+                receiveSelect.appendChild(receiveOption);
+            });
+        }
+        
+        function updateSendCurrency() {
+            const countrySelect = document.getElementById('sendCountry');
+            const currencySelect = document.getElementById('sendCurrency');
+            const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+            
+            currencySelect.innerHTML = '<option value="">Sélectionnez une devise...</option>';
+            
+            if (selectedOption.dataset.currencies) {
+                const currencies = JSON.parse(selectedOption.dataset.currencies);
+                currencies.forEach(currency => {
+                    const option = document.createElement('option');
+                    option.value = currency.code;
+                    option.textContent = `${currency.code} - ${currency.name}`;
+                    currencySelect.appendChild(option);
+                });
+            }
+        }
+        
+        function updateReceiveCurrency() {
+            const countrySelect = document.getElementById('receiveCountry');
+            const currencySelect = document.getElementById('receiveCurrency');
+            const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+            
+            currencySelect.innerHTML = '<option value="">Sélectionnez une devise...</option>';
+            
+            if (selectedOption.dataset.currencies) {
+                const currencies = JSON.parse(selectedOption.dataset.currencies);
+                currencies.forEach(currency => {
+                    const option = document.createElement('option');
+                    option.value = currency.code;
+                    option.textContent = `${currency.code} - ${currency.name}`;
+                    currencySelect.appendChild(option);
+                });
+            }
+        }
+        
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('fullName').value;
+            const whatsapp = document.getElementById('whatsappNumber').value;
+            
+            const sendCountrySelect = document.getElementById('sendCountry');
+            const sendCountryName = sendCountrySelect.options[sendCountrySelect.selectedIndex].textContent;
+            const sendCurrency = document.getElementById('sendCurrency').value;
+            
+            const receiveCountrySelect = document.getElementById('receiveCountry');
+            const receiveCountryName = receiveCountrySelect.options[receiveCountrySelect.selectedIndex].textContent;
+            const receiveCurrency = document.getElementById('receiveCurrency').value;
+            
+            const message = `Bonjour,%0A%0AJe souhaite m'inscrire sur TransfertSpace.%0A%0A*Nom:* ${encodeURIComponent(name)}%0A*Numéro WhatsApp:* ${encodeURIComponent(whatsapp)}%0A%0A*Configuration des transferts:*%0A• Pays d'envoi: ${encodeURIComponent(sendCountryName)} (${sendCurrency})%0A• Pays de destination: ${encodeURIComponent(receiveCountryName)} (${receiveCurrency})%0A%0AMerci de créer mon compte.`;
+            
+            const whatsappUrl = `https://wa.me/212699140001?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+            
+            closeRegistrationModal();
+        });
+    </script>
 </body>
 </html>

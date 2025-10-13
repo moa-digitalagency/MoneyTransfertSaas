@@ -411,7 +411,7 @@ COUNTRIES = [
     },
     {
         "code": "CG",
-        "name": "Congo-Brazzaville",
+        "name": "Rép. du Congo",
         "flag": "🇨🇬",
         "currencies": [
             {"code": "XAF", "name": "Franc CFA", "symbol": "FCFA"}

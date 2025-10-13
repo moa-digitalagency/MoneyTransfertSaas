@@ -13,7 +13,9 @@ main_bp = Blueprint('main', __name__)
 def index():
     from flask import redirect, url_for, session
     from app.models.admin import Admin
+    from app.data import COUNTRIES
     import logging
+    import json
     
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
@@ -23,21 +25,21 @@ def index():
         
         if not username or not password:
             logging.debug("Username ou password vide")
-            return render_template('welcome.html', error='Veuillez remplir tous les champs')
+            return render_template('welcome.html', error='Veuillez remplir tous les champs', countries_json=json.dumps(COUNTRIES))
         
         admin = Admin.query.filter_by(username=username, role='superadmin').first()
         
         if not admin:
             logging.debug(f"Aucun superadmin trouvé avec username: {username}")
-            return render_template('welcome.html', error='Identifiants invalides')
+            return render_template('welcome.html', error='Identifiants invalides', countries_json=json.dumps(COUNTRIES))
         
         if not admin.check_password(password):
             logging.debug(f"Mot de passe incorrect pour: {username}")
-            return render_template('welcome.html', error='Identifiants invalides')
+            return render_template('welcome.html', error='Identifiants invalides', countries_json=json.dumps(COUNTRIES))
         
         if admin.status != 'active':
             logging.debug(f"Compte suspendu: {username}")
-            return render_template('welcome.html', error='Compte suspendu')
+            return render_template('welcome.html', error='Compte suspendu', countries_json=json.dumps(COUNTRIES))
         
         logging.debug(f"Connexion réussie pour: {username}")
         session.clear()
@@ -47,7 +49,7 @@ def index():
         
         return redirect(url_for('superadmin.dashboard'))
     
-    return render_template('welcome.html')
+    return render_template('welcome.html', countries_json=json.dumps(COUNTRIES))
 
 @main_bp.route('/<username>')
 def user_index(username):
