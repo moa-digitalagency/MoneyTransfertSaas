@@ -6,6 +6,7 @@
     <title>TransfertSpace Dashboard</title>
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             background: linear-gradient(135deg, #1e3a8a 0%, #dc2626 100%);
@@ -66,6 +67,77 @@
             </div>
         </div>
 
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl p-6 text-white shadow-2xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-blue-100 text-sm mb-1">Montant Total Aujourd'hui</p>
+                        <p class="text-3xl font-bold">{{ total_today }}</p>
+                    </div>
+                    <div class="text-5xl opacity-50">📅</div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-green-500 to-green-700 rounded-xl p-6 text-white shadow-2xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-green-100 text-sm mb-1">Montant Total Cette Semaine</p>
+                        <p class="text-3xl font-bold">{{ total_week }}</p>
+                    </div>
+                    <div class="text-5xl opacity-50">📆</div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl p-6 text-white shadow-2xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-purple-100 text-sm mb-1">Montant Total Ce Mois-ci</p>
+                        <p class="text-3xl font-bold">{{ total_month }}</p>
+                    </div>
+                    <div class="text-5xl opacity-50">📊</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-2xl p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">📈 Évolution des 7 derniers jours</h2>
+                <canvas id="dailyChart"></canvas>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-2xl p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">🏆 Top 10 Admins</h2>
+                <div class="overflow-y-auto max-h-80">
+                    <table class="w-full">
+                        <thead class="bg-blue-100 sticky top-0">
+                            <tr>
+                                <th class="text-left p-3 text-sm font-semibold text-blue-900">Rang</th>
+                                <th class="text-left p-3 text-sm font-semibold text-blue-900">Admin</th>
+                                <th class="text-right p-3 text-sm font-semibold text-blue-900">Montant</th>
+                                <th class="text-right p-3 text-sm font-semibold text-blue-900">Txns</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in range(top_admins|length) %}
+                            <tr class="border-b border-gray-200">
+                                <td class="p-3 text-sm">
+                                    {% if i == 0 %}🥇
+                                    {% elif i == 1 %}🥈
+                                    {% elif i == 2 %}🥉
+                                    {% else %}{{ i + 1 }}
+                                    {% endif %}
+                                </td>
+                                <td class="p-3 text-sm font-medium">{{ top_admins[i].username }}</td>
+                                <td class="p-3 text-sm text-right font-bold text-green-600">{{ "%.2f"|format(top_admins[i].total) }}</td>
+                                <td class="p-3 text-sm text-right text-gray-600">{{ top_admins[i].count }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <div class="bg-white rounded-xl shadow-2xl p-6 mb-8">
             <h2 class="text-2xl font-bold mb-4 text-blue-900">Statistiques par Admin</h2>
             <div class="overflow-x-auto">
@@ -122,5 +194,43 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const dailyData = {{ daily_stats | tojson }};
+        
+        const ctx = document.getElementById('dailyChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: dailyData.reverse().map(d => d.day_name),
+                datasets: [{
+                    label: 'Montant Total',
+                    data: dailyData.map(d => d.total),
+                    backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toFixed(2);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
