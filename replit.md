@@ -77,6 +77,7 @@ Each admin can independently configure:
   - `data/`: Country and currency information (54+ countries)
 - **Database Models**:
   - `Admin`: User accounts with role (admin/superadmin) and status (active/suspended)
+    - New fields: `full_name` (nom complet) et `whatsapp_number` (numéro WhatsApp)
   - `AdminConfig`: Per-admin configuration (countries, rates, fees, branding)
   - `Transaction`: Transaction records linked to admin accounts
 - **Country & Currency System**: Comprehensive database of 54+ countries with multiple currencies per country where applicable.
@@ -102,13 +103,14 @@ Each admin can independently configure:
 
 ### SuperAdmin Panel
 - **Access & Authentication**: `/superadmin/login` with role verification
-- **Dashboard**: System-wide statistics and admin management
+- **Dashboard**: System-wide statistics and admin management with modern, cohesive design
 - **Admin Management**:
-  - Create new admin accounts with username and email
-  - Edit admin credentials (email, password)
-  - Suspend/activate admin accounts
+  - Create new admin accounts with username, email, full name, WhatsApp number, and reception methods
+  - Edit admin credentials (email, password, full name, WhatsApp number)
+  - Suspend/activate admin accounts via toggle switches
   - Delete admin accounts
   - View per-admin transaction history
+- **Design**: Modern gradient-based interface with card layouts, smooth transitions, and responsive design
 - **Security**: Only users with `role='superadmin'` can access
 
 ### Security Considerations
