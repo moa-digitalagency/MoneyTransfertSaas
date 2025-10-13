@@ -146,15 +146,21 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-gray-600">{{ admin.created_at.strftime('%d/%m/%Y') }}</td>
-                            <td class="px-6 py-4 space-x-3">
+                            <td class="px-6 py-4 space-x-2">
                                 <a href="{{ url_for('superadmin.edit_admin', admin_id=admin.id) }}" 
-                                   class="text-blue-600 hover:text-blue-900 font-semibold">✏️ Modifier</a>
+                                   class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition shadow-md">
+                                   ✏️ Modifier
+                                </a>
                                 
                                 <button onclick="deleteAdmin({{ admin.id }})" 
-                                        class="text-red-600 hover:text-red-900 font-semibold">🗑️ Supprimer</button>
+                                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition shadow-md">
+                                        🗑️ Supprimer
+                                </button>
                                 
                                 <a href="{{ url_for('superadmin.admin_transactions', admin_id=admin.id) }}" 
-                                   class="text-purple-600 hover:text-purple-900 font-semibold">📊 Transactions</a>
+                                   class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition shadow-md">
+                                   📊 Transactions
+                                </a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -168,22 +174,41 @@
         async function toggleAdminStatus(adminId, isActive) {
             const endpoint = isActive ? 'activate' : 'suspend';
             const statusText = document.getElementById(`status-text-${adminId}`);
+            const toggle = document.getElementById(`toggle-${adminId}`);
+            const originalStatus = !isActive;
+            
+            toggle.disabled = true;
+            statusText.textContent = 'En cours...';
+            statusText.className = 'ml-2 text-sm font-semibold text-gray-500';
             
             try {
                 const response = await fetch(`/superadmin/admins/${adminId}/${endpoint}`, {
-                    method: 'POST'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
+                
+                const data = await response.json();
                 
                 if (response.ok) {
                     statusText.textContent = isActive ? 'Active' : 'Suspended';
                     statusText.className = `ml-2 text-sm font-semibold ${isActive ? 'text-green-600' : 'text-red-600'}`;
+                    console.log('Statut changé avec succès:', data.message);
                 } else {
-                    document.getElementById(`toggle-${adminId}`).checked = !isActive;
-                    alert('Erreur lors du changement de statut');
+                    toggle.checked = originalStatus;
+                    statusText.textContent = originalStatus ? 'Active' : 'Suspended';
+                    statusText.className = `ml-2 text-sm font-semibold ${originalStatus ? 'text-green-600' : 'text-red-600'}`;
+                    alert('Erreur: ' + (data.error || 'Impossible de changer le statut'));
                 }
             } catch (error) {
-                document.getElementById(`toggle-${adminId}`).checked = !isActive;
-                alert('Erreur lors du changement de statut');
+                toggle.checked = originalStatus;
+                statusText.textContent = originalStatus ? 'Active' : 'Suspended';
+                statusText.className = `ml-2 text-sm font-semibold ${originalStatus ? 'text-green-600' : 'text-red-600'}`;
+                alert('Erreur de connexion. Veuillez réessayer.');
+                console.error('Erreur toggle:', error);
+            } finally {
+                toggle.disabled = false;
             }
         }
         

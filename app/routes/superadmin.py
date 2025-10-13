@@ -3,6 +3,7 @@ from app.models.admin import Admin, AdminConfig
 from app.models.transaction import Transaction
 from app.database import db
 from sqlalchemy import func
+import json
 
 superadmin_bp = Blueprint('superadmin', __name__, url_prefix='/superadmin')
 
@@ -92,11 +93,13 @@ def create_admin():
         if Admin.query.filter_by(username=username).first():
             return render_template('superadmin_create_admin.html', 
                                  countries=COUNTRIES,
+                                 countries_json=json.dumps(COUNTRIES),
                                  error='Ce nom d\'utilisateur existe déjà')
         
         if Admin.query.filter_by(email=email).first():
             return render_template('superadmin_create_admin.html', 
                                  countries=COUNTRIES,
+                                 countries_json=json.dumps(COUNTRIES),
                                  error='Cet email existe déjà')
         
         admin = Admin(
@@ -143,7 +146,9 @@ def create_admin():
         
         return redirect(url_for('superadmin.admins_list'))
     
-    return render_template('superadmin_create_admin.html', countries=COUNTRIES)
+    return render_template('superadmin_create_admin.html', 
+                         countries=COUNTRIES,
+                         countries_json=json.dumps(COUNTRIES))
 
 @superadmin_bp.route('/admins/<int:admin_id>/edit', methods=['GET', 'POST'])
 def edit_admin(admin_id):

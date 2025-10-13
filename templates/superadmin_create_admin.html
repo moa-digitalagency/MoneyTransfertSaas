@@ -96,7 +96,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-gray-700 text-sm font-bold mb-2">Pays 1</label>
-                            <select name="country1_code" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
+                            <select name="country1_code" id="country1_code" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent" onchange="updateCurrencies()">
                                 {% for country in countries %}
                                 <option value="{{ country.code }}">{{ country.flag }} {{ country.name }}</option>
                                 {% endfor %}
@@ -105,19 +105,13 @@
                         
                         <div>
                             <label class="block text-gray-700 text-sm font-bold mb-2">Devise Pays 1</label>
-                            <select name="country1_currency" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
-                                <option value="USD">USD - Dollar Américain</option>
-                                <option value="EUR">EUR - Euro</option>
-                                <option value="MAD">MAD - Dirham Marocain</option>
-                                <option value="CDF">CDF - Franc Congolais</option>
-                                <option value="XOF">XOF - Franc CFA</option>
-                                <option value="XAF">XAF - Franc CFA</option>
+                            <select name="country1_currency" id="country1_currency" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
                             </select>
                         </div>
                         
                         <div>
                             <label class="block text-gray-700 text-sm font-bold mb-2">Pays 2</label>
-                            <select name="country2_code" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
+                            <select name="country2_code" id="country2_code" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent" onchange="updateCurrencies()">
                                 {% for country in countries %}
                                 <option value="{{ country.code }}">{{ country.flag }} {{ country.name }}</option>
                                 {% endfor %}
@@ -126,13 +120,7 @@
                         
                         <div>
                             <label class="block text-gray-700 text-sm font-bold mb-2">Devise Pays 2</label>
-                            <select name="country2_currency" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
-                                <option value="USD">USD - Dollar Américain</option>
-                                <option value="EUR">EUR - Euro</option>
-                                <option value="MAD">MAD - Dirham Marocain</option>
-                                <option value="CDF">CDF - Franc Congolais</option>
-                                <option value="XOF">XOF - Franc CFA</option>
-                                <option value="XAF">XAF - Franc CFA</option>
+                            <select name="country2_currency" id="country2_currency" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
                             </select>
                         </div>
                     </div>
@@ -199,5 +187,43 @@
             </form>
         </div>
     </div>
+
+    <script>
+        const countriesData = {{ countries_json | safe }};
+
+        function updateCurrencies() {
+            const country1Code = document.getElementById('country1_code').value;
+            const country2Code = document.getElementById('country2_code').value;
+
+            const country1 = countriesData.find(c => c.code === country1Code);
+            const country2 = countriesData.find(c => c.code === country2Code);
+
+            const currency1Select = document.getElementById('country1_currency');
+            const currency2Select = document.getElementById('country2_currency');
+
+            currency1Select.innerHTML = '';
+            currency2Select.innerHTML = '';
+
+            if (country1) {
+                country1.currencies.forEach(currency => {
+                    const option = document.createElement('option');
+                    option.value = currency.code;
+                    option.textContent = `${currency.code} - ${currency.name}`;
+                    currency1Select.appendChild(option);
+                });
+            }
+
+            if (country2) {
+                country2.currencies.forEach(currency => {
+                    const option = document.createElement('option');
+                    option.value = currency.code;
+                    option.textContent = `${currency.code} - ${currency.name}`;
+                    currency2Select.appendChild(option);
+                });
+            }
+        }
+
+        updateCurrencies();
+    </script>
 </body>
 </html>
