@@ -129,6 +129,9 @@ def admin_update():
     config.reception_methods_country1 = [m.strip() for m in reception_methods_1.split('\n') if m.strip()] if reception_methods_1 else []
     config.reception_methods_country2 = [m.strip() for m in reception_methods_2.split('\n') if m.strip()] if reception_methods_2 else []
     
+    config.direction_1to2_enabled = request.form.get('direction_1to2_enabled') == 'on'
+    config.direction_2to1_enabled = request.form.get('direction_2to1_enabled') == 'on'
+    
     db.session.commit()
     
     logger.info("Configuration mise à jour avec succès")

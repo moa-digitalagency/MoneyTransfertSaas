@@ -121,6 +121,35 @@ www.myoneart.com
                 </div>
 
                 <div class="border-b pb-4">
+                    <h2 class="text-lg font-semibold text-blue-900 mb-4">🔄 Directions de transfert</h2>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded">
+                        <p class="text-sm text-blue-800">
+                            <strong>Par défaut</strong>, les transferts sont bidirectionnels. Vous pouvez désactiver une direction si vous ne souhaitez proposer que des transferts dans un seul sens.
+                        </p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                            <input type="checkbox" name="direction_1to2_enabled" id="direction_1to2_enabled" 
+                                   {% if config.transfer_directions.country1_to_country2 %}checked{% endif %}
+                                   class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <label for="direction_1to2_enabled" class="ml-3 text-sm font-medium text-gray-700" id="direction_label_1">
+                                Activer les transferts Pays 1 → Pays 2
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                            <input type="checkbox" name="direction_2to1_enabled" id="direction_2to1_enabled" 
+                                   {% if config.transfer_directions.country2_to_country1 %}checked{% endif %}
+                                   class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <label for="direction_2to1_enabled" class="ml-3 text-sm font-medium text-gray-700" id="direction_label_2">
+                                Activer les transferts Pays 2 → Pays 1
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-b pb-4">
                     <h2 class="text-lg font-semibold text-blue-900 mb-4">💵 Frais de transaction</h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -343,6 +372,9 @@ www.myoneart.com
                 
                 document.getElementById('fees_label_1').textContent = `${country1.flag} ${country1.name} → ${country2.flag} ${country2.name} (${currency1Code})`;
                 document.getElementById('fees_label_2').textContent = `${country2.flag} ${country2.name} → ${country1.flag} ${country1.name} (${currency2Code})`;
+                
+                document.getElementById('direction_label_1').textContent = `Activer les transferts ${country1.flag} ${country1.name} → ${country2.flag} ${country2.name}`;
+                document.getElementById('direction_label_2').textContent = `Activer les transferts ${country2.flag} ${country2.name} → ${country1.flag} ${country1.name}`;
                 
                 document.getElementById('whatsapp_label_1').textContent = `${country1.flag} ${country1.name} → ${country2.flag} ${country2.name}`;
                 document.getElementById('whatsapp_label_2').textContent = `${country2.flag} ${country2.name} → ${country1.flag} ${country1.name}`;
