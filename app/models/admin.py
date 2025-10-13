@@ -77,6 +77,9 @@ class AdminConfig(db.Model):
     direction_1to2_enabled = db.Column(db.Boolean, nullable=False, default=True)
     direction_2to1_enabled = db.Column(db.Boolean, nullable=False, default=True)
     
+    page_suspended = db.Column(db.Boolean, nullable=False, default=False)
+    suspension_message = db.Column(db.Text, default='Service temporairement suspendu. Veuillez réessayer ultérieurement.')
+    
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
@@ -109,5 +112,7 @@ class AdminConfig(db.Model):
             'transfer_directions': {
                 'country1_to_country2': self.direction_1to2_enabled,
                 'country2_to_country1': self.direction_2to1_enabled
-            }
+            },
+            'page_suspended': self.page_suspended,
+            'suspension_message': self.suspension_message
         }

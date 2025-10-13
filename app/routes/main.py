@@ -64,6 +64,9 @@ def user_index(username):
     if not admin.config:
         abort(404)
     
+    if admin.config.page_suspended:
+        return render_template('account_suspended.html', username=username, custom_message=admin.config.suspension_message), 403
+    
     config = admin.config.to_dict()
     
     country1 = get_country_by_code(config['countries']['country1']['code'])

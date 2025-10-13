@@ -158,6 +158,13 @@ def admin_update():
     config.direction_1to2_enabled = request.form.get('direction_1to2_enabled') == 'on'
     config.direction_2to1_enabled = request.form.get('direction_2to1_enabled') == 'on'
     
+    config.page_suspended = request.form.get('page_suspended') == '1'
+    suspension_message = request.form.get('suspension_message', '').strip()
+    if suspension_message:
+        config.suspension_message = suspension_message
+    else:
+        config.suspension_message = 'Service temporairement suspendu. Veuillez réessayer ultérieurement.'
+    
     db.session.commit()
     
     logger.info("Configuration mise à jour avec succès")

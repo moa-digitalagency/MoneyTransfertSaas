@@ -10,9 +10,13 @@
 <body class="bg-gradient-to-br from-red-500 via-pink-500 to-orange-500 min-h-screen flex items-center justify-center">
     <div class="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center">
         <div class="text-6xl mb-4">🚫</div>
-        <h1 class="text-3xl font-bold mb-4 text-gray-800">Compte Suspendu</h1>
+        <h1 class="text-3xl font-bold mb-4 text-gray-800">Service Temporairement Indisponible</h1>
         <p class="text-gray-600 mb-6">
-            Ce compte a été temporairement suspendu. Veuillez contacter l'administrateur pour plus d'informations.
+            {% if custom_message %}
+                {{ custom_message }}
+            {% else %}
+                Ce compte a été temporairement suspendu. Veuillez contacter l'administrateur pour plus d'informations.
+            {% endif %}
         </p>
         <p class="text-sm text-gray-500">Compte: {{ username }}</p>
     </div>
