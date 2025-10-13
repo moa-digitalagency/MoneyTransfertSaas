@@ -5,22 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #dc2626 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('/static/bg-transfer.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-indigo-600 text-white p-4">
+<body>
+    <nav class="bg-blue-900 bg-opacity-90 text-white p-4 shadow-lg relative z-10">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">SuperAdmin Dashboard</h1>
+            <h1 class="text-2xl font-bold">💰 SuperAdmin Dashboard</h1>
             <div class="space-x-4">
-                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-indigo-200">Dashboard</a>
-                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-indigo-200">Admins</a>
-                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-indigo-200">Déconnexion</a>
+                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">Dashboard</a>
+                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition">Admins</a>
+                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">Déconnexion</a>
             </div>
         </div>
     </nav>
 
-    <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow p-6 max-w-2xl mx-auto">
-            <h2 class="text-2xl font-bold mb-6">Créer un nouvel Admin</h2>
+    <div class="content-wrapper container mx-auto p-6">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6 text-blue-900">➕ Créer un nouvel Admin</h2>
             
             {% if error %}
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -29,35 +53,83 @@
             {% endif %}
             
             <form method="POST">
-                <input type="hidden" name="token" value="{{ token }}">
-                
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Nom d'utilisateur (sera l'URL: /username)</label>
-                    <input type="text" name="username" required pattern="[a-zA-Z0-9_-]+" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">
-                    <p class="text-xs text-gray-500 mt-1">Lettres, chiffres, tirets et underscores uniquement</p>
-                </div>
-                
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                    <input type="email" name="email" required
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Nom d'utilisateur (URL: /username)</label>
+                        <input type="text" name="username" required pattern="[a-zA-Z0-9_-]+" 
+                               class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
+                        <p class="text-xs text-gray-500 mt-1">Lettres, chiffres, tirets et underscores uniquement</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                        <input type="email" name="email" required
+                               class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
+                    </div>
                 </div>
                 
                 <div class="mb-6">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Mot de passe</label>
                     <input type="password" name="password" required minlength="6"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">
+                           class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
                 </div>
                 
-                <div class="flex justify-between">
+                <div class="border-t pt-6 mb-6">
+                    <h3 class="text-xl font-bold text-blue-900 mb-4">Configuration des Pays</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Pays 1</label>
+                            <select name="country1_code" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
+                                {% for country in countries %}
+                                <option value="{{ country.code }}">{{ country.flag }} {{ country.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Devise Pays 1</label>
+                            <select name="country1_currency" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
+                                <option value="USD">USD - Dollar Américain</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="MAD">MAD - Dirham Marocain</option>
+                                <option value="CDF">CDF - Franc Congolais</option>
+                                <option value="XOF">XOF - Franc CFA</option>
+                                <option value="XAF">XAF - Franc CFA</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Pays 2</label>
+                            <select name="country2_code" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
+                                {% for country in countries %}
+                                <option value="{{ country.code }}">{{ country.flag }} {{ country.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Devise Pays 2</label>
+                            <select name="country2_currency" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
+                                <option value="USD">USD - Dollar Américain</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="MAD">MAD - Dirham Marocain</option>
+                                <option value="CDF">CDF - Franc Congolais</option>
+                                <option value="XOF">XOF - Franc CFA</option>
+                                <option value="XAF">XAF - Franc CFA</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between gap-4">
                     <a href="{{ url_for('superadmin.admins_list') }}" 
-                       class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                       class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition">
                         Annuler
                     </a>
                     <button type="submit" 
-                            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-                        Créer l'Admin
+                            class="bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg transition shadow-lg">
+                        ✅ Créer l'Admin
                     </button>
                 </div>
             </form>

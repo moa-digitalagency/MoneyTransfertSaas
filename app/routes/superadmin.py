@@ -74,17 +74,25 @@ def create_admin():
     if not require_superadmin_login():
         return redirect(url_for('main.index'))
     
+    from app.data import COUNTRIES
+    
     if request.method == 'POST':
         username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
+        country1_code = request.form.get('country1_code', 'RDC')
+        country1_currency = request.form.get('country1_currency', 'USD')
+        country2_code = request.form.get('country2_code', 'MA')
+        country2_currency = request.form.get('country2_currency', 'MAD')
         
         if Admin.query.filter_by(username=username).first():
             return render_template('superadmin_create_admin.html', 
+                                 countries=COUNTRIES,
                                  error='Ce nom d\'utilisateur existe déjà')
         
         if Admin.query.filter_by(email=email).first():
             return render_template('superadmin_create_admin.html', 
+                                 countries=COUNTRIES,
                                  error='Cet email existe déjà')
         
         admin = Admin(
@@ -100,12 +108,18 @@ def create_admin():
         
         config = AdminConfig(
             admin_id=admin.id,
-            country1_code='CD',
-            country1_currency='USD',
-            country2_code='MA',
-            country2_currency='MAD',
+            country1_code=country1_code,
+            country1_currency=country1_currency,
+            country2_code=country2_code,
+            country2_currency=country2_currency,
             rate_country1_to_country2=10.0,
             rate_country2_to_country1=0.1,
+            whatsapp_phone_1to2='212699140001',
+            whatsapp_contact_1to2='Eazi',
+            whatsapp_phone_2to1='212699140001',
+            whatsapp_contact_2to1='Eazi',
+            reception_methods_country1=['Remise en personne'],
+            reception_methods_country2=['Remise en personne'],
             transaction_fees_1to2=[
                 {'min': 0, 'max': 100, 'fee': 5},
                 {'min': 100, 'max': 500, 'fee': 10},
@@ -123,7 +137,7 @@ def create_admin():
         
         return redirect(url_for('superadmin.admins_list'))
     
-    return render_template('superadmin_create_admin.html')
+    return render_template('superadmin_create_admin.html', countries=COUNTRIES)
 
 @superadmin_bp.route('/admins/<int:admin_id>/edit', methods=['GET', 'POST'])
 def edit_admin(admin_id):
