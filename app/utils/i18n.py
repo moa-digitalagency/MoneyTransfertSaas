@@ -58,8 +58,12 @@ def init_i18n(app):
     
     @app.route('/change-language/<lang>')
     def change_language(lang):
-        from flask import redirect, request
+        from flask import redirect, request, make_response
         if set_locale(lang):
             referrer = request.referrer or '/'
-            return redirect(referrer)
+            response = make_response(redirect(referrer))
+            response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+            response.headers['Pragma'] = 'no-cache'
+            response.headers['Expires'] = '0'
+            return response
         return redirect('/')

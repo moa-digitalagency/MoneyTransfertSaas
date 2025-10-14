@@ -57,6 +57,8 @@ def index():
 
 @main_bp.route('/<username>')
 def user_index(username):
+    from flask import make_response
+    
     admin = Admin.query.filter_by(username=username, role='admin').first()
     
     if not admin:
@@ -87,7 +89,11 @@ def user_index(username):
     
     config['username'] = username
     
-    return render_template('index.html', config=config, username=username, admin_id=admin.id)
+    response = make_response(render_template('index.html', config=config, username=username, admin_id=admin.id))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @main_bp.route('/calculate', methods=['POST'])
 def calculate():
