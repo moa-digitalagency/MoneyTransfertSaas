@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="{{ session.get('lang', 'fr') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('database.page_title') }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen p-4">
+    <div class="container mx-auto max-w-7xl">
+        <!-- Header -->
+        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">
+                        <i class="fas fa-database mr-3"></i>{{ _('database.page_title') }}
+                    </h1>
+                    <p class="text-gray-600 mt-2">{{ _('database.page_subtitle') }}</p>
+                </div>
+                <a href="{{ url_for('superadmin.dashboard') }}" 
+                   class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all">
+                    <i class="fas fa-arrow-left mr-2"></i>{{ _('common.back') }}
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Git Status & Updates -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">
+                    <i class="fab fa-github mr-2"></i>{{ _('database.git_updates') }}
+                </h2>
+                
+                <div id="git-status" class="space-y-4">
+                    {% if git_status.success %}
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <p class="text-sm text-gray-600">{{ _('database.current_branch') }}</p>
+                                <p class="font-semibold text-gray-800">{{ git_status.branch }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">{{ _('database.current_commit') }}</p>
+                                <p class="font-mono text-sm text-gray-800">{{ git_status.commit }}</p>
+                            </div>
+                        </div>
+                        
+                        {% if git_status.has_updates %}
+                        <div class="mt-4 bg-yellow-50 border-l-4 border-yellow-400 p-3">
+                            <p class="text-yellow-700">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>{{ _('database.updates_available') }}
+                            </p>
+                        </div>
+                        {% else %}
+                        <div class="mt-4 bg-green-50 border-l-4 border-green-400 p-3">
+                            <p class="text-green-700">
+                                <i class="fas fa-check-circle mr-2"></i>{{ _('database.up_to_date') }}
+                            </p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="bg-red-50 border-l-4 border-red-400 p-4">
+                        <p class="text-red-700">{{ git_status.error }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="mt-6 space-y-3">
+                    <button onclick="checkGitStatus()" 
+                            class="w-full bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-all">
+                        <i class="fas fa-sync mr-2"></i>{{ _('database.check_updates') }}
+                    </button>
+                    
+                    <button onclick="updateFromGitHub()" 
+                            class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all">
+                        <i class="fas fa-download mr-2"></i>{{ _('database.update_and_migrate') }}
+                    </button>
+                    
+                    <p class="text-sm text-gray-600 mt-2">
+                        <i class="fas fa-info-circle mr-1"></i>{{ _('database.auto_backup_info') }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Database Backups -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-save mr-2"></i>{{ _('database.backups_title') }}
+                </h2>
+                
+                <button onclick="createBackup()" 
+                        class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all mb-4">
+                    <i class="fas fa-plus mr-2"></i>{{ _('database.create_backup') }}
+                </button>
+
+                <div id="backups-list" class="space-y-2 max-h-96 overflow-y-auto">
+                    {% if backups %}
+                        {% for backup in backups %}
+                        <div class="bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="font-semibold text-gray-800">{{ backup.filename }}</p>
+                                    <p class="text-sm text-gray-600">
+                                        {{ backup.created[:10] }} {{ backup.created[11:19] }} - 
+                                        {{ (backup.size / 1024) | round(2) }} KB
+                                    </p>
+                                </div>
+                                <button onclick="restoreBackup('{{ backup.filename }}')" 
+                                        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                                    <i class="fas fa-undo mr-1"></i>{{ _('database.restore') }}
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-inbox text-4xl mb-3"></i>
+                        <p>{{ _('database.no_backups') }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mt-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-list mr-2"></i>{{ _('database.activity_log') }}
+            </h2>
+            <div id="activity-log" class="space-y-2 max-h-64 overflow-y-auto">
+                <p class="text-gray-500 text-center py-4">{{ _('database.no_activity') }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loading-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center">
+                <i class="fas fa-spinner fa-spin text-5xl text-purple-600 mb-4"></i>
+                <p id="loading-text" class="text-xl font-semibold text-gray-800"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLoading(message) {
+            document.getElementById('loading-text').textContent = message;
+            document.getElementById('loading-modal').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-modal').classList.add('hidden');
+        }
+
+        function addLog(message, type = 'info') {
+            const log = document.getElementById('activity-log');
+            const colors = {
+                'info': 'bg-blue-50 text-blue-800 border-blue-200',
+                'success': 'bg-green-50 text-green-800 border-green-200',
+                'error': 'bg-red-50 text-red-800 border-red-200',
+                'warning': 'bg-yellow-50 text-yellow-800 border-yellow-200'
+            };
+            
+            const timestamp = new Date().toLocaleString();
+            const entry = document.createElement('div');
+            entry.className = `p-3 rounded-lg border ${colors[type] || colors['info']}`;
+            entry.innerHTML = `<span class="text-xs text-gray-600">${timestamp}</span><br>${message}`;
+            
+            if (log.firstChild && log.firstChild.textContent.includes('{{ _('database.no_activity') }}')) {
+                log.innerHTML = '';
+            }
+            log.insertBefore(entry, log.firstChild);
+        }
+
+        async function checkGitStatus() {
+            showLoading('{{ _('database.checking_status') }}');
+            try {
+                const response = await fetch('{{ url_for('superadmin.get_git_status') }}');
+                const result = await response.json();
+                hideLoading();
+                
+                if (result.success) {
+                    location.reload();
+                    addLog('{{ _('database.status_checked') }}', 'success');
+                } else {
+                    addLog('{{ _('database.error') }}: ' + result.error, 'error');
+                }
+            } catch (error) {
+                hideLoading();
+                addLog('{{ _('database.error') }}: ' + error.message, 'error');
+            }
+        }
+
+        async function createBackup() {
+            if (!confirm('{{ _('database.confirm_backup') }}')) return;
+            
+            showLoading('{{ _('database.creating_backup') }}');
+            try {
+                const response = await fetch('{{ url_for('superadmin.create_database_backup') }}', {
+                    method: 'POST'
+                });
+                const result = await response.json();
+                hideLoading();
+                
+                if (result.success) {
+                    addLog('{{ _('database.backup_created') }}: ' + result.file, 'success');
+                    location.reload();
+                } else {
+                    addLog('{{ _('database.backup_failed') }}: ' + result.error, 'error');
+                }
+            } catch (error) {
+                hideLoading();
+                addLog('{{ _('database.error') }}: ' + error.message, 'error');
+            }
+        }
+
+        async function restoreBackup(filename) {
+            if (!confirm('{{ _('database.confirm_restore') }}')) return;
+            
+            showLoading('{{ _('database.restoring_backup') }}');
+            try {
+                const response = await fetch('{{ url_for('superadmin.restore_database_backup') }}', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({backup_filename: filename})
+                });
+                const result = await response.json();
+                hideLoading();
+                
+                if (result.success) {
+                    addLog('{{ _('database.backup_restored') }}', 'success');
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    addLog('{{ _('database.restore_failed') }}: ' + result.error, 'error');
+                }
+            } catch (error) {
+                hideLoading();
+                addLog('{{ _('database.error') }}: ' + error.message, 'error');
+            }
+        }
+
+        async function updateFromGitHub() {
+            if (!confirm('{{ _('database.confirm_update') }}')) return;
+            
+            showLoading('{{ _('database.updating') }}');
+            try {
+                const response = await fetch('{{ url_for('superadmin.update_from_github') }}', {
+                    method: 'POST'
+                });
+                const result = await response.json();
+                hideLoading();
+                
+                if (result.success) {
+                    let message = '{{ _('database.update_success') }}';
+                    if (result.backup) {
+                        message += '<br>{{ _('database.backup') }}: ' + result.backup.file;
+                    }
+                    if (result.migrations && result.migrations.migrations) {
+                        message += '<br>{{ _('database.migrations_run') }}: ' + result.migrations.migrations.length;
+                    }
+                    addLog(message, 'success');
+                    setTimeout(() => location.reload(), 3000);
+                } else {
+                    addLog('{{ _('database.update_failed') }}: ' + result.error, 'error');
+                }
+            } catch (error) {
+                hideLoading();
+                addLog('{{ _('database.error') }}: ' + error.message, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

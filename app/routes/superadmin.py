@@ -306,6 +306,79 @@ def statistics():
     
     return render_template('superadmin_statistics.html', admin_stats=admin_stats)
 
+@superadmin_bp.route('/database')
+def database_management():
+    admin = require_superadmin_login()
+    if not admin:
+        return redirect(url_for('main.index'))
+    
+    from app.utils.db_management import DatabaseManager
+    db_manager = DatabaseManager()
+    
+    # Get Git status
+    git_status = db_manager.check_git_status()
+    
+    # Get backups list
+    backups = db_manager.list_backups()
+    
+    return render_template('superadmin_database.html',
+                         git_status=git_status,
+                         backups=backups.get('backups', []) if backups['success'] else [])
+
+@superadmin_bp.route('/database/backup', methods=['POST'])
+def create_database_backup():
+    admin = require_superadmin_login()
+    if not admin:
+        return jsonify({'success': False, 'error': 'Non autorisé'}), 403
+    
+    from app.utils.db_management import DatabaseManager
+    db_manager = DatabaseManager()
+    
+    result = db_manager.create_backup()
+    return jsonify(result)
+
+@superadmin_bp.route('/database/restore', methods=['POST'])
+def restore_database_backup():
+    admin = require_superadmin_login()
+    if not admin:
+        return jsonify({'success': False, 'error': 'Non autorisé'}), 403
+    
+    data = request.get_json()
+    backup_filename = data.get('backup_filename')
+    
+    if not backup_filename:
+        return jsonify({'success': False, 'error': 'Nom de fichier manquant'})
+    
+    from app.utils.db_management import DatabaseManager
+    db_manager = DatabaseManager()
+    
+    result = db_manager.restore_backup(backup_filename)
+    return jsonify(result)
+
+@superadmin_bp.route('/database/update', methods=['POST'])
+def update_from_github():
+    admin = require_superadmin_login()
+    if not admin:
+        return jsonify({'success': False, 'error': 'Non autorisé'}), 403
+    
+    from app.utils.db_management import DatabaseManager
+    db_manager = DatabaseManager()
+    
+    result = db_manager.update_with_migrations()
+    return jsonify(result)
+
+@superadmin_bp.route('/database/git-status')
+def get_git_status():
+    admin = require_superadmin_login()
+    if not admin:
+        return jsonify({'success': False, 'error': 'Non autorisé'}), 403
+    
+    from app.utils.db_management import DatabaseManager
+    db_manager = DatabaseManager()
+    
+    result = db_manager.check_git_status()
+    return jsonify(result)
+
 @superadmin_bp.route('/logout')
 def logout():
     session.clear()

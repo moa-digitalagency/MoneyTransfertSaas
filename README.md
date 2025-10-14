@@ -190,11 +190,14 @@ L'application supporte 54+ pays incluant :
 │   ├── routes/
 │   │   ├── main.py            # Routes publiques
 │   │   ├── admin.py           # Routes admin
-│   │   └── superadmin.py      # Routes TransfertSpace
+│   │   └── superadmin.py      # Routes TransfertSpace + DB management
 │   ├── utils/
 │   │   ├── calculations.py    # Calculs avec 10 paliers
-│   │   └── security.py        # Hachage de mots de passe
+│   │   ├── security.py        # Hachage de mots de passe
+│   │   ├── db_management.py   # Gestion BD, backups, GitHub
+│   │   └── i18n.py            # Système de traduction
 │   └── database.py            # Configuration PostgreSQL
+├── backups/                   # Sauvegardes de la base de données
 ├── templates/
 │   ├── welcome.html           # Page d'accueil avec inscription
 │   ├── index.html             # Interface de transfert client
@@ -243,9 +246,87 @@ SESSION_SECRET=votre_clé_secrète
 - Limitez les tentatives de connexion
 - Effectuez des sauvegardes régulières de la base de données
 
+## 🔧 Gestion de Base de Données et Déploiement
+
+### Système de Gestion de Base de Données
+
+Le SuperAdmin dispose d'un système complet de gestion de base de données accessible depuis le menu **"Base de données"** :
+
+#### 🔄 Mises à Jour Automatiques depuis GitHub
+- **Repository GitHub** : https://github.com/moa-digitalagency/MoneyTransfertSaas.git
+- **Vérification des mises à jour** : Détection automatique des nouvelles versions
+- **Mise à jour en un clic** : Pull depuis GitHub avec exécution automatique des migrations
+- **Backup automatique** : Sauvegarde complète de la base de données avant chaque mise à jour
+
+#### 💾 Système de Backup
+- **Création manuelle** : Créez des sauvegardes à la demande
+- **Backup automatique** : Avant chaque mise à jour GitHub
+- **Restauration** : Restaurez n'importe quelle sauvegarde en un clic
+- **Stockage local** : Les backups sont stockés dans le dossier `/backups`
+- **Format PostgreSQL** : Fichiers `.sql` compatibles avec pg_dump/pg_restore
+
+#### 🔀 Système de Migrations
+- **Migrations automatiques** : Détection et exécution automatique des fichiers `migrate_*.py`
+- **Suivi des migrations** : Historique complet dans le journal d'activité
+- **Rollback** : Restaurez une sauvegarde en cas de problème
+
+#### 📊 Journal d'Activité
+- Suivi de toutes les opérations (backups, restaurations, mises à jour)
+- Horodatage précis de chaque action
+- Codes de couleur pour les succès/erreurs
+
+### Déploiement sur Replit
+
+#### Configuration du Domaine/Sous-domaine
+
+Pour configurer un domaine personnalisé (ex: `gec.my-app.site`) :
+
+1. **Depuis l'interface Replit** :
+   - Cliquez sur "Deploy" dans votre Repl
+   - Allez dans "Settings" > "Domains"
+   - Ajoutez votre domaine personnalisé
+   - Suivez les instructions pour configurer les DNS
+
+2. **Configuration automatique** :
+   ```bash
+   # Replit configure automatiquement les variables d'environnement
+   REPLIT_DOMAINS=gec.my-app.site
+   REPLIT_DEV_DOMAIN=gec.my-app.site
+   ```
+
+#### Déploiement Automatique
+
+La configuration de déploiement est déjà en place :
+
+```bash
+# Mode production avec autoscaling
+gunicorn --bind=0.0.0.0:5000 --reuse-port main:app
+```
+
+**Options de déploiement** :
+- **Autoscale** : S'adapte automatiquement à la charge (recommandé pour ce projet)
+- **VM** : Serveur toujours actif (pour services temps réel)
+- **Scheduled** : Exécution programmée (pour tâches cron)
+
+#### Mise à Jour depuis GitHub
+
+1. **Accédez à la gestion de base de données** : `/superadmin/database`
+2. **Vérifiez les mises à jour** : Cliquez sur "Vérifier les mises à jour"
+3. **Mise à jour** : Cliquez sur "Mettre à jour et migrer"
+   - ✅ Backup automatique de la base de données
+   - ✅ Pull du code depuis GitHub
+   - ✅ Exécution des migrations
+   - ✅ Journal d'activité complet
+
 ## Nouvelles Fonctionnalités (Octobre 2025)
 
 ✨ **Dernières améliorations** :
+- 🗄️ **Système de gestion de base de données** : Interface complète pour backups, restaurations et mises à jour
+- 🔄 **Mises à jour GitHub automatiques** : Pull depuis GitHub avec migrations automatiques
+- 💾 **Backups automatiques** : Sauvegarde avant chaque mise à jour
+- 🔀 **Système de migrations** : Exécution automatique des scripts de migration
+- 📊 **Journal d'activité** : Suivi complet de toutes les opérations de base de données
+- 🌐 **Support domaines personnalisés** : Configuration facile via Replit
 - 🎨 Boutons d'action améliorés (Modifier, Supprimer, Transactions)
 - 🔄 Toggle de statut admin amélioré avec feedback
 - 🌍 Liste complète de 54+ pays avec devises dynamiques

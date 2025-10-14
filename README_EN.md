@@ -237,9 +237,87 @@ SESSION_SECRET=your_secret_key
 - Limit login attempts
 - Perform regular database backups
 
+## 🔧 Database Management and Deployment
+
+### Database Management System
+
+The SuperAdmin has access to a complete database management system from the **"Database"** menu:
+
+#### 🔄 Automatic Updates from GitHub
+- **GitHub Repository**: https://github.com/moa-digitalagency/MoneyTransfertSaas.git
+- **Update Checking**: Automatic detection of new versions
+- **One-click Update**: Pull from GitHub with automatic migration execution
+- **Automatic Backup**: Complete database backup before each update
+
+#### 💾 Backup System
+- **Manual Creation**: Create backups on demand
+- **Automatic Backup**: Before each GitHub update
+- **Restoration**: Restore any backup with one click
+- **Local Storage**: Backups are stored in the `/backups` folder
+- **PostgreSQL Format**: `.sql` files compatible with pg_dump/pg_restore
+
+#### 🔀 Migration System
+- **Automatic Migrations**: Detection and automatic execution of `migrate_*.py` files
+- **Migration Tracking**: Complete history in the activity log
+- **Rollback**: Restore a backup in case of issues
+
+#### 📊 Activity Log
+- Tracking of all operations (backups, restorations, updates)
+- Precise timestamp for each action
+- Color codes for success/errors
+
+### Deployment on Replit
+
+#### Domain/Subdomain Configuration
+
+To configure a custom domain (e.g., `gec.my-app.site`):
+
+1. **From Replit interface**:
+   - Click "Deploy" in your Repl
+   - Go to "Settings" > "Domains"
+   - Add your custom domain
+   - Follow instructions to configure DNS
+
+2. **Automatic configuration**:
+   ```bash
+   # Replit automatically configures environment variables
+   REPLIT_DOMAINS=gec.my-app.site
+   REPLIT_DEV_DOMAIN=gec.my-app.site
+   ```
+
+#### Automatic Deployment
+
+Deployment configuration is already in place:
+
+```bash
+# Production mode with autoscaling
+gunicorn --bind=0.0.0.0:5000 --reuse-port main:app
+```
+
+**Deployment options**:
+- **Autoscale**: Automatically adapts to load (recommended for this project)
+- **VM**: Always-on server (for real-time services)
+- **Scheduled**: Scheduled execution (for cron tasks)
+
+#### Update from GitHub
+
+1. **Access database management**: `/superadmin/database`
+2. **Check for updates**: Click "Check for updates"
+3. **Update**: Click "Update and migrate"
+   - ✅ Automatic database backup
+   - ✅ Code pull from GitHub
+   - ✅ Migrations execution
+   - ✅ Complete activity log
+
 ## New Features (October 2025)
 
 ✨ **Latest improvements**:
+- 🗄️ **Database management system**: Complete interface for backups, restorations, and updates
+- 🔄 **Automatic GitHub updates**: Pull from GitHub with automatic migrations
+- 💾 **Automatic backups**: Backup before each update
+- 🔀 **Migration system**: Automatic execution of migration scripts
+- 📊 **Activity log**: Complete tracking of all database operations
+- 🌐 **Custom domain support**: Easy configuration via Replit
 - 🎨 Enhanced action buttons (Edit, Delete, Transactions)
 - 🔄 Enhanced admin status toggle with feedback
 - 🌍 Complete list of 54+ countries with dynamic currencies
