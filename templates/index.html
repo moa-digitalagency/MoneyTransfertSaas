@@ -194,10 +194,15 @@ www.myoneart.com
             }
         };
 
+        console.log('Country 1 reception methods:', {{ config.country1_reception_methods | tojson | safe }});
+        console.log('Country 2 reception methods:', {{ config.country2_reception_methods | tojson | safe }});
+        
         const receptionMethods = {
-            'country1_to_country2': {{ config.country2_reception_methods | tojson | safe }}.map(m => ({ value: m, label: m })),
-            'country2_to_country1': {{ config.country1_reception_methods | tojson | safe }}.map(m => ({ value: m, label: m }))
+            'country1_to_country2': ({{ config.country2_reception_methods | tojson | safe }} || []).map(m => ({ value: m, label: m })),
+            'country2_to_country1': ({{ config.country1_reception_methods | tojson | safe }} || []).map(m => ({ value: m, label: m }))
         };
+        
+        console.log('Reception methods object:', receptionMethods);
 
         function setCalculationType(type) {
             calculationType = type;
@@ -243,7 +248,10 @@ www.myoneart.com
             const select = document.getElementById('reception-method');
             select.innerHTML = `<option value="">${translations.selectMethod}</option>`;
             
-            const methods = receptionMethods[currentDirection];
+            const methods = receptionMethods[currentDirection] || [];
+            console.log('Current direction:', currentDirection);
+            console.log('Available methods:', methods);
+            
             methods.forEach(method => {
                 const option = document.createElement('option');
                 option.value = method.value;

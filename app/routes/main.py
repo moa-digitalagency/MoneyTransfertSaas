@@ -84,8 +84,8 @@ def user_index(username):
     custom_methods1 = config.get('reception_methods', {}).get('country1', [])
     custom_methods2 = config.get('reception_methods', {}).get('country2', [])
     
-    config['country1_reception_methods'] = get_reception_methods(config['countries']['country1']['code'], custom_methods1)
-    config['country2_reception_methods'] = get_reception_methods(config['countries']['country2']['code'], custom_methods2)
+    config['country1_reception_methods'] = get_reception_methods(config['countries']['country1']['code'], custom_methods1) or []
+    config['country2_reception_methods'] = get_reception_methods(config['countries']['country2']['code'], custom_methods2) or []
     
     config['username'] = username
     

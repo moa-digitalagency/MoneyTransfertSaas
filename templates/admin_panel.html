@@ -76,15 +76,15 @@ www.myoneart.com
 <body class="p-4">
     <div class="max-w-4xl mx-auto">
         <div class="bg-white rounded-2xl shadow-2xl p-6 mt-8">
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <h1 class="text-2xl font-bold text-blue-900">
                     ⚙️ Configuration
                 </h1>
-                <div class="flex gap-4 items-center">
-                    <a href="/{{ username }}" target="_blank" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                <div class="flex flex-wrap gap-2 sm:gap-4 items-center">
+                    <a href="/{{ username }}" target="_blank" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm">
                         🏠 Accueil
                     </a>
-                    <a href="/admin/history" class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition">
+                    <a href="/admin/history" class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition text-sm">
                         📋 Historique
                     </a>
                     <a href="/admin/logout" class="text-sm text-red-600 hover:text-red-700 transition">Déconnexion</a>
@@ -94,15 +94,17 @@ www.myoneart.com
             {% if username %}
             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <p class="text-sm text-gray-600 mb-2">🔗 Lien de votre page de transfert:</p>
-                <div class="flex gap-2 items-center">
+                <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
                     <input type="text" value="{{ request.host_url }}{{ username }}" readonly 
                            class="flex-1 px-3 py-2 bg-white border border-gray-300 rounded text-sm" id="page-link">
-                    <button onclick="copyLink()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm">
-                        📋 Copier
-                    </button>
-                    <a href="/{{ username }}" target="_blank" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition text-sm">
-                        👁️ Voir
-                    </a>
+                    <div class="flex gap-2">
+                        <button onclick="copyLink()" class="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm whitespace-nowrap">
+                            📋 Copier
+                        </button>
+                        <a href="/{{ username }}" target="_blank" class="flex-1 sm:flex-none px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition text-sm text-center whitespace-nowrap">
+                            👁️ Voir
+                        </a>
+                    </div>
                 </div>
             </div>
             {% endif %}
