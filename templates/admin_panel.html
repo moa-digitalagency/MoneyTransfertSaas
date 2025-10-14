@@ -166,13 +166,19 @@ www.myoneart.com
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2" id="rate_label_1">Pays 1 → Pays 2</label>
                             <input type="number" step="0.001" name="country1_to_country2" id="rate1to2" value="{{ config.rates.country1_to_country2 }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition" oninput="calculateInverseRate(this, 'rate2to1')">
-                            <p class="text-xs text-gray-500 mt-1">Le taux inverse sera calculé automatiquement</p>
+                            <p class="text-xs text-blue-600 mt-1 font-medium" id="rate_help_1">
+                                {{ t.admin_panel.rate_explanation.replace('{from_currency}', config.countries.country1.currency).replace('{to_currency}', config.countries.country2.currency) }}
+                            </p>
+                            <p class="text-xs text-gray-500 mt-1">{{ t.admin_panel.rate_inverse_auto }}</p>
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2" id="rate_label_2">Pays 2 → Pays 1</label>
                             <input type="number" step="0.001" name="country2_to_country1" id="rate2to1" value="{{ config.rates.country2_to_country1 }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition" oninput="calculateInverseRate(this, 'rate1to2')">
-                            <p class="text-xs text-gray-500 mt-1">Le taux inverse sera calculé automatiquement</p>
+                            <p class="text-xs text-blue-600 mt-1 font-medium" id="rate_help_2">
+                                {{ t.admin_panel.rate_explanation.replace('{from_currency}', config.countries.country2.currency).replace('{to_currency}', config.countries.country1.currency) }}
+                            </p>
+                            <p class="text-xs text-gray-500 mt-1">{{ t.admin_panel.rate_inverse_auto }}</p>
                         </div>
                     </div>
                 </div>
@@ -406,6 +412,9 @@ www.myoneart.com
     <script>
         const countriesData = {{ countries_json | safe }};
         const currentConfig = {{ config | tojson }};
+        const translations = {
+            rate_explanation: "{{ t.admin_panel.rate_explanation }}"
+        };
 
         function updateCurrencies() {
             const country1Code = document.getElementById('country1_code').value;
@@ -459,6 +468,9 @@ www.myoneart.com
             if (country1 && country2) {
                 document.getElementById('rate_label_1').textContent = `${currency1Code} → ${currency2Code}`;
                 document.getElementById('rate_label_2').textContent = `${currency2Code} → ${currency1Code}`;
+                
+                document.getElementById('rate_help_1').textContent = translations.rate_explanation.replace('{from_currency}', currency1Code).replace('{to_currency}', currency2Code);
+                document.getElementById('rate_help_2').textContent = translations.rate_explanation.replace('{from_currency}', currency2Code).replace('{to_currency}', currency1Code);
                 
                 document.getElementById('fees_label_1').textContent = `${country1.flag} ${country1.name} → ${country2.flag} ${country2.name} (${currency1Code})`;
                 document.getElementById('fees_label_2').textContent = `${country2.flag} ${country2.name} → ${country1.flag} ${country1.name} (${currency2Code})`;

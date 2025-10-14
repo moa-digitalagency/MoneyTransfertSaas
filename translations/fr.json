@@ -17,7 +17,6 @@
     "required_field": "*",
     "copyright": "© 2025"
   },
-  
   "welcome": {
     "title": "TransfertSpace",
     "subtitle": "Connexion & Inscription à la plateforme",
@@ -50,7 +49,6 @@
       "account_suspended": "Compte suspendu"
     }
   },
-  
   "registration": {
     "title": "Demande d'inscription",
     "subtitle": "Devenez opérateur de transfert",
@@ -87,7 +85,6 @@
       "countries_must_differ": "Les deux pays doivent être différents"
     }
   },
-  
   "transfer": {
     "title": "Transfert",
     "fast_beneficial_rapid": "Facile, Bénéfique & Rapide",
@@ -118,7 +115,6 @@
       "whatsapp_error": "Erreur lors de la génération du lien WhatsApp"
     }
   },
-  
   "admin_login": {
     "title": "Administration",
     "username": "Nom d'utilisateur",
@@ -126,7 +122,6 @@
     "login_button": "Se connecter",
     "back": "Retour"
   },
-  
   "admin_panel": {
     "title": "Panneau Administrateur",
     "welcome": "Bienvenue",
@@ -138,9 +133,11 @@
     "total_transactions": "Total des transactions",
     "total_sent": "Total envoyé",
     "total_received": "Total reçu",
-    "view_details": "Voir les détails"
+    "view_details": "Voir les détails",
+    "rate_explanation": "Entrez le coût en {from_currency} pour obtenir 1 {to_currency}",
+    "rate_help": "Exemple: Pour MAD → USD, entrez combien de MAD valent 1 USD",
+    "rate_inverse_auto": "Le taux inverse sera calculé automatiquement"
   },
-  
   "superadmin": {
     "title": "Super Admin",
     "dashboard": "Tableau de bord",
@@ -233,14 +230,12 @@
     "no_transactions": "Aucune transaction",
     "id": "ID"
   },
-  
   "account_suspended": {
     "title": "Compte Suspendu",
     "message": "Ce compte a été temporairement suspendu.",
     "contact": "Veuillez contacter l'administrateur pour plus d'informations.",
     "back_home": "Retour à l'accueil"
   },
-  
   "whatsapp_message": {
     "greeting": "Bonjour",
     "transfer_from_to": "j'ai besoin de faire un transfert",
@@ -252,20 +247,17 @@
     "details": "Coordonnées:",
     "confirm_request": "Merci de confirmer cette demande."
   },
-  
   "language": {
     "french": "Français",
     "english": "English",
     "select_language": "Choisir la langue",
     "change_language": "Changer de langue"
   },
-
   "errors": {
     "admin_not_found": "Admin introuvable",
     "calculation_error": "Erreur lors du calcul",
     "whatsapp_error": "Erreur lors de la génération du lien WhatsApp"
   },
-
   "database": {
     "page_title": "Gestion de la Base de Données",
     "page_subtitle": "Mises à jour GitHub, migrations et sauvegardes automatiques",
