@@ -2,8 +2,17 @@
 
 ## Recent Changes
 
-### 2025-10-14: Corrections VPS et améliorations
-- ✅ **Correction critique**: Résolution de l'erreur `TypeError: replace() argument 2 must be str, not Undefined`
+### 2025-10-14: Corrections majeures du système de calcul
+- ✅ **Correction critique des frais de transaction**: 
+  - Les frais sont maintenant soustraits de la monnaie d'envoi AVANT la conversion (au lieu d'après)
+  - Logique corrigée: (montant_envoi - frais) × taux = montant_reçu
+  - La devise des frais reflète maintenant correctement la monnaie d'envoi
+  - Fichier modifié: `app/utils/calculations.py`
+- ✅ **Correction des libellés de taux de change**:
+  - Texte corrigé pour MAD → CDF: "Entrez combien de CDF pour 1 MAD" (au lieu de l'inverse)
+  - Texte corrigé pour CDF → MAD: "Entrez combien de MAD pour 1 CDF" (au lieu de l'inverse)
+  - Fichiers modifiés: `translations/fr.json`, `translations/en.json`
+- ✅ **Correction critique précédente**: Résolution de l'erreur `TypeError: replace() argument 2 must be str, not Undefined`
   - Corrigé tous les templates pour utiliser `.currency_code` au lieu de `.currency`
   - Templates affectés: `admin_panel.html`, `index.html`
 - ✅ **Script de mise à jour VPS**: Créé `update_vps.sh` avec gestion d'erreurs robuste

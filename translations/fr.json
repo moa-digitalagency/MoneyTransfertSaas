@@ -134,7 +134,7 @@
     "total_sent": "Total envoyé",
     "total_received": "Total reçu",
     "view_details": "Voir les détails",
-    "rate_explanation": "Entrez le coût en {from_currency} pour obtenir 1 {to_currency}",
+    "rate_explanation": "Entrez combien de {to_currency} pour 1 {from_currency}",
     "rate_help": "Exemple: Pour MAD → USD, entrez combien de MAD valent 1 USD",
     "rate_inverse_auto": "Le taux inverse sera calculé automatiquement",
     "auto_inverse_rate_label": "🔄 Calcul automatique du taux inverse",
