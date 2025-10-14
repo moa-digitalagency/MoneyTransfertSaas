@@ -163,6 +163,17 @@ www.myoneart.com
         
         const urlPrefix = {% if username %}'{{ "/" + username }}'{% else %}''{% endif %};
 
+        const translations = {
+            amountToSend: "{{ t.transfer.amount_label_send }}",
+            amountToReceive: "{{ t.transfer.amount_label_receive }}",
+            selectMethod: "{{ t.registration.select }}",
+            receptionDetails: "{{ t.transfer.reception_details }}",
+            calculateFirst: "{{ t.transfer.calculate_first }}",
+            fillAllFields: "{{ t.welcome.fill_all_fields }}",
+            calcError: "{{ t.transfer.calc_error }}",
+            whatsappError: "{{ t.transfer.whatsapp_error }}"
+        };
+
         const config = {
             country1: {
                 code: '{{ config.countries.country1.code }}',
@@ -215,9 +226,9 @@ www.myoneart.com
             let receiveCurrency = direction === 'country1_to_country2' ? config.country2.currency : config.country1.currency;
             
             if (calculationType === 'send') {
-                document.getElementById('amount-label').textContent = `Montant à envoyer (${sendCurrency})`;
+                document.getElementById('amount-label').textContent = `${translations.amountToSend} (${sendCurrency})`;
             } else {
-                document.getElementById('amount-label').textContent = `Montant à recevoir (${receiveCurrency})`;
+                document.getElementById('amount-label').textContent = `${translations.amountToReceive} (${receiveCurrency})`;
             }
             
             updateReceptionMethods();
@@ -230,7 +241,7 @@ www.myoneart.com
 
         function updateReceptionMethods() {
             const select = document.getElementById('reception-method');
-            select.innerHTML = '<option value="">Sélectionnez...</option>';
+            select.innerHTML = `<option value="">${translations.selectMethod}</option>`;
             
             const methods = receptionMethods[currentDirection];
             methods.forEach(method => {
@@ -240,7 +251,7 @@ www.myoneart.com
                 select.appendChild(option);
             });
             
-            document.getElementById('details-label').textContent = 'Numéro / Coordonnées';
+            document.getElementById('details-label').textContent = translations.receptionDetails;
         }
 
         async function calculate() {
@@ -275,13 +286,13 @@ www.myoneart.com
                 document.getElementById('reception-section').classList.remove('hidden');
             } catch (error) {
                 console.error('Erreur:', error);
-                alert('Erreur lors du calcul');
+                alert(translations.calcError);
             }
         }
 
         async function sendWhatsApp() {
             if (!lastCalculation) {
-                alert('Veuillez d\'abord calculer le montant');
+                alert(translations.calculateFirst);
                 return;
             }
 
@@ -289,7 +300,7 @@ www.myoneart.com
             const receptionDetails = document.getElementById('reception-details').value;
 
             if (!receptionMethod || !receptionDetails) {
-                alert('Veuillez remplir tous les champs');
+                alert(translations.fillAllFields);
                 return;
             }
 
@@ -314,7 +325,7 @@ www.myoneart.com
                 window.location.href = data.whatsapp_url;
             } catch (error) {
                 console.error('Erreur:', error);
-                alert('Erreur lors de la génération du lien WhatsApp');
+                alert(translations.whatsappError);
             }
         }
 

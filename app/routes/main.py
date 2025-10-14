@@ -5,6 +5,7 @@ from app.models.transaction import Transaction
 from app.models.admin import Admin, AdminConfig
 from app.data import get_country_by_code, get_reception_methods
 from app.database import db
+from app.utils.i18n import get_translations
 import urllib.parse
 
 main_bp = Blueprint('main', __name__)
@@ -20,26 +21,27 @@ def index():
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '')
+        t = get_translations()
         
         logging.debug(f"Tentative de connexion pour: {username}")
         
         if not username or not password:
             logging.debug("Username ou password vide")
-            return render_template('welcome.html', error='Veuillez remplir tous les champs', countries_json=json.dumps(COUNTRIES))
+            return render_template('welcome.html', error=t['welcome']['errors']['fill_all_fields'], countries_json=json.dumps(COUNTRIES))
         
         admin = Admin.query.filter_by(username=username, role='superadmin').first()
         
         if not admin:
             logging.debug(f"Aucun superadmin trouvé avec username: {username}")
-            return render_template('welcome.html', error='Identifiants invalides', countries_json=json.dumps(COUNTRIES))
+            return render_template('welcome.html', error=t['welcome']['errors']['invalid_credentials'], countries_json=json.dumps(COUNTRIES))
         
         if not admin.check_password(password):
             logging.debug(f"Mot de passe incorrect pour: {username}")
-            return render_template('welcome.html', error='Identifiants invalides', countries_json=json.dumps(COUNTRIES))
+            return render_template('welcome.html', error=t['welcome']['errors']['invalid_credentials'], countries_json=json.dumps(COUNTRIES))
         
         if admin.status != 'active':
             logging.debug(f"Compte suspendu: {username}")
-            return render_template('welcome.html', error='Compte suspendu', countries_json=json.dumps(COUNTRIES))
+            return render_template('welcome.html', error=t['welcome']['errors']['account_suspended'], countries_json=json.dumps(COUNTRIES))
         
         logging.debug(f"Connexion réussie pour: {username}")
         session.clear()
@@ -103,9 +105,11 @@ def calculate():
 @main_bp.route('/<username>/calculate', methods=['POST'])
 def user_calculate(username):
     admin = Admin.query.filter_by(username=username, role='admin', status='active').first()
+    t = get_translations()
     
     if not admin or not admin.config:
-        return jsonify({'error': 'Admin introuvable'}), 404
+        error_msg = t.get('errors', {}).get('admin_not_found', 'Admin not found')
+        return jsonify({'error': error_msg}), 404
     
     config = admin.config.to_dict()
     data = request.json
@@ -124,8 +128,9 @@ def user_calculate(username):
 def generate_whatsapp():
     config = load_config()
     data = request.json
+    t = get_translations()
     
-    whatsapp_url, transaction_data = generate_whatsapp_message_from_config(data, config)
+    whatsapp_url, transaction_data = generate_whatsapp_message_from_config(data, config, t)
     
     try:
         send_amount = float(data.get('send_amount', 0) or 0)
@@ -156,14 +161,16 @@ def generate_whatsapp():
 @main_bp.route('/<username>/generate_whatsapp', methods=['POST'])
 def user_generate_whatsapp(username):
     admin = Admin.query.filter_by(username=username, role='admin', status='active').first()
+    t = get_translations()
     
     if not admin or not admin.config:
-        return jsonify({'error': 'Admin introuvable'}), 404
+        error_msg = t.get('errors', {}).get('admin_not_found', 'Admin not found')
+        return jsonify({'error': error_msg}), 404
     
     config = admin.config.to_dict()
     data = request.json
     
-    whatsapp_url, transaction_data = generate_whatsapp_message_from_config(data, config)
+    whatsapp_url, transaction_data = generate_whatsapp_message_from_config(data, config, t)
     
     try:
         send_amount = float(data.get('send_amount', 0) or 0)
@@ -192,7 +199,10 @@ def user_generate_whatsapp(username):
     
     return jsonify({'whatsapp_url': whatsapp_url})
 
-def generate_whatsapp_message_from_config(data, config):
+def generate_whatsapp_message_from_config(data, config, t=None):
+    if t is None:
+        t = get_translations()
+    
     whatsapp_config = config['whatsapp']
     
     direction = data.get('direction')
@@ -212,19 +222,19 @@ def generate_whatsapp_message_from_config(data, config):
     country2 = get_country_by_code(config['countries']['country2']['code'])
     
     if direction == 'country1_to_country2':
-        transfer_text = f"de {country1['name']} vers {country2['name']}"
+        transfer_text = f"{t['whatsapp_message']['from']} {country1['name']} {t['whatsapp_message']['to']} {country2['name']}"
     else:
-        transfer_text = f"de {country2['name']} vers {country1['name']}"
+        transfer_text = f"{t['whatsapp_message']['from']} {country2['name']} {t['whatsapp_message']['to']} {country1['name']}"
     
-    message = f"""Bonjour {whatsapp['contact_name']}, j'ai besoin de faire un transfert {transfer_text}.
+    message = f"""{t['whatsapp_message']['greeting']} {whatsapp['contact_name']}, {t['whatsapp_message']['transfer_from_to']} {transfer_text}.
 
-*Montant à envoyer:* {send_amount} {send_currency}
-*Montant à recevoir:* {receive_amount} {receive_currency}
+*{t['whatsapp_message']['send_amount']}* {send_amount} {send_currency}
+*{t['whatsapp_message']['receive_amount']}* {receive_amount} {receive_currency}
 
-*Moyen de réception:* {reception_method}
-*Coordonnées:* {reception_details}
+*{t['whatsapp_message']['reception_method']}* {reception_method}
+*{t['whatsapp_message']['details']}* {reception_details}
 
-Merci de confirmer cette demande."""
+{t['whatsapp_message']['confirm_request']}"""
     
     encoded_message = urllib.parse.quote(message)
     phone = whatsapp['phone']

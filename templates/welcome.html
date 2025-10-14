@@ -255,6 +255,20 @@
 
     <script>
         const countriesData = {{ countries_json | safe }};
+        const translations = {
+            selectCountry: "{{ t.registration.select }}",
+            selectCurrency: "{{ t.registration.select_country_first }}",
+            fillAllFields: "{{ t.welcome.fill_all_fields }}",
+            enterFullName: "{{ t.welcome.enter_full_name }}",
+            enterWhatsApp: "{{ t.welcome.enter_whatsapp }}",
+            selectSendCountry: "{{ t.welcome.select_send_country }}",
+            selectSendCurrency: "{{ t.welcome.select_send_currency }}",
+            selectReceiveCountry: "{{ t.welcome.select_receive_country }}",
+            selectReceiveCurrency: "{{ t.welcome.select_receive_currency }}",
+            differentCountries: "{{ t.welcome.different_countries }}",
+            requestSent: "{{ t.welcome.request_sent }}",
+            requestError: "{{ t.welcome.request_error }}"
+        };
         
         function openRegistrationModal() {
             document.getElementById('registrationModal').classList.add('active');
@@ -271,8 +285,8 @@
             const sendSelect = document.getElementById('sendCountry');
             const receiveSelect = document.getElementById('receiveCountry');
             
-            sendSelect.innerHTML = '<option value="">Sélectionnez un pays...</option>';
-            receiveSelect.innerHTML = '<option value="">Sélectionnez un pays...</option>';
+            sendSelect.innerHTML = `<option value="">${translations.selectCountry}</option>`;
+            receiveSelect.innerHTML = `<option value="">${translations.selectCountry}</option>`;
             
             countriesData.forEach(country => {
                 const sendOption = document.createElement('option');
@@ -294,7 +308,7 @@
             const currencySelect = document.getElementById('sendCurrency');
             const selectedOption = countrySelect.options[countrySelect.selectedIndex];
             
-            currencySelect.innerHTML = '<option value="">Sélectionnez une devise...</option>';
+            currencySelect.innerHTML = `<option value="">${translations.selectCurrency}</option>`;
             
             if (selectedOption.dataset.currencies) {
                 const currencies = JSON.parse(selectedOption.dataset.currencies);
@@ -312,7 +326,7 @@
             const currencySelect = document.getElementById('receiveCurrency');
             const selectedOption = countrySelect.options[countrySelect.selectedIndex];
             
-            currencySelect.innerHTML = '<option value="">Sélectionnez une devise...</option>';
+            currencySelect.innerHTML = `<option value="">${translations.selectCurrency}</option>`;
             
             if (selectedOption.dataset.currencies) {
                 const currencies = JSON.parse(selectedOption.dataset.currencies);
@@ -335,7 +349,7 @@
             
             if (!username || !password) {
                 e.preventDefault();
-                showAlert('Veuillez remplir tous les champs obligatoires (*)');
+                showAlert(translations.fillAllFields);
                 return false;
             }
         });
@@ -351,42 +365,42 @@
             const receiveCurrency = document.getElementById('receiveCurrency').value;
             
             if (!name) {
-                showAlert('Veuillez entrer votre nom complet');
+                showAlert(translations.enterFullName);
                 return false;
             }
             
             if (!whatsapp) {
-                showAlert('Veuillez entrer votre numéro WhatsApp');
+                showAlert(translations.enterWhatsApp);
                 return false;
             }
             
             if (!whatsapp.match(/^\+?[0-9]{10,15}$/)) {
-                showAlert('Veuillez entrer un numéro WhatsApp valide (format international)');
+                showAlert(translations.enterWhatsApp);
                 return false;
             }
             
             if (!sendCountry) {
-                showAlert('Veuillez sélectionner le pays d\'envoi');
+                showAlert(translations.selectSendCountry);
                 return false;
             }
             
             if (!sendCurrency) {
-                showAlert('Veuillez sélectionner la devise du pays d\'envoi');
+                showAlert(translations.selectSendCurrency);
                 return false;
             }
             
             if (!receiveCountry) {
-                showAlert('Veuillez sélectionner le pays de réception');
+                showAlert(translations.selectReceiveCountry);
                 return false;
             }
             
             if (!receiveCurrency) {
-                showAlert('Veuillez sélectionner la devise du pays de réception');
+                showAlert(translations.selectReceiveCurrency);
                 return false;
             }
             
             if (sendCountry === receiveCountry) {
-                showAlert('Les deux pays doivent être différents');
+                showAlert(translations.differentCountries);
                 return false;
             }
             
@@ -396,7 +410,7 @@
             const receiveCountrySelect = document.getElementById('receiveCountry');
             const receiveCountryName = receiveCountrySelect.options[receiveCountrySelect.selectedIndex].textContent;
             
-            const message = `Bonjour,%0A%0AJe souhaite m'inscrire sur TransfertSpace.%0A%0A*Nom:* ${encodeURIComponent(name)}%0A*Numéro WhatsApp:* ${encodeURIComponent(whatsapp)}%0A%0A*Configuration des transferts:*%0A• Pays d'envoi: ${encodeURIComponent(sendCountryName)} (${sendCurrency})%0A• Pays de destination: ${encodeURIComponent(receiveCountryName)} (${receiveCurrency})%0A%0AMerci de créer mon compte.`;
+            const message = `{{ t.welcome.whatsapp_greeting }}%0A%0A{{ t.welcome.whatsapp_intro }}%0A%0A*{{ t.welcome.whatsapp_name }}:* ${encodeURIComponent(name)}%0A*{{ t.welcome.whatsapp_number }}:* ${encodeURIComponent(whatsapp)}%0A%0A*{{ t.welcome.whatsapp_config }}:*%0A• {{ t.welcome.whatsapp_send_country }}: ${encodeURIComponent(sendCountryName)} (${sendCurrency})%0A• {{ t.welcome.whatsapp_receive_country }}: ${encodeURIComponent(receiveCountryName)} (${receiveCurrency})%0A%0A{{ t.welcome.whatsapp_thanks }}`;
             
             const whatsappUrl = `https://wa.me/212699140001?text=${message}`;
             window.open(whatsappUrl, '_blank');

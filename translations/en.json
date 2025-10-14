@@ -162,5 +162,11 @@
     "english": "English",
     "select_language": "Select language",
     "change_language": "Change language"
+  },
+
+  "errors": {
+    "admin_not_found": "Admin not found",
+    "calculation_error": "Calculation error",
+    "whatsapp_error": "Error generating WhatsApp link"
   }
 }

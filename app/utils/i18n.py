@@ -16,6 +16,11 @@ def get_locale():
     """Get current locale from session or default to French"""
     return session.get('lang', 'fr')
 
+def get_translations():
+    """Get translations for current language"""
+    lang = get_locale()
+    return load_translations(lang)
+
 def set_locale(lang):
     """Set locale in session"""
     if lang in ['fr', 'en']:
