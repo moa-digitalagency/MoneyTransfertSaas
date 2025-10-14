@@ -28,6 +28,21 @@ def set_locale(lang):
         return True
     return False
 
+def translate(key, lang=None):
+    """Translate a key using dot notation (e.g., 'database.page_title')"""
+    if lang is None:
+        lang = get_locale()
+    translations = load_translations(lang)
+    
+    keys = key.split('.')
+    value = translations
+    for k in keys:
+        if isinstance(value, dict) and k in value:
+            value = value[k]
+        else:
+            return key
+    return value
+
 def init_i18n(app):
     """Initialize i18n support for Flask app"""
     
@@ -37,6 +52,7 @@ def init_i18n(app):
         translations = load_translations(lang)
         return {
             't': translations,
+            '_': translate,
             'current_lang': lang
         }
     
