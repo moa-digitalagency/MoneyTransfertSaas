@@ -6,11 +6,11 @@ Contact : moa@myoneart.com
 www.myoneart.com
 -->
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ current_lang }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Connexion</title>
+    <title>Admin - {{ t.admin_login.title }}</title>
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -24,7 +24,7 @@ www.myoneart.com
     <div class="max-w-md w-full">
         <div class="bg-white rounded-2xl shadow-2xl p-8">
             <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">
-                🔐 Administration
+                🔐 {{ t.admin_login.title }}
             </h1>
             
             {% if error %}
@@ -35,22 +35,23 @@ www.myoneart.com
             
             <form method="POST" action="/admin/login">
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Nom d'utilisateur</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ t.admin_login.username }}</label>
                     <input type="text" name="username" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition">
                 </div>
                 
                 <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ t.admin_login.password }}</label>
                     <input type="password" name="password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition">
                 </div>
                 
                 <button type="submit" class="w-full bg-blue-900 text-white py-3 rounded-lg font-bold hover:bg-blue-800 transition">
-                    🔓 Se connecter
+                    🔓 {{ t.admin_login.login_button }}
                 </button>
             </form>
             
             <div class="mt-6 text-center">
-                <a href="/" class="text-sm text-gray-600 hover:text-blue-900 transition">← Retour</a>
+                <a href="/" class="text-sm text-gray-600 hover:text-blue-900 transition">← {{ t.admin_login.back }}</a>
+                {% include 'components/language_selector.html' %}
             </div>
         </div>
     </div>
