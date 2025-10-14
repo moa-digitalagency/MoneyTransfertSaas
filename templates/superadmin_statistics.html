@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistiques Complètes - TransfertSpace</title>
+    <title>{{ t.superadmin.complete_statistics_title }}</title>
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -34,32 +34,32 @@
 <body>
     <nav class="bg-blue-900 bg-opacity-90 text-white p-4 shadow-lg relative z-10">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">💰 TransfertSpace - Statistiques</h1>
+            <h1 class="text-2xl font-bold">💰 TransfertSpace - {{ t.superadmin.statistics }}</h1>
             <div class="space-x-4">
-                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">Dashboard</a>
-                <a href="{{ url_for('superadmin.statistics') }}" class="hover:text-blue-200 transition font-bold">Statistiques</a>
-                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition">Admins</a>
-                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">Déconnexion</a>
+                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">{{ t.superadmin.dashboard }}</a>
+                <a href="{{ url_for('superadmin.statistics') }}" class="hover:text-blue-200 transition font-bold">{{ t.superadmin.statistics }}</a>
+                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition">{{ t.superadmin.admins }}</a>
+                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">{{ t.superadmin.logout }}</a>
             </div>
         </div>
     </nav>
 
     <div class="content-wrapper container mx-auto p-6">
         <div class="bg-white rounded-xl shadow-2xl p-6">
-            <h2 class="text-3xl font-bold mb-6 text-blue-900">📊 Statistiques Complètes par Admin</h2>
+            <h2 class="text-3xl font-bold mb-6 text-blue-900">📊 {{ t.superadmin.complete_statistics_per_admin }}</h2>
             <div class="overflow-x-auto">
                 <table class="min-w-full">
                     <thead class="bg-blue-100 sticky top-0">
                         <tr>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-blue-900 uppercase">Rang</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-blue-900 uppercase">Username</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-blue-900 uppercase">Nom Complet</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-blue-900 uppercase">Email</th>
-                            <th class="px-6 py-4 text-center text-sm font-bold text-blue-900 uppercase">Status</th>
-                            <th class="px-6 py-4 text-right text-sm font-bold text-blue-900 uppercase">Nb Transactions</th>
-                            <th class="px-6 py-4 text-right text-sm font-bold text-blue-900 uppercase">Volume Total</th>
-                            <th class="px-6 py-4 text-left text-sm font-bold text-blue-900 uppercase">Créé le</th>
-                            <th class="px-6 py-4 text-center text-sm font-bold text-blue-900 uppercase">Actions</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-blue-900 uppercase">{{ t.superadmin.rank }}</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-blue-900 uppercase">{{ t.superadmin.username }}</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-blue-900 uppercase">{{ t.superadmin.full_name }}</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-blue-900 uppercase">{{ t.superadmin.email }}</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-blue-900 uppercase">{{ t.superadmin.status }}</th>
+                            <th class="px-6 py-4 text-right text-sm font-bold text-blue-900 uppercase">{{ t.superadmin.transaction_count }}</th>
+                            <th class="px-6 py-4 text-right text-sm font-bold text-blue-900 uppercase">{{ t.superadmin.total_volume }}</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-blue-900 uppercase">{{ t.superadmin.created_at }}</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-blue-900 uppercase">{{ t.superadmin.actions }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
@@ -92,7 +92,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <a href="{{ url_for('superadmin.admin_transactions', admin_id=stat.id) }}" 
                                    class="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition" 
-                                   title="Voir les transactions">
+                                   title="{{ t.superadmin.view_transactions_title }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                                         <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />

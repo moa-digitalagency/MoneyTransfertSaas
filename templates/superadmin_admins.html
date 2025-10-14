@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Admins</title>
+    <title>{{ t.superadmin.admin_management }}</title>
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -79,12 +79,12 @@
 <body>
     <nav class="bg-blue-900 bg-opacity-90 text-white p-4 shadow-lg relative z-10">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">💰 TransfertSpace Dashboard</h1>
+            <h1 class="text-2xl font-bold">💰 {{ t.common.app_name }} {{ t.superadmin.dashboard }}</h1>
             <div class="space-x-4">
-                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">Dashboard</a>
-                <a href="{{ url_for('superadmin.statistics') }}" class="hover:text-blue-200 transition">Statistiques</a>
-                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition font-bold">Admins</a>
-                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">Déconnexion</a>
+                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">{{ t.superadmin.dashboard }}</a>
+                <a href="{{ url_for('superadmin.statistics') }}" class="hover:text-blue-200 transition">{{ t.superadmin.statistics }}</a>
+                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition font-bold">{{ t.superadmin.admins }}</a>
+                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">{{ t.superadmin.logout }}</a>
             </div>
         </div>
     </nav>
@@ -92,10 +92,10 @@
     <div class="content-wrapper container mx-auto p-6">
         <div class="bg-white rounded-xl shadow-2xl p-8">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-bold text-blue-900">👥 Liste des Admins</h2>
+                <h2 class="text-3xl font-bold text-blue-900">👥 {{ t.superadmin.admin_list }}</h2>
                 <a href="{{ url_for('superadmin.create_admin') }}" 
                    class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition shadow-lg inline-flex items-center justify-center" 
-                   title="Créer un Admin">
+                   title="{{ t.superadmin.create_admin }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -106,13 +106,13 @@
                 <table class="min-w-full">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Username</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Nom complet</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ t.superadmin.username }}</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ t.superadmin.full_name }}</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ t.superadmin.email }}</th>
                             <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">WhatsApp</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Statut</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Créé le</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Actions</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ t.superadmin.status }}</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ t.superadmin.created_at }}</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">{{ t.superadmin.actions }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
@@ -139,7 +139,7 @@
                                 {% endif %}
                             </td>
                             <td class="px-6 py-4">
-                                <label class="toggle-switch" title="Cliquer pour {% if admin.status == 'active' %}suspendre{% else %}activer{% endif %}">
+                                <label class="toggle-switch" title="{% if admin.status == 'active' %}{{ t.superadmin.click_to_suspend }}{% else %}{{ t.superadmin.click_to_activate }}{% endif %}">
                                     <input type="checkbox" 
                                            {% if admin.status == 'active' %}checked{% endif %}
                                            onchange="toggleAdminStatus({{ admin.id }}, this.checked)"
@@ -155,7 +155,7 @@
                                 <div class="flex items-center gap-2">
                                     <a href="{{ url_for('superadmin.edit_admin', admin_id=admin.id) }}" 
                                        class="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition" 
-                                       title="Modifier">
+                                       title="{{ t.superadmin.edit }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                             <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                         </svg>
@@ -163,7 +163,7 @@
                                     
                                     <button onclick="deleteAdmin({{ admin.id }})" 
                                             class="inline-flex items-center justify-center border-2 border-red-600 text-red-600 hover:bg-red-50 p-2 rounded-lg transition" 
-                                            title="Supprimer">
+                                            title="{{ t.superadmin.delete }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                                         </svg>
@@ -171,7 +171,7 @@
                                     
                                     <a href="{{ url_for('superadmin.admin_transactions', admin_id=admin.id) }}" 
                                        class="inline-flex items-center justify-center border-2 border-purple-600 text-purple-600 hover:bg-purple-50 p-2 rounded-lg transition" 
-                                       title="Voir transactions">
+                                       title="{{ t.superadmin.view_transactions }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                             <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                                             <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
@@ -195,7 +195,7 @@
             const originalStatus = !isActive;
             
             toggle.disabled = true;
-            statusText.textContent = 'En cours...';
+            statusText.textContent = '{{ t.superadmin.in_progress }}';
             statusText.className = 'ml-2 text-sm font-semibold text-gray-500';
             
             try {
@@ -209,20 +209,20 @@
                 const data = await response.json();
                 
                 if (response.ok) {
-                    statusText.textContent = isActive ? 'Active' : 'Suspended';
+                    statusText.textContent = isActive ? '{{ t.superadmin.active }}' : '{{ t.superadmin.suspended }}';
                     statusText.className = `ml-2 text-sm font-semibold ${isActive ? 'text-green-600' : 'text-red-600'}`;
                     console.log('Statut changé avec succès:', data.message);
                 } else {
                     toggle.checked = originalStatus;
-                    statusText.textContent = originalStatus ? 'Active' : 'Suspended';
+                    statusText.textContent = originalStatus ? '{{ t.superadmin.active }}' : '{{ t.superadmin.suspended }}';
                     statusText.className = `ml-2 text-sm font-semibold ${originalStatus ? 'text-green-600' : 'text-red-600'}`;
-                    alert('Erreur: ' + (data.error || 'Impossible de changer le statut'));
+                    alert('{{ t.superadmin.error_status_change }}');
                 }
             } catch (error) {
                 toggle.checked = originalStatus;
-                statusText.textContent = originalStatus ? 'Active' : 'Suspended';
+                statusText.textContent = originalStatus ? '{{ t.superadmin.active }}' : '{{ t.superadmin.suspended }}';
                 statusText.className = `ml-2 text-sm font-semibold ${originalStatus ? 'text-green-600' : 'text-red-600'}`;
-                alert('Erreur de connexion. Veuillez réessayer.');
+                alert('{{ t.superadmin.connection_error }}');
                 console.error('Erreur toggle:', error);
             } finally {
                 toggle.disabled = false;
@@ -230,7 +230,7 @@
         }
         
         async function deleteAdmin(adminId) {
-            if (!confirm('Voulez-vous vraiment supprimer cet admin ? Toutes ses transactions seront également supprimées.')) return;
+            if (!confirm('{{ t.superadmin.confirm_delete_admin }}')) return;
             
             const response = await fetch(`/superadmin/admins/${adminId}/delete`, {
                 method: 'POST'

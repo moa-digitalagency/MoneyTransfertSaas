@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions de {{ admin.username }}</title>
+    <title>{{ t.superadmin.transactions_of }} {{ admin.username }}</title>
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -12,10 +12,10 @@
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">💰 TransfertSpace Dashboard</h1>
             <div class="space-x-4">
-                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">Dashboard</a>
-                <a href="{{ url_for('superadmin.statistics') }}" class="hover:text-blue-200 transition">Statistiques</a>
-                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition">Admins</a>
-                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">Déconnexion</a>
+                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">{{ t.superadmin.dashboard }}</a>
+                <a href="{{ url_for('superadmin.statistics') }}" class="hover:text-blue-200 transition">{{ t.superadmin.statistics }}</a>
+                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition">{{ t.superadmin.admins }}</a>
+                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">{{ t.superadmin.logout }}</a>
             </div>
         </div>
     </nav>
@@ -23,10 +23,10 @@
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow p-6">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Transactions de {{ admin.username }}</h2>
+                <h2 class="text-2xl font-bold">{{ t.superadmin.transactions_of }} {{ admin.username }}</h2>
                 <a href="{{ url_for('superadmin.admins_list') }}" 
                    class="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded">
-                    Retour
+                    {{ t.common.back }}
                 </a>
             </div>
 
@@ -34,12 +34,12 @@
                 <table class="min-w-full">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Direction</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant envoyé</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant reçu</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Méthode</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ t.superadmin.id }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ t.superadmin.direction }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ t.superadmin.amount_sent }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ t.superadmin.amount_received }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ t.superadmin.method }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ t.superadmin.date }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
@@ -64,7 +64,7 @@
                         {% else %}
                         <tr>
                             <td colspan="6" class="px-6 py-4 text-center text-gray-500">
-                                Aucune transaction
+                                {{ t.superadmin.no_transactions }}
                             </td>
                         </tr>
                         {% endfor %}

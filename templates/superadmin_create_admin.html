@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un Admin</title>
+    <title>{{ t.superadmin.create_admin }}</title>
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -36,16 +36,16 @@
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">💰 TransfertSpace Dashboard</h1>
             <div class="space-x-4">
-                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">Dashboard</a>
-                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition">Admins</a>
-                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">Déconnexion</a>
+                <a href="{{ url_for('superadmin.dashboard') }}" class="hover:text-blue-200 transition">{{ t.superadmin.dashboard }}</a>
+                <a href="{{ url_for('superadmin.admins_list') }}" class="hover:text-blue-200 transition">{{ t.superadmin.admins }}</a>
+                <a href="{{ url_for('superadmin.logout') }}" class="hover:text-blue-200 transition">{{ t.superadmin.logout }}</a>
             </div>
         </div>
     </nav>
 
     <div class="content-wrapper container mx-auto p-6">
         <div class="bg-white rounded-xl shadow-2xl p-8 max-w-3xl mx-auto">
-            <h2 class="text-3xl font-bold mb-6 text-blue-900">➕ Créer un nouvel Admin</h2>
+            <h2 class="text-3xl font-bold mb-6 text-blue-900">➕ {{ t.superadmin.create_new_admin }}</h2>
             
             {% if error %}
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -55,48 +55,48 @@
             
             <form method="POST">
                 <div class="border-b pb-6 mb-6">
-                    <h3 class="text-xl font-bold text-blue-900 mb-4">📋 Informations de l'Admin</h3>
+                    <h3 class="text-xl font-bold text-blue-900 mb-4">📋 {{ t.superadmin.admin_information }}</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Nom d'utilisateur (URL: /username)</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.username_url }}</label>
                             <input type="text" name="username" required pattern="[a-zA-Z0-9_-]+" 
                                    class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
-                            <p class="text-xs text-gray-500 mt-1">Lettres, chiffres, tirets et underscores uniquement</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ t.superadmin.username_format }}</p>
                         </div>
                         
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Nom complet</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.full_name }}</label>
                             <input type="text" name="full_name" 
                                    class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
                         </div>
                         
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.email }}</label>
                             <input type="email" name="email" required
                                    class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
                         </div>
                         
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Numéro WhatsApp</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.whatsapp_number }}</label>
                             <input type="text" name="whatsapp_number" placeholder="+212699140001"
                                    class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
-                            <p class="text-xs text-gray-500 mt-1">Format international avec indicatif pays</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ t.superadmin.whatsapp_format }}</p>
                         </div>
                     </div>
                     
                     <div class="mt-6">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Mot de passe</label>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.password }}</label>
                         <input type="password" name="password" required minlength="6"
                                class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
                     </div>
                 </div>
                 
                 <div class="border-b pb-6 mb-6">
-                    <h3 class="text-xl font-bold text-blue-900 mb-4">🌍 Configuration des Pays</h3>
+                    <h3 class="text-xl font-bold text-blue-900 mb-4">🌍 {{ t.superadmin.country_configuration }}</h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Pays 1</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.country_1 }}</label>
                             <select name="country1_code" id="country1_code" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent" onchange="updateCurrencies()">
                                 {% for country in countries %}
                                 <option value="{{ country.code }}">{{ country.flag }} {{ country.name }}</option>
@@ -105,13 +105,13 @@
                         </div>
                         
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Devise Pays 1</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.currency_country_1 }}</label>
                             <select name="country1_currency" id="country1_currency" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
                             </select>
                         </div>
                         
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Pays 2</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.country_2 }}</label>
                             <select name="country2_code" id="country2_code" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent" onchange="updateCurrencies()">
                                 {% for country in countries %}
                                 <option value="{{ country.code }}">{{ country.flag }} {{ country.name }}</option>
@@ -120,7 +120,7 @@
                         </div>
                         
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Devise Pays 2</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.currency_country_2 }}</label>
                             <select name="country2_currency" id="country2_currency" required class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-blue-900 focus:border-transparent">
                             </select>
                         </div>
@@ -128,47 +128,47 @@
                 </div>
                 
                 <div class="border-b pb-6 mb-6">
-                    <h3 class="text-xl font-bold text-blue-900 mb-4">💳 Moyens de Réception</h3>
+                    <h3 class="text-xl font-bold text-blue-900 mb-4">💳 {{ t.superadmin.reception_methods }}</h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Moyens de réception Pays 1</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.reception_methods_country_1 }}</label>
                             <div class="space-y-2">
                                 <label class="flex items-center space-x-2">
                                     <input type="checkbox" name="reception_methods_country1" value="Remise en personne" checked
                                            class="rounded text-blue-900 focus:ring-blue-900">
-                                    <span>Remise en personne</span>
+                                    <span>{{ t.superadmin.hand_delivery }}</span>
                                 </label>
                                 <label class="flex items-center space-x-2">
                                     <input type="checkbox" name="reception_methods_country1" value="Virement bancaire"
                                            class="rounded text-blue-900 focus:ring-blue-900">
-                                    <span>Virement bancaire</span>
+                                    <span>{{ t.superadmin.bank_transfer }}</span>
                                 </label>
                                 <label class="flex items-center space-x-2">
                                     <input type="checkbox" name="reception_methods_country1" value="Mobile Money"
                                            class="rounded text-blue-900 focus:ring-blue-900">
-                                    <span>Mobile Money</span>
+                                    <span>{{ t.superadmin.mobile_money }}</span>
                                 </label>
                             </div>
                         </div>
                         
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Moyens de réception Pays 2</label>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ t.superadmin.reception_methods_country_2 }}</label>
                             <div class="space-y-2">
                                 <label class="flex items-center space-x-2">
                                     <input type="checkbox" name="reception_methods_country2" value="Remise en personne" checked
                                            class="rounded text-blue-900 focus:ring-blue-900">
-                                    <span>Remise en personne</span>
+                                    <span>{{ t.superadmin.hand_delivery }}</span>
                                 </label>
                                 <label class="flex items-center space-x-2">
                                     <input type="checkbox" name="reception_methods_country2" value="Virement bancaire"
                                            class="rounded text-blue-900 focus:ring-blue-900">
-                                    <span>Virement bancaire</span>
+                                    <span>{{ t.superadmin.bank_transfer }}</span>
                                 </label>
                                 <label class="flex items-center space-x-2">
                                     <input type="checkbox" name="reception_methods_country2" value="Mobile Money"
                                            class="rounded text-blue-900 focus:ring-blue-900">
-                                    <span>Mobile Money</span>
+                                    <span>{{ t.superadmin.mobile_money }}</span>
                                 </label>
                             </div>
                         </div>
@@ -178,11 +178,11 @@
                 <div class="flex justify-between gap-4">
                     <a href="{{ url_for('superadmin.admins_list') }}" 
                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition">
-                        Annuler
+                        {{ t.superadmin.cancel }}
                     </a>
                     <button type="submit" 
                             class="bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg transition shadow-lg">
-                        ✅ Créer l'Admin
+                        ✅ {{ t.superadmin.create_admin_btn }}
                     </button>
                 </div>
             </form>
