@@ -1,0 +1,166 @@
+{
+  "common": {
+    "app_name": "TransfertSpace",
+    "tagline": "Easy, Beneficial & Fast Money Transfer",
+    "moa_digital": "MOA Digital Agency LLC",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "required_field": "*",
+    "copyright": "© 2025"
+  },
+  
+  "welcome": {
+    "title": "TransfertSpace",
+    "subtitle": "Login & Registration to the platform",
+    "username": "Username",
+    "password": "Password",
+    "login_button": "Log in",
+    "new_here": "New to TransfertSpace?",
+    "want_account": "I want an account",
+    "errors": {
+      "fill_all_fields": "Please fill in all fields",
+      "invalid_credentials": "Invalid credentials",
+      "account_suspended": "Account suspended"
+    }
+  },
+  
+  "registration": {
+    "title": "Registration Request",
+    "subtitle": "Become a transfer operator",
+    "how_it_works": "How does it work?",
+    "step1": "Fill in this form with your information and the two countries between which you want to make transfers",
+    "step2": "Your request will be automatically sent by WhatsApp to our team",
+    "step3": "Once your account is created, you will receive your credentials and your personalized link by WhatsApp",
+    "step4": "Manage your international transfers between your two configured countries with your own rates and fees",
+    "full_name": "Full name",
+    "whatsapp_number": "WhatsApp number",
+    "whatsapp_format": "International format with country code (e.g.: +212699140001)",
+    "transfer_config": "International transfer configuration",
+    "transfer_config_desc": "Choose the two countries between which you want to make transfers",
+    "always_two_countries": "Transfers always between two different countries",
+    "country_example": "For example, Morocco ↔ DRC, France ↔ Senegal, etc.",
+    "origin_country": "Origin country",
+    "destination_country": "Destination country",
+    "send_country": "Sending country",
+    "receive_country": "Receiving country",
+    "currency": "Currency",
+    "select": "Select...",
+    "select_country_first": "Choose country first...",
+    "auto_notification": "Automatic notification",
+    "auto_notification_desc": "After validation, you will receive your login credentials and your personalized URL directly on WhatsApp.",
+    "send_request": "Send my request",
+    "errors": {
+      "enter_full_name": "Please enter your full name",
+      "enter_whatsapp": "Please enter your WhatsApp number",
+      "invalid_whatsapp": "Please enter a valid WhatsApp number (international format)",
+      "select_send_country": "Please select the sending country",
+      "select_send_currency": "Please select the currency for the sending country",
+      "select_receive_country": "Please select the receiving country",
+      "select_receive_currency": "Please select the currency for the receiving country",
+      "countries_must_differ": "The two countries must be different"
+    }
+  },
+  
+  "transfer": {
+    "title": "Transfer",
+    "fast_beneficial_rapid": "Easy, Beneficial & Fast",
+    "transfer_direction": "Transfer direction",
+    "direction_label": "Direction",
+    "no_direction_enabled": "No transfer direction is currently enabled. Please contact the administrator.",
+    "calculation_type": "Calculation type",
+    "amount_to_send": "Amount to SEND",
+    "amount_to_receive": "Amount to RECEIVE",
+    "amount_label_send": "Amount to send",
+    "amount_label_receive": "Amount to receive",
+    "you_send": "You send:",
+    "recipient_receives": "Recipient receives:",
+    "rate": "Rate",
+    "fee": "Fee",
+    "reception_method": "Reception method",
+    "reception_details": "Number / Details",
+    "enter_details": "Enter details",
+    "send_whatsapp": "Send on WhatsApp",
+    "for_admin": "For Admin",
+    "errors": {
+      "calculate_first": "Please calculate the amount first",
+      "fill_all_fields": "Please fill in all fields",
+      "calculation_error": "Calculation error",
+      "whatsapp_error": "Error generating WhatsApp link"
+    }
+  },
+  
+  "admin_login": {
+    "title": "Administration",
+    "username": "Username",
+    "password": "Password",
+    "login_button": "Log in",
+    "back": "Back"
+  },
+  
+  "admin_panel": {
+    "title": "Admin Panel",
+    "welcome": "Welcome",
+    "dashboard": "Dashboard",
+    "history": "History",
+    "statistics": "Statistics",
+    "logout": "Logout",
+    "transactions": "Transactions",
+    "total_transactions": "Total transactions",
+    "total_sent": "Total sent",
+    "total_received": "Total received",
+    "view_details": "View details"
+  },
+  
+  "superadmin": {
+    "title": "Super Admin",
+    "dashboard": "Dashboard",
+    "admins_management": "Admins management",
+    "create_admin": "Create admin",
+    "statistics": "Statistics",
+    "logout": "Logout",
+    "all_admins": "All admins",
+    "admin_name": "Admin name",
+    "status": "Status",
+    "actions": "Actions",
+    "active": "Active",
+    "suspended": "Suspended",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view_transactions": "View transactions"
+  },
+  
+  "account_suspended": {
+    "title": "Account Suspended",
+    "message": "This account has been temporarily suspended.",
+    "contact": "Please contact the administrator for more information.",
+    "back_home": "Back to home"
+  },
+  
+  "whatsapp_message": {
+    "greeting": "Hello",
+    "transfer_from_to": "I need to make a transfer",
+    "from": "from",
+    "to": "to",
+    "send_amount": "Amount to send:",
+    "receive_amount": "Amount to receive:",
+    "reception_method": "Reception method:",
+    "details": "Details:",
+    "confirm_request": "Please confirm this request."
+  },
+  
+  "language": {
+    "french": "Français",
+    "english": "English",
+    "select_language": "Select language",
+    "change_language": "Change language"
+  }
+}

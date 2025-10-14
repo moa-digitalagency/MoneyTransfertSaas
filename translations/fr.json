@@ -1,0 +1,166 @@
+{
+  "common": {
+    "app_name": "TransfertSpace",
+    "tagline": "Transfert Monétaire Facile, Bénéfique & Rapide",
+    "moa_digital": "MOA Digital Agency LLC",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "required_field": "*",
+    "copyright": "© 2025"
+  },
+  
+  "welcome": {
+    "title": "TransfertSpace",
+    "subtitle": "Connexion & Inscription à la plateforme",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "login_button": "Se connecter",
+    "new_here": "Nouveau sur TransfertSpace?",
+    "want_account": "Je veux un compte",
+    "errors": {
+      "fill_all_fields": "Veuillez remplir tous les champs",
+      "invalid_credentials": "Identifiants invalides",
+      "account_suspended": "Compte suspendu"
+    }
+  },
+  
+  "registration": {
+    "title": "Demande d'inscription",
+    "subtitle": "Devenez opérateur de transfert",
+    "how_it_works": "Comment ça marche?",
+    "step1": "Remplissez ce formulaire avec vos informations et les deux pays entre lesquels vous souhaitez effectuer des transferts",
+    "step2": "Votre demande sera envoyée automatiquement par WhatsApp à notre équipe",
+    "step3": "Une fois votre compte créé, vous recevrez vos identifiants et votre lien personnalisé par WhatsApp",
+    "step4": "Gérez vos transferts internationaux entre vos deux pays configurés avec vos propres taux et frais",
+    "full_name": "Nom complet",
+    "whatsapp_number": "Numéro WhatsApp",
+    "whatsapp_format": "Format international avec indicatif pays (ex: +212699140001)",
+    "transfer_config": "Configuration des transferts internationaux",
+    "transfer_config_desc": "Choisissez les deux pays entre lesquels vous souhaitez effectuer des transferts",
+    "always_two_countries": "Transferts toujours entre deux pays différents",
+    "country_example": "Par exemple, Maroc ↔ RDC, France ↔ Sénégal, etc.",
+    "origin_country": "Pays d'origine",
+    "destination_country": "Pays de destination",
+    "send_country": "Pays d'envoi",
+    "receive_country": "Pays de réception",
+    "currency": "Devise",
+    "select": "Sélectionnez...",
+    "select_country_first": "Choisir le pays d'abord...",
+    "auto_notification": "Notification automatique",
+    "auto_notification_desc": "Après validation, vous recevrez vos identifiants de connexion et votre URL personnalisée directement sur WhatsApp.",
+    "send_request": "Envoyer ma demande",
+    "errors": {
+      "enter_full_name": "Veuillez entrer votre nom complet",
+      "enter_whatsapp": "Veuillez entrer votre numéro WhatsApp",
+      "invalid_whatsapp": "Veuillez entrer un numéro WhatsApp valide (format international)",
+      "select_send_country": "Veuillez sélectionner le pays d'envoi",
+      "select_send_currency": "Veuillez sélectionner la devise du pays d'envoi",
+      "select_receive_country": "Veuillez sélectionner le pays de réception",
+      "select_receive_currency": "Veuillez sélectionner la devise du pays de réception",
+      "countries_must_differ": "Les deux pays doivent être différents"
+    }
+  },
+  
+  "transfer": {
+    "title": "Transfert",
+    "fast_beneficial_rapid": "Facile, Bénéfique & Rapide",
+    "transfer_direction": "Direction du transfert",
+    "direction_label": "Direction",
+    "no_direction_enabled": "Aucune direction de transfert n'est actuellement activée. Veuillez contacter l'administrateur.",
+    "calculation_type": "Type de calcul",
+    "amount_to_send": "Montant à ENVOYER",
+    "amount_to_receive": "Montant à RECEVOIR",
+    "amount_label_send": "Montant à envoyer",
+    "amount_label_receive": "Montant à recevoir",
+    "you_send": "Vous envoyez:",
+    "recipient_receives": "Destinataire reçoit:",
+    "rate": "Taux",
+    "fee": "Frais",
+    "reception_method": "Moyen de réception",
+    "reception_details": "Numéro / Coordonnées",
+    "enter_details": "Entrez les coordonnées",
+    "send_whatsapp": "Envoyer sur WhatsApp",
+    "for_admin": "For Admin",
+    "errors": {
+      "calculate_first": "Veuillez d'abord calculer le montant",
+      "fill_all_fields": "Veuillez remplir tous les champs",
+      "calculation_error": "Erreur lors du calcul",
+      "whatsapp_error": "Erreur lors de la génération du lien WhatsApp"
+    }
+  },
+  
+  "admin_login": {
+    "title": "Administration",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "login_button": "Se connecter",
+    "back": "Retour"
+  },
+  
+  "admin_panel": {
+    "title": "Panneau Administrateur",
+    "welcome": "Bienvenue",
+    "dashboard": "Tableau de bord",
+    "history": "Historique",
+    "statistics": "Statistiques",
+    "logout": "Déconnexion",
+    "transactions": "Transactions",
+    "total_transactions": "Total des transactions",
+    "total_sent": "Total envoyé",
+    "total_received": "Total reçu",
+    "view_details": "Voir les détails"
+  },
+  
+  "superadmin": {
+    "title": "Super Admin",
+    "dashboard": "Tableau de bord",
+    "admins_management": "Gestion des admins",
+    "create_admin": "Créer un admin",
+    "statistics": "Statistiques",
+    "logout": "Déconnexion",
+    "all_admins": "Tous les admins",
+    "admin_name": "Nom de l'admin",
+    "status": "Statut",
+    "actions": "Actions",
+    "active": "Actif",
+    "suspended": "Suspendu",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "view_transactions": "Voir transactions"
+  },
+  
+  "account_suspended": {
+    "title": "Compte Suspendu",
+    "message": "Ce compte a été temporairement suspendu.",
+    "contact": "Veuillez contacter l'administrateur pour plus d'informations.",
+    "back_home": "Retour à l'accueil"
+  },
+  
+  "whatsapp_message": {
+    "greeting": "Bonjour",
+    "transfer_from_to": "j'ai besoin de faire un transfert",
+    "from": "de",
+    "to": "vers",
+    "send_amount": "Montant à envoyer:",
+    "receive_amount": "Montant à recevoir:",
+    "reception_method": "Moyen de réception:",
+    "details": "Coordonnées:",
+    "confirm_request": "Merci de confirmer cette demande."
+  },
+  
+  "language": {
+    "french": "Français",
+    "english": "English",
+    "select_language": "Choisir la langue",
+    "change_language": "Changer de langue"
+  }
+}

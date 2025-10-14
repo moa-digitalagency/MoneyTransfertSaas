@@ -23,6 +23,9 @@ def create_app():
     from app.database import init_db
     init_db(app)
     
+    from app.utils.i18n import init_i18n
+    init_i18n(app)
+    
     from app.routes.main import main_bp
     from app.routes.admin import admin_bp
     from app.routes.superadmin import superadmin_bp
