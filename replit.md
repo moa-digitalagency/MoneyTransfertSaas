@@ -43,7 +43,10 @@ Preferred communication style: Simple, everyday language.
 ### Admin Configuration Capabilities
 Each admin can independently configure:
 - Source and destination countries
-- Exchange rates (bidirectional)
+- Exchange rates (bidirectional) with advanced features:
+  - **High-precision calculation**: 8 decimal places for accurate rates
+  - **Automatic inverse calculation**: Toggle to auto-calculate inverse rates or enter manually
+  - **Manual mode**: Allows independent rate setting for both directions
 - Tiered transaction fees
 - WhatsApp contact numbers (dual contact system)
 - Reception methods per country
