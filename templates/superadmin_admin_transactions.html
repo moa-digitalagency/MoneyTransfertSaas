@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ current_lang }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,6 +72,11 @@
                 </table>
             </div>
         </div>
+    </div>
+    
+    <div class="text-center mt-6 pb-4 text-gray-600 text-sm">
+        <p>© 2025 <a href="https://www.myoneart.com" target="_blank" class="text-indigo-600 hover:text-indigo-800 transition font-semibold">{{ t.common.moa_digital }}</a></p>
+        {% include 'components/language_selector.html' %}
     </div>
 </body>
 </html>
