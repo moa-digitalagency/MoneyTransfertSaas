@@ -14,7 +14,9 @@ def require_superadmin_login():
     
     admin = Admin.query.get(session['admin_id'])
     if not admin or admin.role != 'superadmin' or admin.status != 'active':
+        saved_lang = session.get('lang', 'fr')
         session.clear()
+        session['lang'] = saved_lang
         return False
     
     return admin

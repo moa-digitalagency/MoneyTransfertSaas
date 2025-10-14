@@ -19,7 +19,9 @@ def require_admin_login():
     
     admin = Admin.query.get(session['admin_id'])
     if not admin or admin.status != 'active':
+        saved_lang = session.get('lang', 'fr')
         session.clear()
+        session['lang'] = saved_lang
         return False
     
     return admin
@@ -57,9 +59,11 @@ def admin_login():
         if admin.status != 'active':
             return render_template('admin_login.html', error='Compte suspendu')
         
+        saved_lang = session.get('lang', 'fr')
         session.clear()
         session['admin_id'] = admin.id
         session['admin_role'] = 'admin'
+        session['lang'] = saved_lang
         session.permanent = True
         
         logger.info(f"Connexion admin réussie: {admin.username}")

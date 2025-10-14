@@ -44,9 +44,11 @@ def index():
             return render_template('welcome.html', error=t['welcome']['errors']['account_suspended'], countries_json=json.dumps(COUNTRIES))
         
         logging.debug(f"Connexion réussie pour: {username}")
+        saved_lang = session.get('lang', 'fr')
         session.clear()
         session['admin_id'] = admin.id
         session['admin_role'] = 'superadmin'
+        session['lang'] = saved_lang
         session.permanent = True
         
         return redirect(url_for('superadmin.dashboard'))
