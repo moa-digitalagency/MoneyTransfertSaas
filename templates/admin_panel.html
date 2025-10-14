@@ -162,23 +162,36 @@ www.myoneart.com
                 <div class="border-b pb-4">
                     <h2 class="text-lg font-semibold text-blue-900 mb-4">💱 Taux de change</h2>
                     
+                    <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg mb-4">
+                        <div>
+                            <label for="auto_inverse_rate" class="text-sm font-medium text-gray-700">
+                                🔄 Calcul automatique du taux inverse
+                            </label>
+                            <p class="text-xs text-gray-500 mt-1">Quand activé, le taux inverse sera calculé automatiquement</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="auto_inverse_rate" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2" id="rate_label_1">Pays 1 → Pays 2</label>
-                            <input type="number" step="0.001" name="country1_to_country2" id="rate1to2" value="{{ config.rates.country1_to_country2 }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition" oninput="calculateInverseRate(this, 'rate2to1')">
+                            <input type="number" step="0.00000001" name="country1_to_country2" id="rate1to2" value="{{ config.rates.country1_to_country2 }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition" oninput="handleRateInput(this, 'rate2to1')">
                             <p class="text-xs text-blue-600 mt-1 font-medium" id="rate_help_1">
                                 {{ t.admin_panel.rate_explanation.replace('{from_currency}', config.countries.country1.currency).replace('{to_currency}', config.countries.country2.currency) }}
                             </p>
-                            <p class="text-xs text-gray-500 mt-1">{{ t.admin_panel.rate_inverse_auto }}</p>
+                            <p class="text-xs text-gray-500 mt-1" id="rate_status_1">Le taux inverse sera calculé automatiquement</p>
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2" id="rate_label_2">Pays 2 → Pays 1</label>
-                            <input type="number" step="0.001" name="country2_to_country1" id="rate2to1" value="{{ config.rates.country2_to_country1 }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition" oninput="calculateInverseRate(this, 'rate1to2')">
+                            <input type="number" step="0.00000001" name="country2_to_country1" id="rate2to1" value="{{ config.rates.country2_to_country1 }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition" oninput="handleRateInput(this, 'rate1to2')">
                             <p class="text-xs text-blue-600 mt-1 font-medium" id="rate_help_2">
                                 {{ t.admin_panel.rate_explanation.replace('{from_currency}', config.countries.country2.currency).replace('{to_currency}', config.countries.country1.currency) }}
                             </p>
-                            <p class="text-xs text-gray-500 mt-1">{{ t.admin_panel.rate_inverse_auto }}</p>
+                            <p class="text-xs text-gray-500 mt-1" id="rate_status_2">Le taux inverse sera calculé automatiquement</p>
                         </div>
                     </div>
                 </div>
@@ -501,15 +514,42 @@ www.myoneart.com
             }, 2000);
         }
         
-        function calculateInverseRate(sourceInput, targetInputId) {
+        function handleRateInput(sourceInput, targetInputId) {
+            const autoInverse = document.getElementById('auto_inverse_rate').checked;
+            
+            if (!autoInverse) {
+                return;
+            }
+            
             const sourceValue = parseFloat(sourceInput.value);
             const targetInput = document.getElementById(targetInputId);
             
             if (sourceValue && sourceValue > 0) {
                 const inverseRate = 1 / sourceValue;
-                targetInput.value = inverseRate.toFixed(6);
+                targetInput.value = inverseRate.toFixed(8);
             }
         }
+        
+        function updateRateStatusText() {
+            const autoInverse = document.getElementById('auto_inverse_rate').checked;
+            const status1 = document.getElementById('rate_status_1');
+            const status2 = document.getElementById('rate_status_2');
+            
+            if (autoInverse) {
+                status1.textContent = 'Le taux inverse sera calculé automatiquement';
+                status2.textContent = 'Le taux inverse sera calculé automatiquement';
+                status1.className = 'text-xs text-gray-500 mt-1';
+                status2.className = 'text-xs text-gray-500 mt-1';
+            } else {
+                status1.textContent = '⚠️ Mode manuel : saisissez le taux manuellement';
+                status2.textContent = '⚠️ Mode manuel : saisissez le taux manuellement';
+                status1.className = 'text-xs text-orange-600 mt-1 font-medium';
+                status2.className = 'text-xs text-orange-600 mt-1 font-medium';
+            }
+        }
+        
+        document.getElementById('auto_inverse_rate').addEventListener('change', updateRateStatusText);
+        updateRateStatusText();
     </script>
     
     <div class="text-center mt-6 pb-4 text-white text-sm">

@@ -136,7 +136,10 @@
     "view_details": "View details",
     "rate_explanation": "Enter the cost in {from_currency} to get 1 {to_currency}",
     "rate_help": "Example: For MAD → USD, enter how many MAD equals 1 USD",
-    "rate_inverse_auto": "The inverse rate will be calculated automatically"
+    "rate_inverse_auto": "The inverse rate will be calculated automatically",
+    "auto_inverse_rate_label": "🔄 Automatic inverse rate calculation",
+    "auto_inverse_rate_help": "When enabled, the inverse rate will be calculated automatically",
+    "manual_rate_warning": "⚠️ Manual mode: enter the rate manually"
   },
   "superadmin": {
     "title": "Super Admin",
