@@ -286,7 +286,7 @@ www.myoneart.com
 
                 document.getElementById('send-result').textContent = `${data.send_amount} ${data.send_currency}`;
                 document.getElementById('receive-result').textContent = `${data.receive_amount} ${data.receive_currency}`;
-                document.getElementById('rate-display').textContent = data.rate;
+                document.getElementById('rate-display').textContent = `1 ${data.send_currency} pour ${data.rate} ${data.receive_currency}`;
                 document.getElementById('fee-display').textContent = data.fee;
                 document.getElementById('fee-currency-display').textContent = data.fee_currency;
                 
