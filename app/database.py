@@ -22,12 +22,11 @@ def init_db(app):
         
         existing_superadmin = Admin.query.filter_by(role='superadmin').first()
         if not existing_superadmin:
-            superadmin = Admin(
-                username='myoneart',
-                email='moa@myoneart.com',
-                role='superadmin',
-                status='active'
-            )
+            superadmin = Admin()
+            superadmin.username = 'myoneart'
+            superadmin.email = 'moa@myoneart.com'
+            superadmin.role = 'superadmin'
+            superadmin.status = 'active'
             superadmin.set_password('my0n34rt')
             db.session.add(superadmin)
             db.session.commit()
