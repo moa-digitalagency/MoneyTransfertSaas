@@ -44,17 +44,38 @@ def dashboard():
     
     recent_admins = Admin.query.filter_by(role='admin').order_by(Admin.created_at.desc()).limit(5).all()
     
-    admin_stats = db.session.query(
-        Admin.id,
-        Admin.username,
-        Admin.email,
-        Admin.status,
-        func.count(Transaction.id).label('transaction_count'),
-        func.sum(Transaction.send_amount).label('total_volume')
-    ).outerjoin(Transaction, Admin.id == Transaction.admin_id)\
-     .filter(Admin.role == 'admin')\
-     .group_by(Admin.id, Admin.username, Admin.email, Admin.status)\
-     .all()
+    # Get admin stats with currency breakdown
+    all_admins = Admin.query.filter_by(role='admin').all()
+    admin_stats = []
+    for adm in all_admins:
+        transaction_count = Transaction.query.filter_by(admin_id=adm.id).count()
+        
+        volumes_by_currency = db.session.query(
+            Transaction.send_currency,
+            func.sum(Transaction.send_amount).label('total')
+        ).filter_by(admin_id=adm.id)\
+         .group_by(Transaction.send_currency)\
+         .all()
+        
+        total_volume = sum([v.total for v in volumes_by_currency]) if volumes_by_currency else 0
+        
+        if len(volumes_by_currency) == 0:
+            volume_display = "0.00"
+        elif len(volumes_by_currency) == 1:
+            volume_display = f"{volumes_by_currency[0].total:.2f} {volumes_by_currency[0].send_currency}"
+        else:
+            volume_parts = [f"{v.total:.2f} {v.send_currency}" for v in volumes_by_currency]
+            volume_display = " + ".join(volume_parts)
+        
+        admin_stats.append({
+            'id': adm.id,
+            'username': adm.username,
+            'email': adm.email,
+            'status': adm.status,
+            'transaction_count': transaction_count,
+            'total_volume': total_volume,
+            'volume_display': volume_display
+        })
     
     now = datetime.utcnow()
     today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -92,19 +113,47 @@ def dashboard():
             'total': day_total if day_total else 0
         })
     
-    top_admins = db.session.query(
-        Admin.username,
-        func.sum(Transaction.send_amount).label('total'),
-        func.count(Transaction.id).label('count')
+    # Get top admins with currency breakdown
+    top_admins_data = db.session.query(
+        Admin.id,
+        Admin.username
     ).join(
         Transaction, Transaction.admin_id == Admin.id
     ).filter(
         Admin.role == 'admin'
     ).group_by(
         Admin.id, Admin.username
-    ).order_by(
-        desc('total')
-    ).limit(10).all()
+    ).all()
+    
+    top_admins = []
+    for admin_id, username in top_admins_data:
+        volumes_by_currency = db.session.query(
+            Transaction.send_currency,
+            func.sum(Transaction.send_amount).label('total')
+        ).filter_by(admin_id=admin_id)\
+         .group_by(Transaction.send_currency)\
+         .all()
+        
+        total = sum([v.total for v in volumes_by_currency]) if volumes_by_currency else 0
+        count = Transaction.query.filter_by(admin_id=admin_id).count()
+        
+        if len(volumes_by_currency) == 0:
+            volume_display = "0.00"
+        elif len(volumes_by_currency) == 1:
+            volume_display = f"{volumes_by_currency[0].total:.2f} {volumes_by_currency[0].send_currency}"
+        else:
+            volume_parts = [f"{v.total:.2f} {v.send_currency}" for v in volumes_by_currency]
+            volume_display = " + ".join(volume_parts)
+        
+        top_admins.append({
+            'username': username,
+            'total': total,
+            'count': count,
+            'volume_display': volume_display
+        })
+    
+    top_admins.sort(key=lambda x: x['total'], reverse=True)
+    top_admins = top_admins[:10]
     
     return render_template('superadmin_dashboard.html',
                          total_admins=total_admins,
@@ -289,20 +338,51 @@ def statistics():
     if not admin:
         return redirect(url_for('main.index'))
     
-    admin_stats = db.session.query(
-        Admin.id,
-        Admin.username,
-        Admin.full_name,
-        Admin.email,
-        Admin.status,
-        Admin.created_at,
-        func.count(Transaction.id).label('transaction_count'),
-        func.sum(Transaction.send_amount).label('total_volume')
-    ).outerjoin(Transaction, Admin.id == Transaction.admin_id)\
-     .filter(Admin.role == 'admin')\
-     .group_by(Admin.id, Admin.username, Admin.full_name, Admin.email, Admin.status, Admin.created_at)\
-     .order_by(desc('total_volume'))\
-     .all()
+    # Get all admins
+    admins = Admin.query.filter_by(role='admin').all()
+    
+    # Calculate stats for each admin with currency breakdown
+    admin_stats = []
+    for adm in admins:
+        # Get transaction count
+        transaction_count = Transaction.query.filter_by(admin_id=adm.id).count()
+        
+        # Get volume by currency
+        volumes_by_currency = db.session.query(
+            Transaction.send_currency,
+            func.sum(Transaction.send_amount).label('total')
+        ).filter_by(admin_id=adm.id)\
+         .group_by(Transaction.send_currency)\
+         .all()
+        
+        # Calculate total volume (sum of first currency for sorting)
+        total_volume = sum([v.total for v in volumes_by_currency]) if volumes_by_currency else 0
+        
+        # Format volume display
+        if len(volumes_by_currency) == 0:
+            volume_display = "0.00"
+        elif len(volumes_by_currency) == 1:
+            # Single currency - show amount with currency
+            volume_display = f"{volumes_by_currency[0].total:.2f} {volumes_by_currency[0].send_currency}"
+        else:
+            # Multiple currencies - show breakdown
+            volume_parts = [f"{v.total:.2f} {v.send_currency}" for v in volumes_by_currency]
+            volume_display = " + ".join(volume_parts)
+        
+        admin_stats.append({
+            'id': adm.id,
+            'username': adm.username,
+            'full_name': adm.full_name,
+            'email': adm.email,
+            'status': adm.status,
+            'created_at': adm.created_at,
+            'transaction_count': transaction_count,
+            'total_volume': total_volume,
+            'volume_display': volume_display
+        })
+    
+    # Sort by total volume
+    admin_stats.sort(key=lambda x: x['total_volume'], reverse=True)
     
     return render_template('superadmin_statistics.html', admin_stats=admin_stats)
 

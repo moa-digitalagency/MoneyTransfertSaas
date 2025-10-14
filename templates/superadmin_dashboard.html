@@ -115,7 +115,7 @@
                             <tr>
                                 <th class="text-left p-3 text-sm font-semibold text-blue-900">{{ t.superadmin.rank }}</th>
                                 <th class="text-left p-3 text-sm font-semibold text-blue-900">{{ t.superadmin.admin }}</th>
-                                <th class="text-right p-3 text-sm font-semibold text-blue-900">{{ t.superadmin.volume }} ({{ t.superadmin.mixed_currencies }})</th>
+                                <th class="text-right p-3 text-sm font-semibold text-blue-900">{{ t.superadmin.volume }}</th>
                                 <th class="text-right p-3 text-sm font-semibold text-blue-900">{{ t.superadmin.txns }}</th>
                             </tr>
                         </thead>
@@ -131,7 +131,7 @@
                                 </td>
                                 <td class="p-3 text-sm font-medium">{{ top_admins[i].username }}</td>
                                 <td class="p-3 text-sm text-right font-bold text-green-600">
-                                    {{ "%.2f"|format(top_admins[i].total) }} <span class="text-xs text-gray-500">USD/MAD/...</span>
+                                    {{ top_admins[i].volume_display }}
                                 </td>
                                 <td class="p-3 text-sm text-right text-gray-600">{{ top_admins[i].count }}</td>
                             </tr>
@@ -167,7 +167,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ stat.transaction_count or 0 }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ "%.2f"|format(stat.total_volume or 0) }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap font-bold text-green-600">{{ stat.volume_display }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <a href="{{ url_for('superadmin.admin_transactions', admin_id=stat.id) }}" 
                                    class="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition" 

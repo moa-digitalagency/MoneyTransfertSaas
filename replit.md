@@ -12,6 +12,11 @@
   - Texte corrigé pour MAD → CDF: "Entrez combien de CDF pour 1 MAD" (au lieu de l'inverse)
   - Texte corrigé pour CDF → MAD: "Entrez combien de MAD pour 1 CDF" (au lieu de l'inverse)
   - Fichiers modifiés: `translations/fr.json`, `translations/en.json`
+- ✅ **Affichage des devises dans les dashboards**:
+  - Les volumes de transactions affichent maintenant les devises à côté des montants
+  - Gestion intelligente: devise unique affichée directement, devises multiples avec détails (ex: "100.00 MAD + 50.00 USD")
+  - Affichage corrigé dans le dashboard SuperAdmin et la page de statistiques complètes
+  - Fichiers modifiés: `app/routes/superadmin.py`, `templates/superadmin_dashboard.html`, `templates/superadmin_statistics.html`
 - ✅ **Correction critique précédente**: Résolution de l'erreur `TypeError: replace() argument 2 must be str, not Undefined`
   - Corrigé tous les templates pour utiliser `.currency_code` au lieu de `.currency`
   - Templates affectés: `admin_panel.html`, `index.html`
