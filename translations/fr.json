@@ -108,6 +108,9 @@
     "enter_details": "Entrez les coordonnées",
     "send_whatsapp": "Envoyer sur WhatsApp",
     "for_admin": "For Admin",
+    "calculate_first": "Veuillez d'abord calculer le montant",
+    "calc_error": "Erreur lors du calcul",
+    "whatsapp_error": "Erreur lors de la génération du lien WhatsApp",
     "errors": {
       "calculate_first": "Veuillez d'abord calculer le montant",
       "fill_all_fields": "Veuillez remplir tous les champs",

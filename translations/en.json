@@ -108,6 +108,9 @@
     "enter_details": "Enter details",
     "send_whatsapp": "Send on WhatsApp",
     "for_admin": "For Admin",
+    "calculate_first": "Please calculate the amount first",
+    "calc_error": "Calculation error",
+    "whatsapp_error": "Error generating WhatsApp link",
     "errors": {
       "calculate_first": "Please calculate the amount first",
       "fill_all_fields": "Please fill in all fields",
