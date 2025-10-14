@@ -1,5 +1,17 @@
 # Money Transfer Calculator: Multi-Tenant SaaS Platform
 
+## Recent Changes
+
+### 2025-10-14: Corrections VPS et améliorations
+- ✅ **Correction critique**: Résolution de l'erreur `TypeError: replace() argument 2 must be str, not Undefined`
+  - Corrigé tous les templates pour utiliser `.currency_code` au lieu de `.currency`
+  - Templates affectés: `admin_panel.html`, `index.html`
+- ✅ **Script de mise à jour VPS**: Créé `update_vps.sh` avec gestion d'erreurs robuste
+- ✅ **Documentation**: Ajouté `COMMANDES_VPS.md` avec instructions complètes de déploiement
+- ✅ **Amélioration des taux de change**: 
+  - Précision augmentée à 8 décimales
+  - Toggle pour calcul automatique/manuel des taux inverses
+
 ## Overview
 
 This is a **multi-tenant SaaS platform** for money transfer services. The application has been converted from a single-instance system to a full SaaS model with role-based access control (SuperAdmin and Admin). 
