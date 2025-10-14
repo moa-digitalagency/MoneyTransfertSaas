@@ -227,8 +227,8 @@ www.myoneart.com
             const direction = document.getElementById('direction').value;
             currentDirection = direction;
             
-            let sendCurrency = direction === 'country1_to_country2' ? config.countries.country1.currency_code : config.countries.country2.currency_code;
-            let receiveCurrency = direction === 'country1_to_country2' ? config.countries.country2.currency_code : config.countries.country1.currency_code;
+            let sendCurrency = direction === 'country1_to_country2' ? config.country1.currency : config.country2.currency;
+            let receiveCurrency = direction === 'country1_to_country2' ? config.country2.currency : config.country1.currency;
             
             if (calculationType === 'send') {
                 document.getElementById('amount-label').textContent = `${translations.amountToSend} (${sendCurrency})`;
