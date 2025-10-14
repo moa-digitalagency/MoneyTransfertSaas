@@ -2,6 +2,23 @@
 
 ## Recent Changes
 
+### 2025-10-14 (Soir): Corrections UX Mobile & Moyens de Paiement
+- ✅ **Correction responsive des boutons (Mobile)**:
+  - Ajout de classes Tailwind responsive pour une meilleure organisation sur mobile
+  - Les boutons de navigation (Accueil, Historique, Déconnexion) s'adaptent maintenant avec `flex-wrap`
+  - Les boutons "Copier" et "Voir" se réorganisent en colonne sur mobile puis en ligne sur tablette/desktop
+  - Utilisation de `flex-col sm:flex-row` pour un affichage optimal sur tous les appareils
+  - Fichier modifié: `templates/admin_panel.html`
+- ✅ **Correction moyens de paiement**:
+  - Ajout de gestion défensive pour valeurs null/undefined dans le JavaScript
+  - Ajout de logs de débogage dans la console pour identifier les problèmes sur VPS
+  - Amélioration de la robustesse avec `|| []` pour garantir des tableaux valides
+  - Fichiers modifiés: `templates/index.html`, `app/routes/main.py`
+- 📝 **Guide de débogage créé**: `DEBUG_MOYENS_PAIEMENT.md`
+  - Instructions complètes pour débugger sur VPS
+  - Points de vérification de la base de données
+  - Étapes de résolution des problèmes
+
 ### 2025-10-14: Corrections majeures du système de calcul
 - ✅ **Correction critique des frais de transaction**: 
   - Les frais sont maintenant soustraits de la monnaie d'envoi AVANT la conversion (au lieu d'après)
