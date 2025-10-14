@@ -10,3 +10,12 @@ flask-login
 flask-sqlalchemy
 gunicorn>=23.0.0
 psycopg2-binary
+email_validator
+flask
+flask-sqlalchemy
+gunicorn
+psycopg2-binary
+email-validator
+flask
+flask-sqlalchemy
+psycopg2-binary
